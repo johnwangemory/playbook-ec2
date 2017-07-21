@@ -1,6 +1,6 @@
 # playbook-ec2
 
-Ansible Playbook for provision EC2 instances with list and terminate plays. All the playbooks are idempotent which means it is safe to run them mutiple times.
+Ansible Playbook for provision EC2 instances with list and terminate plays. All the playbooks are idempotent which means it is safe to run them multiple times.
 
 ## Status
 
