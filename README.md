@@ -23,7 +23,8 @@ ansible-playbook -i hosts list.yml
 
 In order to run this playbook, it is assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS account. The following variables will need to be customized to fit your needs:
 
-| Name                         | Value           | Remark                      |
+| Name                         | Value           | Remark                         |
+| ---                          | ---             | ---                            |
 | ansible_ssh_private_key_file | ~/.ssh/ylu.pem  | path to your ssh private key   |
 | key_name                     | ylu             | name of your ssh key on AWS    |
 | sg_name                      | mysg            | name of the security group     |
