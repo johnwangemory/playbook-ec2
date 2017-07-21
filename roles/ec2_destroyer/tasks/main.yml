@@ -1,0 +1,5 @@
+---
+## Terminate EC2 instances
+- include_vars: ../../ec2_launcher/vars/main.yml
+- include: ../../ec2_launcher/tasks/query.yml
+- include: destroy.yml

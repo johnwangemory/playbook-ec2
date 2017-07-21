@@ -1,0 +1,9 @@
+---
+aws_region: us-east-2
+key_name: ylu
+instance_type: t2.micro
+image_id: ami-618fab04
+instance_tag: yannan2
+sg_name: mysg
+vpc_id: vpc-e8c95f81
+subnet_id: subnet-5e7cd125

@@ -1,0 +1,69 @@
+---
+- name: Add existing instances to the group
+  add_host:
+    name: "{{item.public_dns_name}}"
+    instance_id: "{{item.id}}"
+    groups: ec2hosts
+  with_items: "{{ec2_info.instances}}"
+  when: ec2_info.instances|length > 0
+
+- name: Create security group
+  ec2_group:
+    name: "{{sg_name}}"
+    description: "A Security group"
+    region: "{{aws_region}}"
+    vpc_id: "{{vpc_id}}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+    rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+  when: ec2_info.instances|length == 0
+  register: basic_firewall
+
+- name: Create an EC2 instance
+  ec2:
+    key_name: "{{key_name}}"
+    region: "{{aws_region}}"
+    group_id: "{{basic_firewall.group_id}}"
+    instance_type: "{{instance_type}}"
+    image: "{{image_id}}"
+    instance_tags:
+      Name: "{{instance_tag}}" 
+    user_data: |
+               #!/bin/sh
+               sudo apt update -y
+               sudo apt install -y python-minimal
+    vpc_subnet_id: "{{subnet_id}}"
+    assign_public_ip: yes
+    wait: yes
+    count: 1
+  when: basic_firewall.group_id is defined and ec2_info.instances|length == 0
+  register: basic_ec2
+
+- name: Display basic_ec2 info
+  debug:
+    msg: "id: {{item.id}}, hostname: {{item.public_dns_name}}"
+  with_items: "{{basic_ec2.instances}}"
+  when: basic_ec2.instances is defined
+
+- name: Wait for the instance to fullly come up
+  wait_for:
+    host: "{{item.public_ip}}"
+    port: 22
+    state: started
+    delay: 60
+    timeout: 320
+  with_items: "{{basic_ec2.instances}}"
+  when: basic_ec2.instances is defined
+
+- name: Add new instances to the group
+  add_host:
+    name: "{{item.public_dns_name}}"
+    instance_id: "{{item.id}}"
+    groups: ec2hosts
+  with_items: "{{basic_ec2.instances}}"
+  when: basic_ec2.instances is defined

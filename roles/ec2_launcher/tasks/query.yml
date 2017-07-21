@@ -1,0 +1,14 @@
+---
+- name: Get ec2 instance facts
+  ec2_remote_facts:
+    region: "{{aws_region}}"
+    filters:
+      instance-state-name: running
+      "tag:Name": "{{instance_tag}}"
+  register: ec2_info
+
+- name: Display ec2_info
+  debug:
+    msg: "id: {{item.id}}, hostname: {{item.public_dns_name}}"
+  with_items: "{{ec2_info.instances}}"
+  when: ec2_info.instances|length > 0

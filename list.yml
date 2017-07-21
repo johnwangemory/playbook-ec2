@@ -1,0 +1,9 @@
+---
+# Query EC2 instances
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - include_vars: roles/ec2_launcher/vars/main.yml
+    - include: roles/ec2_launcher/tasks/query.yml

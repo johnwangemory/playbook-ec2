@@ -1,0 +1,3 @@
+---
+- include: query.yml  # query the instance
+- include: create.yml # create the instance in case no such instance

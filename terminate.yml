@@ -1,0 +1,8 @@
+---
+# Terminate EC2 instances
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  roles:
+    - ec2_destroyer
