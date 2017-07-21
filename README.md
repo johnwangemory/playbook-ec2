@@ -30,7 +30,7 @@ In order to run this playbook, it is assumed that ~/.aws/credentials is set up w
 | sg_name                      | ylu_sg          | name of the security group     | roles/ec2_launcher/vars/main.yml |
 | instance_tag                 | ylu_test        | tag name for your EC2 instance | roles/ec2_launcher/vars/main.yml |
 | instance_type                | t2.micro        | type of EC2 instance           | roles/ec2_launcher/vars/main.yml |
-| image_id                     | ami-618fab04    | AMI of Ubuntu 14.04            | roles/ec2_launcher/vars/main.yml |
+| image_id                     | ami-618fab04    | AMI of Ubuntu 16.04            | roles/ec2_launcher/vars/main.yml |
 | aws_region                   | us-east-2       | EC2 region of AWS              | roles/ec2_launcher/vars/main.yml |
 | vpc_id                       | vpc-e8c95f81    | id of an existing VPC          | roles/ec2_launcher/vars/main.yml |
 | subnect_id                   | subnet-5e7cd125 | id of an existing Subnet       | roles/ec2_launcher/vars/main.yml |
