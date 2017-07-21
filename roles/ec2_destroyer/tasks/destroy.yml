@@ -9,7 +9,7 @@
 
 - name: Pause for a minute
   pause:
-    seconds: 60
+    seconds: 90
   when: ec2_info.instances|length > 0
 
 - name: Take security group of {{sg_name}} down

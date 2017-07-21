@@ -7,3 +7,4 @@
     - jq
     - lua50
     - golang
+    - expect
