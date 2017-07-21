@@ -22,4 +22,4 @@ ansible-playbook -i hosts -vvv list.yml
 ```
 
 ## Author
-Yannan Lu <yannan.lu@emory.edu>
+Yannan Lu <yannanlu@yahoo.com>
