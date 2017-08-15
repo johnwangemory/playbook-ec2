@@ -1,0 +1,12 @@
+---
+- name: Restart_tomcat7
+  service:
+    name: tomcat7
+    enabled: yes
+    state: restarted
+
+- name: Restart_tomcat.service
+  systemd:
+    name: tomcat
+    enabled: yes
+    state: restarted

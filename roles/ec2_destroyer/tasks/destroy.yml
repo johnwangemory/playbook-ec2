@@ -9,12 +9,20 @@
 
 - name: Pause for a minute
   pause:
-    seconds: 90
+    seconds: 60
   when: ec2_info.instances|length > 0
 
-- name: Take security group of {{sg_name}} down
+- name: Get ec2 security group facts (boto3 required)
+  ec2_group_facts:
+    region: "{{aws_region}}"
+    filters:
+      vpc_id: "{{vpc_id}}"
+      group_name: "{{sg_name}}"
+  register: ec2_sg_info
+
+- name: Take security group down
   ec2_group:
     name: "{{sg_name}}"
     region: "{{aws_region}}"
     state: 'absent'
-  when: ec2_info.instances|length > 0
+  when: ec2_info.instances|length > 0 or ec2_sg_info.security_groups|length > 0

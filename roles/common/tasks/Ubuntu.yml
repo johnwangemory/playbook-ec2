@@ -3,8 +3,7 @@
   apt:
     name: "{{item}}"
     state: present
+    update_cache: yes
   with_items:
     - jq
-    - lua50
-    - golang
     - expect

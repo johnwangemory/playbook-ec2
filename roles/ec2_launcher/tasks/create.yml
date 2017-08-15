@@ -1,11 +1,19 @@
 ---
-- name: Add existing instances to the group
-  add_host:
-    name: "{{item.public_dns_name}}"
-    instance_id: "{{item.id}}"
-    groups: ec2hosts
-  with_items: "{{ec2_info.instances}}"
-  when: ec2_info.instances|length > 0
+- name: Query facts on the AMI
+  ec2_ami_find:
+    region: "{{aws_region}}"
+    ami_id: "{{image_id}}"
+  register: ami_info
+
+- name: Set the default user for Ubuntu
+  set_fact:
+    default_user: ubuntu
+  when: ami_info.results[0].name|search("ubuntu")
+
+- name: Set the default user for CentOS
+  set_fact:
+    default_user: centos
+  when: ami_info.results[0].name|search("CentOS")
 
 - name: Create security group
   ec2_group:
@@ -13,15 +21,11 @@
     description: "A Security group"
     region: "{{aws_region}}"
     vpc_id: "{{vpc_id}}"
-    rules:
-      - proto: tcp
-        from_port: 22
-        to_port: 22
-        cidr_ip: 0.0.0.0/0
+    rules: "{{sg_rules}}"
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0
-  when: ec2_info.instances|length == 0
+  when: ami_info.results|length > 0
   register: basic_firewall
 
 - name: Create an EC2 instance
@@ -32,23 +36,23 @@
     instance_type: "{{instance_type}}"
     image: "{{image_id}}"
     instance_tags:
-      Name: "{{instance_tag}}" 
-    user_data: |
-               #!/bin/sh
-               sudo apt update -y
-               sudo apt install -y python-minimal
+      Name: "{{instance_tag}}"
+    user_data: "{{lookup('file', 'files/user_data.sh')}}"
+    volumes:
+      - device_name: "{{ami_info.results[0].root_device_name}}"
+        volume_size: 8
+        delete_on_termination: true
     vpc_subnet_id: "{{subnet_id}}"
     assign_public_ip: yes
     wait: yes
-    count: 1
-  when: basic_firewall.group_id is defined and ec2_info.instances|length == 0
+  when: basic_firewall.group_id is defined and ami_info.results|length > 0
   register: basic_ec2
 
 - name: Display basic_ec2 info
   debug:
-    msg: "id: {{item.id}}, hostname: {{item.public_dns_name}}"
+    msg: "id: {{item.id}}, hostname: {{item.public_dns_name}}, user: {{default_user}}"
   with_items: "{{basic_ec2.instances}}"
-  when: basic_ec2.instances is defined
+  when: basic_ec2.instances|length > 0
 
 - name: Wait for the instance to fullly come up
   wait_for:
@@ -58,11 +62,17 @@
     delay: 60
     timeout: 320
   with_items: "{{basic_ec2.instances}}"
-  when: basic_ec2.instances is defined
+  when: basic_ec2.instances|length > 0
+
+- name: Pause for 30 sec
+  pause:
+    seconds: 30
+  when: basic_ec2.instances|length > 0 and ami_info.results[0].name|search("CentOS")
 
 - name: Add new instances to the group
   add_host:
     name: "{{item.public_dns_name}}"
+    ansible_user: "{{default_user}}"
     instance_id: "{{item.id}}"
     groups: ec2hosts
   with_items: "{{basic_ec2.instances}}"

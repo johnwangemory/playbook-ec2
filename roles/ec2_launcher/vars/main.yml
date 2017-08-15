@@ -2,8 +2,30 @@
 aws_region: us-east-2
 key_name: ylu
 instance_type: t2.micro
-image_id: ami-618fab04
+image_id: ami-8b92b4ee
 instance_tag: ylu_test
 sg_name: ylu_sg
 vpc_id: vpc-e8c95f81
 subnet_id: subnet-5e7cd125
+default_user: ec2-user 
+sg_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 0.0.0.0/0
+  - proto: tcp
+    from_port: 2812
+    to_port: 2812
+    cidr_ip: 170.140.201.0/24
+  - proto: tcp
+    from_port: 2812
+    to_port: 2812
+    cidr_ip: 75.131.197.0/24
+  - proto: tcp
+    from_port: 443
+    to_port: 443
+    cidr_ip: 170.140.201.0/24
+  - proto: tcp
+    from_port: 443
+    to_port: 443
+    cidr_ip: 75.131.197.0/24

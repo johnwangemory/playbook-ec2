@@ -1,0 +1,33 @@
+---
+- name: Install Nginx package
+  yum:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Template of nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0644
+  vars:
+    nginx_user: nginx
+  notify: Restart_nginx.service
+
+- name: Get stats of monitrc
+  stat:
+    path: /etc/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of nginx.monit
+  template:
+    src: nginx.monit.j2
+    dest: /etc/monit.d/nginx.monit
+    mode: 0644
+  vars:
+    start_program: '/usr/bin/systemctl start nginx'
+    stop_program: '/usr/bin/systemctl stop nginx'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service

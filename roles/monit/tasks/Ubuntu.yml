@@ -1,0 +1,25 @@
+---
+- name: Install Monit package
+  apt:
+    name: monit
+    state: present
+    update_cache: yes
+
+- name: Copy monit.pem
+  copy:
+    src: monit.pem
+    dest: /etc/monit/
+    mode: 0600
+  notify: Restart_monit
+
+- name: Template of monitrc.j2
+  template:
+    src: monitrc.j2
+    dest: /etc/monit/monitrc
+    mode: 0600
+  vars:
+    idfile: /var/lib/monit/id
+    statefile: /var/lib/monit/state
+    pemfile: /etc/monit/monit.pem
+    includedir: /etc/monit/conf.d
+  notify: Restart_monit

@@ -1,0 +1,24 @@
+---
+- name: Query facts on the AMI
+  ec2_ami_find:
+    region: "{{aws_region}}"
+    ami_id: "{{ec2_info.instances[0].image_id}}"
+  register: ami_info
+
+- name: Reset the default user for Ubuntu
+  set_fact:
+    default_user: ubuntu
+  when: ami_info.results[0].name|search("ubuntu")
+
+- name: Reset the default user for CentOS
+  set_fact:
+    default_user: centos
+  when: ami_info.results[0].name|search("CentOS")
+
+- name: Add existing instances to the group
+  add_host:
+    name: "{{item.public_dns_name}}"
+    ansible_user: "{{default_user}}"
+    instance_id: "{{item.id}}"
+    groups: ec2hosts
+  with_items: "{{ec2_info.instances}}"

@@ -1,0 +1,91 @@
+---
+- name: Create group account for activemq
+  group:
+    name: "{{group}}"
+    state: present
+
+- name: Create user account for activemq
+  user:
+    name: "{{user}}"
+    comment: ActiveMQ
+    group: "{{group}}"
+    state: present
+    shell: /sbin/nologin
+    createhome: no
+
+- name: Create dir of /opt
+  file:
+    path: /opt
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create dir of /var/cache/ansible
+  file:
+    path: /var/cache/ansible
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Gets the tarball
+  get_url:
+    url=https://archive.apache.org/dist/activemq/5.14.3/apache-activemq-5.14.3-bin.tar.gz
+    dest=/var/cache/ansible/
+  register: new_archive
+
+- name: Get stats of /opt/activemq
+  stat:
+    path: /opt/apache-activemq-5.14.3
+    get_md5: no
+    get_checksum: no
+  register: st_activemq
+
+- name: Unarchive source
+  unarchive:
+    src: /var/cache/ansible/apache-activemq-5.14.3-bin.tar.gz
+    dest: /opt
+    remote_src: yes
+    owner: "{{user}}"
+    group: "{{group}}"
+  when: new_archive|changed or not st_activemq.stat.exists
+
+- name: Create symlink of /opt/activemq
+  file:
+    src: /opt/apache-activemq-5.14.3
+    dest: /opt/activemq
+    state: link
+
+- name: Copy activemq.xml
+  copy:
+    src: activemq.xml
+    dest: /opt/activemq/conf/
+    mode: 0664
+  notify: Restart_activemq
+
+- name: Copy activemq.service
+  copy:
+    src: activemq.service
+    dest: /lib/systemd/system/
+    mode: 0664
+  notify: Restart_activemq
+
+- name: Get stats of monitrc
+  stat: 
+    path: /etc/monit/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of activemq.monit
+  template:
+    src: activemq.monit.j2
+    dest: /etc/monit/conf.d/activemq.monit
+    mode: 0644
+  vars:
+    pidfile: /var/run/activemq/main.pid
+    start_program: '/usr/sbin/service activemq start'
+    stop_program: '/usr/sbin/service activemq stop'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit

@@ -1,0 +1,25 @@
+---
+- name: Install Monit package
+  yum:
+    name: monit
+    state: present
+    update_cache: yes
+
+- name: Copy monit.pem
+  copy:
+    src: monit.pem
+    dest: /etc/monit.d/
+    mode: 0600
+  notify: Restart_monit.service
+
+- name: Template of monitrc.j2
+  template:
+    src: monitrc.j2
+    dest: /etc/monitrc
+    mode: 0600
+  vars:
+    idfile: /var/.monit.id
+    statefile: /var/.monit.state
+    pemfile: /etc/monit.d/monit.pem
+    includedir: /etc/monit.d
+  notify: Restart_monit.service

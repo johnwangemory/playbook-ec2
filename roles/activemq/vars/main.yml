@@ -1,0 +1,12 @@
+user: activemq
+group: activemq
+
+extra_sg_rules:
+  - proto: tcp
+    from_port: 8161
+    to_port: 8161
+    cidr_ip: 170.140.201.0/24
+  - proto: tcp
+    from_port: 8161
+    to_port: 8161
+    cidr_ip: 75.131.197.0/24

@@ -1,0 +1,27 @@
+set daemon 60            # check services at 1-minute intervals
+set logfile /var/log/monit.log
+set pidfile /var/run/monit.pid
+set idfile {{ idfile }}
+set statefile {{ statefile }}
+
+set eventqueue
+    basedir /var/lib/monit/events # set the base directory where events will be stored
+    slots 100                     # optionally limit the queue size
+
+set httpd
+    port 2812
+    ssl enable
+    pemfile {{ pemfile }}
+    allow 170.140.201.0/24
+    allow 75.131.197.0/24
+    allow localhost        # allow localhost to connect to the server and
+    allow monit:monit      # require user 'monit' with password 'monit'
+
+check system $HOST
+    if loadavg (1min) > 4 then alert
+    if loadavg (5min) > 2 then alert
+    if cpu usage > 95% for 10 cycles then alert
+    if memory usage > 75% then alert
+    if swap usage > 25% then alert
+
+include {{ includedir }}/*.monit

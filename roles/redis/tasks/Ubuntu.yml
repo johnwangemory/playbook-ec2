@@ -1,0 +1,28 @@
+---
+- name: Install Redis package
+  apt:
+    name: redis-server
+    state: present
+    update_cache: yes
+
+- name: Template of redis.conf
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    mode: 0640
+  vars:
+    pidfile: /var/run/redis/redis-server.pid
+    logfile: /var/log/redis/redis-server.log
+  notify: Restart_redis
+
+- name: Template of redis.monit
+  template:
+    src: redis.monit.j2
+    dest: /etc/monit/conf.d/redis.monit
+    mode: 0644
+  vars:
+    pidfile: /var/run/redis/redis-server.pid
+    start_program: '/usr/sbin/service redis-server start'
+    stop_program: '/usr/sbin/service redis-server stop'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit

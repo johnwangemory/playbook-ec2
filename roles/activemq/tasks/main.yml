@@ -1,0 +1,3 @@
+---
+- include: update_sg.yml  # add the extra rules to the security group
+- include: "{{ansible_distribution}}.yml"   # install and config nginx

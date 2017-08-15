@@ -1,2 +1,2 @@
 ---
-- include: packages.yml  # install packages
+- include: "{{ansible_distribution}}.yml"      # install packages

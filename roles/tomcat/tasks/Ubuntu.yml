@@ -1,0 +1,61 @@
+---
+- name: Install Tomcat package
+  apt:
+    name: tomcat7
+    state: present
+    update_cache: yes
+
+- name: Copy server.crt
+  copy:
+    src: server.crt
+    dest: /etc/nginx/
+    mode: 0600
+  notify: Restart_nginx
+
+- name: Copy server.key
+  copy:
+    src: server.key
+    dest: /etc/nginx/
+    mode: 0600
+  notify: Restart_nginx
+
+- name: Copy default.conf with proxy_pass
+  copy:
+    src: default.conf
+    dest: /etc/nginx/conf.d/
+    mode: 0644
+  notify: Restart_nginx
+
+- name: Copy date.jsp
+  copy:
+    src: date.jsp
+    dest: /var/lib/tomcat7/webapps/ROOT
+    mode: 0644
+
+#- name: Template of tomcat.conf
+#  template:
+#    src: tomcat.conf.j2
+#    dest: /etc/tomcat7/tomcat.conf
+#    mode: 0644
+#  vars:
+#    nginx_user: tomcat7
+#  notify: Restart_tomcat
+
+- name: Get stats of monitrc
+  stat: 
+    path: /etc/monit/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of tomcat.monit
+  template:
+    src: tomcat.monit.j2
+    dest: /etc/monit/conf.d/tomcat.monit
+    mode: 0644
+  vars:
+    pattern: '.base=/var/lib/tomcat7 '
+    start_program: '/usr/sbin/service tomcat7 start'
+    stop_program: '/usr/sbin/service tomcat7 stop'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit
