@@ -2,3 +2,4 @@
 dependencies:
   - role: monit
   - role: nginx
+  - role: java

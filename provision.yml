@@ -17,7 +17,8 @@
   roles:
     - common
     - monit
-    - nginx
     - java
+    - qbroker
+    - nginx
     - tomcat
     - activemq

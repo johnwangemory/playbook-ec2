@@ -1,0 +1,46 @@
+---
+- name: Create group account for qb
+  group:
+    name: "{{qb_group}}"
+    state: present
+
+- name: Create user account for qbadm
+  user:
+    name: "{{qb_user}}"
+    comment: QBroker
+    group: "{{qb_group}}"
+    state: present
+    shell: /bin/bash
+    home: /opt/qbroker
+    createhome: no
+
+- name: Create dir of /var/cache/ansible
+  file:
+    path: /var/cache/ansible
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Get the tarball
+  get_url:
+    url: "{{qb_repo_url}}/{{qb_tarball}}"
+    dest: /var/cache/ansible/
+    validate_certs: "{{validate_certs}}"
+  register: new_archive
+
+- name: Get stats of /opt/qbroker
+  stat:
+    path: /opt/qbroker
+    get_md5: no
+    get_checksum: no
+  register: st_qbroker
+
+- name: Unarchive source
+  unarchive:
+    src: "/var/cache/ansible/{{qb_tarball}}"
+    dest: /opt
+    remote_src: yes
+    owner: "{{qb_user}}"
+    group: "{{qb_group}}"
+  when: new_archive|changed or not st_qbroker.stat.exists

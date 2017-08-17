@@ -1,5 +1,8 @@
-user: activemq
-group: activemq
+amq_user: activemq
+amq_group: activemq
+amq_pkg_name: apache-activemq
+amq_version: 5.14.3
+amq_repo_url: https://archive.apache.org/dist/activemq
 
 extra_sg_rules:
   - proto: tcp
