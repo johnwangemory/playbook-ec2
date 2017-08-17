@@ -1,0 +1,75 @@
+---
+- name: Install MySQL community repo
+  yum:
+    name: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+    state: present
+
+- name: Install mysql package
+  yum:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - mysql-server
+    - MySQL-python
+
+- name: Make sure mysqld is up
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Get stats of .my.cnf
+  stat:
+    path: ~/.my.cnf
+    get_md5: no
+    get_checksum: no
+  register: st_mycnf
+
+- name: Update MySQL root password
+  mysql_user:
+    name: root
+    host: "{{item}}"
+    password: "{{mysql_root_passwd}}"
+    state: present
+  with_items:
+    - "{{ansible_hostname}}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  when: not st_mycnf.stat.exists
+
+- name: Template for .my.cnf
+  template:
+    src: root.cnf.j2
+    dest: ~/.my.cnf
+    mode: 0600
+
+- name: Ensure Anonymous users are not in the database
+  mysql_user:
+    name: ''
+    host: "{{item}}"
+    state: absent
+  with_items:
+    - "{{ansible_hostname}}"
+    - localhost
+
+- name: Remove the test database
+  mysql_db:
+    name: test
+    state: absent
+
+- name: Get stats of monitrc
+  stat:
+    path: /etc/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Copy mysqld.monit
+  copy:
+    src: mysqld.monit
+    dest: /etc/monit.d/
+    mode: 0644
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service

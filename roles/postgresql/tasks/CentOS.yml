@@ -1,0 +1,50 @@
+---
+- name: Install postgresql package
+  yum:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - postgresql-server
+
+- name: Get stats of pg_hba.conf
+  stat:
+    path: /var/lib/pgsql/data/pg_hba.conf
+    get_md5: no
+    get_checksum: no
+  register: st_pghba
+
+- name: Init the DB
+  command: /usr/bin/initdb -D /var/lib/pgsql/data
+  become: yes
+  become_user: postgres
+  when: not st_pghba.stat.exists
+
+- name: Copy pg_hba.conf
+  copy:
+    src: pg_hba.conf
+    dest: /var/lib/pgsql/data/
+    mode: 0600
+
+- name: Make sure postgresql is up
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Get stats of monitrc
+  stat:
+    path: /etc/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of postgres.monit
+  template:
+    src: postgres.monit.j2
+    dest: /etc/monit.d/postgres.monit
+    mode: 0644
+  vars:
+    pidfile: /var/run/postgresql/postmaster.pid
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service

@@ -1,0 +1,56 @@
+---
+- name: Install Apache2 package
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: Copy server.crt
+  copy:
+    src: server.crt
+    dest: /etc/apache2/
+    mode: 0600
+  notify: Restart_apache
+
+- name: Copy server.key
+  copy:
+    src: server.key
+    dest: /etc/apache2/
+    mode: 0600
+  notify: Restart_apache
+
+- name: Copy apache2.conf
+  copy:
+    src: apache2.conf
+    dest: /etc/apache2/
+    mode: 0644
+  notify: Restart_apache
+
+- name: Template of default.conf.j2
+  template:
+    src: default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+    mode: 0644
+  vars:
+    conf_dir: /etc/apache2
+    mods_dir: /usr/lib/apache2/modules
+  notify: Restart_apache
+
+- name: Get stats of monitrc
+  stat: 
+    path: /etc/monit/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of apache2.monit
+  template:
+    src: apache2.monit.j2
+    dest: /etc/monit/conf.d/apache2.monit
+    mode: 0644
+  vars:
+    pidfile: /var/run/apache2/apache2.pid
+    start_program: '/usr/sbin/service apache2 start'
+    stop_program: '/usr/sbin/service apache2 stop'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit

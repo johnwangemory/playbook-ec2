@@ -6,6 +6,8 @@
     update_cache: yes
   with_items:
     - jq
+    - git
+    - lsof
     - expect
 
 - name: Update sysctl.conf
@@ -18,3 +20,4 @@
     - net.ipv4.tcp_tw_recycle
     - net.ipv6.conf.all.disable_ipv6
     - net.ipv6.conf.default.disable_ipv6
+    - net.ipv6.conf.lo.disable_ipv6

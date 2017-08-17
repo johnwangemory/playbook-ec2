@@ -1,0 +1,32 @@
+---
+- name: Install postgresql package
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+    - postgresql
+    - python-psycopg2
+
+- name: Copy pg_hba.conf
+  copy:
+    src: pg_hba.conf
+    dest: /etc/postgresql/9.5/main
+    mode: 0600
+
+- name: Get stats of monitrc
+  stat: 
+    path: /etc/monit/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of postgres.monit
+  template:
+    src: postgres.monit.j2
+    dest: /etc/monit/conf.d/postgres.monit
+    mode: 0644
+  vars:
+    pidfile: /var/run/postgresql/9.5-main.pid
+  when: st_monitrc.stat.exists
+  notify: Restart_monit

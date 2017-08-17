@@ -1,0 +1,62 @@
+---
+- name: Install Apache package
+  yum:
+    name: httpd
+    state: present
+    update_cache: yes
+
+- name: Install mod_ssl
+  yum:
+    name: mod_ssl
+    state: present
+    update_cache: yes
+
+- name: Copy server.crt
+  copy:
+    src: server.crt
+    dest: /etc/httpd/
+    mode: 0600
+  notify: Restart_apache.service
+
+- name: Copy server.key
+  copy:
+    src: server.key
+    dest: /etc/httpd/
+    mode: 0600
+  notify: Restart_apache.service
+
+- name: Copy httpd.conf
+  copy:
+    src: httpd.conf
+    dest: /etc/httpd/conf/
+    mode: 0644
+  notify: Restart_apache.service
+
+- name: Template of default.conf.j2
+  template:
+    src: default.conf.j2
+    dest: /etc/httpd/conf.d/ssl.conf
+    mode: 0644
+  vars:
+    conf_dir: /etc/httpd
+    mods_dir: /etc/httpd/modules
+  notify: Restart_apache.service
+
+- name: Get stats of monitrc
+  stat:
+    path: /etc/monitrc
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of apache2.monit
+  template:
+    src: apache2.monit.j2
+    dest: /etc/monit.d/apache2.monit
+    mode: 0644
+  vars:
+    pidfile: /var/run/httpd/httpd.pid
+    start_program: '/usr/bin/systemctl start httpd'
+    stop_program: '/usr/bin/systemctl stop httpd'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service

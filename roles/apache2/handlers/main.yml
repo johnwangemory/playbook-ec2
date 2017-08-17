@@ -1,0 +1,12 @@
+---
+- name: Restart_apache
+  service:
+    name: apache2
+    enabled: yes
+    state: restarted
+
+- name: Restart_apache.service
+  systemd:
+    name: httpd
+    enabled: yes
+    state: restarted
