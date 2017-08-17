@@ -62,7 +62,7 @@
   register: st_monitrc
 
 - name: Copy mysqld.monit
-  Copy:
+  copy:
     src: mysqld.monit
     dest: /etc/monit/conf.d/
     mode: 0644
