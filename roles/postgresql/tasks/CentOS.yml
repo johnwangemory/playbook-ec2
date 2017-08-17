@@ -6,6 +6,7 @@
     update_cache: yes
   with_items:
     - postgresql-server
+    - python-psycopg2
 
 - name: Get stats of pg_hba.conf
   stat:
@@ -31,6 +32,49 @@
     name: postgresql
     state: started
     enabled: yes
+
+- name: Create user for the db
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: "{{db_owner}}"
+    password: "{{db_passwd}}"
+    state: present
+
+- name: Create database
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: "{{db_name}}"
+    owner: "{{db_owner}}"
+    encoding: UTF-8
+    template: template1
+    state: present
+
+- name: Check table of services
+  become: yes
+  become_user: postgres
+  command: /usr/bin/psql "{{db_name}}" -c '\d services'
+  register: table_check
+  failed_when: False
+
+- name: Copy eventid.sql
+  copy:
+    src: eventid.sql
+    dest: /tmp/
+    mode: 0644
+  when: "'service_id' not in table_check.stdout"
+
+- name: Load schema of eventid.sql
+  become: yes
+  become_user: postgres
+  command: /usr/bin/psql "{{db_name}}" -f /tmp/eventid.sql
+  when: "'service_id' not in table_check.stdout"
+
+- name: Cleanup eventid.sql
+  file:
+    path: /tmp/eventid.sql
+    state: absent
 
 - name: Get stats of monitrc
   stat:
