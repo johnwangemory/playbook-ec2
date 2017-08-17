@@ -59,6 +59,43 @@
     name: test
     state: absent
 
+- name: Create user for the db
+  mysql_user:
+    name: "{{mysql_db_user}}"
+    password: "{{mysql_db_passwd}}"
+    priv: '*.*:ALL'
+    state: present
+
+- name: Create database
+  mysql_db:
+    name: "{{mysql_db_name}}"
+    encoding: utf8
+    state: present
+
+- name: Check table of services
+  command: /usr/bin/mysql "{{mysql_db_name}}" -e 'show columns from services'
+  register: table_check
+  failed_when: False
+
+- name: Copy eventid.sql
+  copy:
+    src: eventid.sql
+    dest: /tmp/
+    mode: 0644
+  when: "'service_id' not in table_check.stdout"
+
+- name: Load schema of eventid.sql
+  mysql_db:
+    name: "{{mysql_db_name}}"
+    state: import
+    target: /tmp/eventid.sql
+  when: "'service_id' not in table_check.stdout"
+
+- name: Cleanup eventid.sql
+  file:
+    path: /tmp/eventid.sql
+    state: absent
+
 - name: Get stats of monitrc
   stat:
     path: /etc/monitrc

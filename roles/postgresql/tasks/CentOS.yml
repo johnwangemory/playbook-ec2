@@ -37,16 +37,16 @@
   become: yes
   become_user: postgres
   postgresql_user:
-    name: "{{db_owner}}"
-    password: "{{db_passwd}}"
+    name: "{{pg_db_owner}}"
+    password: "{{pg_db_passwd}}"
     state: present
 
 - name: Create database
   become: yes
   become_user: postgres
   postgresql_db:
-    name: "{{db_name}}"
-    owner: "{{db_owner}}"
+    name: "{{pg_db_name}}"
+    owner: "{{pg_db_owner}}"
     encoding: UTF-8
     template: template1
     state: present
@@ -54,7 +54,7 @@
 - name: Check table of services
   become: yes
   become_user: postgres
-  command: /usr/bin/psql "{{db_name}}" -c '\d services'
+  command: /usr/bin/psql "{{pg_db_name}}" -c '\d services'
   register: table_check
   failed_when: False
 
@@ -68,7 +68,7 @@
 - name: Load schema of eventid.sql
   become: yes
   become_user: postgres
-  command: /usr/bin/psql "{{db_name}}" -f /tmp/eventid.sql
+  command: /usr/bin/psql "{{pg_db_name}}" -f /tmp/eventid.sql
   when: "'service_id' not in table_check.stdout"
 
 - name: Cleanup eventid.sql
