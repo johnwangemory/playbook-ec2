@@ -5,27 +5,6 @@
     state: present
     update_cache: yes
 
-- name: Copy server.crt
-  copy:
-    src: server.crt
-    dest: /etc/nginx/
-    mode: 0600
-  notify: Restart_nginx
-
-- name: Copy server.key
-  copy:
-    src: server.key
-    dest: /etc/nginx/
-    mode: 0600
-  notify: Restart_nginx
-
-- name: Copy default.conf with proxy_pass
-  copy:
-    src: default.conf
-    dest: /etc/nginx/conf.d/
-    mode: 0644
-  notify: Restart_nginx
-
 - name: Copy date.jsp
   copy:
     src: date.jsp
@@ -42,7 +21,7 @@
 #  notify: Restart_tomcat
 
 - name: Get stats of monitrc
-  stat: 
+  stat:
     path: /etc/monit/monitrc
     get_md5: no
     get_checksum: no

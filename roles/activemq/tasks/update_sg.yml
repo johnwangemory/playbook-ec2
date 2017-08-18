@@ -14,10 +14,6 @@
   become: no
   register: ec2_sg_info
 
-- name: Display sg_info
-  debug:
-    var: ec2_sg_info
-
 - name: Initialize an empty list
   set_fact:
     sg_rules: []

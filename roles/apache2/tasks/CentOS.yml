@@ -11,37 +11,6 @@
     state: present
     update_cache: yes
 
-- name: Copy server.crt
-  copy:
-    src: server.crt
-    dest: /etc/httpd/
-    mode: 0600
-  notify: Restart_apache.service
-
-- name: Copy server.key
-  copy:
-    src: server.key
-    dest: /etc/httpd/
-    mode: 0600
-  notify: Restart_apache.service
-
-- name: Copy httpd.conf
-  copy:
-    src: httpd.conf
-    dest: /etc/httpd/conf/
-    mode: 0644
-  notify: Restart_apache.service
-
-- name: Template of default.conf.j2
-  template:
-    src: default.conf.j2
-    dest: /etc/httpd/conf.d/ssl.conf
-    mode: 0644
-  vars:
-    conf_dir: /etc/httpd
-    mods_dir: /etc/httpd/modules
-  notify: Restart_apache.service
-
 - name: Get stats of monitrc
   stat:
     path: /etc/monitrc

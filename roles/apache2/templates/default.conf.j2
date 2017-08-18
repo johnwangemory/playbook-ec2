@@ -1,8 +1,0 @@
-LoadModule ssl_module {{mods_dir}}/mod_ssl.so
-
-Listen 443
-<VirtualHost *:443>
-    SSLEngine on
-    SSLCertificateFile "{{conf_dir}}/server.crt"
-    SSLCertificateKeyFile "{{conf_dir}}/server.key"
-</VirtualHost>

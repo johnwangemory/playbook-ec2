@@ -1,5 +1,5 @@
 ---
-- name: Restart_tomcat7
+- name: Restart_tomcat
   service:
     name: tomcat7
     enabled: yes

@@ -1,2 +1,3 @@
 ---
-- include: "{{ansible_distribution}}.yml"   # install and config tomcat
+- include: "{{ansible_distribution}}.yml"          # install and config tomcat
+- include: "{{ansible_distribution}}_{{web_frontend}}.yml"

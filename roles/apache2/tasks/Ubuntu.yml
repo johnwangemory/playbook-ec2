@@ -5,37 +5,6 @@
     state: present
     update_cache: yes
 
-- name: Copy server.crt
-  copy:
-    src: server.crt
-    dest: /etc/apache2/
-    mode: 0600
-  notify: Restart_apache
-
-- name: Copy server.key
-  copy:
-    src: server.key
-    dest: /etc/apache2/
-    mode: 0600
-  notify: Restart_apache
-
-- name: Copy apache2.conf
-  copy:
-    src: apache2.conf
-    dest: /etc/apache2/
-    mode: 0644
-  notify: Restart_apache
-
-- name: Template of default.conf.j2
-  template:
-    src: default.conf.j2
-    dest: /etc/apache2/sites-available/000-default.conf
-    mode: 0644
-  vars:
-    conf_dir: /etc/apache2
-    mods_dir: /usr/lib/apache2/modules
-  notify: Restart_apache
-
 - name: Get stats of monitrc
   stat: 
     path: /etc/monit/monitrc

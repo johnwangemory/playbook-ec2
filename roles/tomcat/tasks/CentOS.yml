@@ -5,27 +5,6 @@
     state: present
     update_cache: yes
 
-- name: Copy server.crt
-  copy:
-    src: server.crt
-    dest: /etc/nginx/
-    mode: 0600
-  notify: Restart_nginx.service
-
-- name: Copy server.key
-  copy:
-    src: server.key
-    dest: /etc/nginx/
-    mode: 0600
-  notify: Restart_nginx.service
-
-- name: Copy default.conf with proxy_pass
-  copy:
-    src: default.conf
-    dest: /etc/nginx/conf.d/
-    mode: 0644
-  notify: Restart_nginx.service
-
 - name: Create dir of ROOT
   file:
     path: /var/lib/tomcat/webapps/ROOT
