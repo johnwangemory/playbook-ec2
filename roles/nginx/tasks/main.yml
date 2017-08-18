@@ -1,2 +1,2 @@
 ---
-- include: "{{ansible_distribution}}.yml"   # install and config nginx
+- include: "{{ansible_distribution}}.yml"   # install nginx only

@@ -1,0 +1,86 @@
+{
+  "Name": "node_cache",
+  "ClassName": "org.qbroker.node.CacheNode",
+  "Description": "cache responses",
+  "Operation": "cache",
+  "LinkName": "cache",
+  "Capacity": "256",
+  "DisplayMask": "0",
+  "XAMode": "1",
+  "Debug": "9",
+  "Ruleset": [
+    {
+      "Name": "cache",
+      "PreferredOutLink": "event",
+      "RequestType": "http",
+      "JMSPropertyGroup": [
+        {
+          "path": ".",
+          "name": "."
+        }
+      ],
+      "KeyTemplate": "##path##/##name##",
+      "TimeToLive": "0",
+      "RCRequired": "false"
+    },
+    {
+      "Name": "list",
+      "PreferredOutLink": "request",
+      "JMSPropertyGroup": [
+        {
+          "path": "."
+        }
+      ],
+      "RCRequired": "false"
+    },
+    {
+      "Name": "static",
+      "PreferredOutLink": "null",
+      "JMSPropertyGroup": [
+        {
+          "action": "^query$",
+          "name": "."
+        }
+      ],
+      "KeyTemplate": "##name##",
+      "TimeToLive": "600"
+    },
+    {
+      "Name": "update",
+      "PreferredOutLink": "null",
+      "JMSPropertyGroup": [
+        {
+          "action": "^update$",
+          "name": "."
+        }
+      ],
+      "KeyTemplate": "##name##",
+      "TargetRule": "static",
+      "TimeToLive": "600"
+    },
+    {
+      "Name": "rest",
+      "PreferredOutLink": "nohit",
+      "DisplayMask": "4167"
+    }
+  ],
+  "OutLink": [
+    "null",
+    {
+      "Name": "failure",
+      "Capacity": "128",
+      "Partition": "32,32"
+    },
+    {
+      "Name": "nohit",
+      "Capacity": "128",
+      "Partition": "32,32"
+    },
+    {
+      "Name": "request",
+      "Capacity": "256",
+      "Partition": "0,128"
+    },
+    "event"
+  ]
+}

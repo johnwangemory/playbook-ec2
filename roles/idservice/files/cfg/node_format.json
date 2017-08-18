@@ -1,0 +1,133 @@
+{
+  "Name": "node_format",
+  "ClassName": "org.qbroker.node.FormatNode",
+  "Description": "format requests",
+  "Operation": "format",
+  "LinkName": "root",
+  "Capacity": "256",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "admin",
+      "PreferredOutLink": "escalation",
+      "JMSPropertyGroup": [
+        {
+          "short_name": "^Flow$",
+          "service": "."
+        }
+      ]
+    },
+    {
+      "Name": "query",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "JMSType": "^\\/id\\/query\\/."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "action",
+          "Template": [
+            "query"
+          ]
+        },
+        {
+          "FieldName": "name",
+          "Template": [
+            "##JMSType##"
+          ],
+          "Substitution": [
+            "s/^\\/[^\\/]+\\/query\\///"
+          ]
+        },
+        {
+          "FieldName": "jsp",
+          "Template": [
+            "/getJSON.jsp"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "request",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "JMSType": "^\\/id"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "path",
+          "Template": [
+            "##JMSType##"
+          ],
+          "Substitution": [
+            "s/^\\/[^\\/]+//"
+          ]
+        },
+        {
+          "FieldName": "jsp",
+          "Template": [
+            "/getJSON.jsp"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "action",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "JMSType": "^\\/"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "action",
+          "Template": [
+            "##JMSType##"
+          ],
+          "Substitution": [
+            "s/^\\///",
+            "s/\\/.+$//"
+          ]
+        },
+        {
+          "FieldName": "name",
+          "Template": [
+            "##JMSType##"
+          ],
+          "Substitution": [
+            "s/^\\/[^\\/]+\\///"
+          ]
+        },
+        {
+          "FieldName": "jsp",
+          "Template": [
+            "/getJSON.jsp"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "bypass",
+      "PreferredOutLink": "cache"
+    }
+  ],
+  "OutLink": [
+    "cache",
+    {
+      "Name": "failure",
+      "Capacity": "128",
+      "Partition": "0,32"
+    },
+    {
+      "Name": "escalation",
+      "Capacity": "64",
+      "Partition": "0,32"
+    }
+  ]
+}

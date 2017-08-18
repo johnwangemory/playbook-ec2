@@ -1,0 +1,203 @@
+{
+  "Name": "node_collect",
+  "ClassName": "org.qbroker.node.CollectNode",
+  "Description": "collecting responses",
+  "Operation": "collect",
+  "LinkName": "request",
+  "Capacity": "256",
+  "DisplayMask": "0",
+  "XAMode": "1",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "component",
+      "PreferredOutLink": "eval_out",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/component$",
+          "name": "."
+        }
+      ],
+      "FieldName": "RuleName",
+      "Template": "component_name",
+      "NextTask": [
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "SELECT component_id FROM components WHERE component_name = %%name%%"
+        },
+        {
+          "Success": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "component_id"
+        },
+        {
+          "Success": "done_req",
+          "Failure": "query"
+        },
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "INSERT INTO components (component_id, component_name, description) VALUES (nextval('component_id_seq'), %%name%%, 'NEW')"
+        },
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "SELECT component_id FROM components WHERE component_name = %%name%%",
+          "Failure": "query"
+        },
+        {
+          "Success": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "component_id"
+        }
+      ]
+    },
+    {
+      "Name": "instance",
+      "PreferredOutLink": "eval_out",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/instance$",
+          "name": "."
+        }
+      ],
+      "FieldName": "RuleName",
+      "Template": "instance_name",
+      "NextTask": [
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "SELECT instance_id FROM instances WHERE instance_name = %%name%%"
+        },
+        {
+          "Success": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "instance_id"
+        },
+        {
+          "Success": "done_req",
+          "Failure": "query"
+        },
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "INSERT INTO instances (instance_id, instance_name, description) VALUES (nextval('instance_id_seq'), %%name%%, 'NEW')"
+        },
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "SELECT instance_id FROM instances WHERE instance_name = %%name%%",
+          "Failure": "query"
+        },
+        {
+          "Success": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "instance_id"
+        }
+      ]
+    },
+    {
+      "Name": "service",
+      "PreferredOutLink": "eval_out",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/service$",
+          "name": "."
+        }
+      ],
+      "FieldName": "RuleName",
+      "Template": "service_name",
+      "NextTask": [
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "SELECT service_id FROM services WHERE service_name = %%name%%"
+        },
+        {
+          "Success": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "service_id"
+        },
+        {
+          "Success": "done_req",
+          "Failure": "query"
+        },
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "INSERT INTO services (service_id, service_name, description) VALUES (nextval('service_id_seq'), %%name%%, 'NEW')"
+        },
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "SELECT service_id FROM services WHERE service_name = %%name%%",
+          "Failure": "query"
+        },
+        {
+          "Success": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "service_id"
+        }
+      ]
+    },
+    {
+      "Name": "list_component",
+      "PreferredOutLink": "query",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/component$"
+        }
+      ],
+      "FieldName": "SQL",
+      "Template": "SELECT component_name AS \"NAME\", component_id AS \"ID\" FROM components"
+    },
+    {
+      "Name": "list_instance",
+      "PreferredOutLink": "query",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/instance$"
+        }
+      ],
+      "FieldName": "SQL",
+      "Template": "SELECT instance_name AS \"NAME\", instance_id AS \"ID\" FROM instances"
+    },
+    {
+      "Name": "list_service",
+      "PreferredOutLink": "query",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/service$"
+        }
+      ],
+      "FieldName": "SQL",
+      "Template": "SELECT service_name AS \"NAME\", service_id AS \"ID\" FROM services"
+    }
+  ],
+  "OutLink": [
+    {
+      "Name": "done_req",
+      "Capacity": "128",
+      "Partition": "0,64"
+    },
+    {
+      "Name": "failure_req",
+      "Capacity": "128",
+      "Partition": "32,32"
+    },
+    {
+      "Name": "nohit_req",
+      "Capacity": "128",
+      "Partition": "32,32"
+    },
+    {
+      "Name": "eval_out",
+      "Capacity": "128"
+    },
+    {
+      "Name": "query",
+      "Capacity": "128"
+    }
+  ]
+}

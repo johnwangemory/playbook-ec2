@@ -5,51 +5,6 @@
     state: present
     update_cache: yes
 
-- name: Create dir of ROOT
-  file:
-    path: /var/lib/tomcat/webapps/ROOT
-    state: directory
-    owner: tomcat
-    group: tomcat
-    mode: 0755
-  notify: Restart_tomcat.service
-
-- name: Create dir of META-INF
-  file:
-    path: /var/lib/tomcat/webapps/ROOT/META-INF
-    state: directory
-    owner: tomcat
-    group: tomcat
-    mode: 0755
-
-- name: Copy context.xml
-  copy:
-    src: context.xml
-    dest: /var/lib/tomcat/webapps/ROOT/META-INF
-    mode: 0644
-  notify: Restart_tomcat.service
-
-- name: Copy index.html
-  copy:
-    src: index.html
-    dest: /var/lib/tomcat/webapps/ROOT
-    mode: 0644
-
-- name: Copy date.jsp
-  copy:
-    src: date.jsp
-    dest: /var/lib/tomcat/webapps/ROOT
-    mode: 0644
-
-#- name: Template of server.xml
-#  template:
-#    src: tomcat.conf.j2
-#    dest: /etc/tomcat/tomcat.conf
-#    mode: 0644
-#  vars:
-#    nginx_user: tomcat
-#  notify: Restart_tomcat.service
-
 - name: Get stats of monitrc
   stat:
     path: /etc/monitrc

@@ -9,6 +9,6 @@ Listen 443
     SSLCertificateKeyFile "{{conf_dir}}/server.key"
 
     ProxyRequests Off
-    ProxyPass "/broker" "http://localhost:8080/"
-    ProxyPassReverse "/broker" "http://localhost:8080/"
+    ProxyPass "/idservice" "http://localhost:8080/idservice"
+    ProxyPassReverse "/idservice" "http://localhost:8080/idservice"
 </VirtualHost>

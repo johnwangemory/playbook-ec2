@@ -1,0 +1,9 @@
+{
+  "Name": "pstr_done_req",
+  "ClassName": "org.qbroker.persister.LogPersister",
+  "URI": "log:///dev/null",
+  "Operation": "append",
+  "LinkName": "done_req",
+  "Template": "##path##",
+  "DisplayMask": "0"
+}

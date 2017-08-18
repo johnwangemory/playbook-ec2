@@ -1,0 +1,88 @@
+---
+- name: Create dir of idservice/WEB-INF/lib
+  file:
+    path: /opt/qbroker/idservice/WEB-INF/lib
+    state: directory
+    owner: tomcat
+    group: tomcat
+    mode: 0755
+    recurse: yes
+
+- name: Copy web.xml
+  copy:
+    src: web.xml
+    dest: /opt/qbroker/idservice/WEB-INF/
+    owner: tomcat
+    group: tomcat 
+    mode: 0644
+  notify: Restart_tomcat.service
+
+- name: Copy date.jsp
+  copy:
+    src: date.jsp
+    dest: /opt/qbroker/idservice/
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+
+- name: Copy idservice.xml
+  copy:
+    src: idservice.xml
+    dest: /etc/tomcat/Catalina/localhost/
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  notify: Restart_tomcat.service
+
+- name: Create dir of ID
+  file:
+    path: /opt/qbroker/flow/ID
+    state: directory
+    owner: tomcat
+    group: tomcat
+    mode: 0755
+
+- name: Copy json files
+  copy:
+    src: "cfg/{{item}}"
+    dest: /opt/qbroker/flow/ID/
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  with_items: "{{flow_json_files}}"
+  notify: Restart_tomcat.service
+
+- name: Template of Flow.json
+  template:
+    src: Flow.json.j2
+    dest: /opt/qbroker/flow/ID/Flow.json
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  vars:
+    log_dir: /var/log/tomcat
+  notify: Restart_tomcat.service
+
+- name: Template of pstr_db_query.json
+  template:
+    src: pstr_db_query.json.j2
+    dest: /opt/qbroker/flow/ID/pstr_db_query.json
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  vars:
+    pg_db_name: eventdb
+    pg_db_user: eventdba
+    pg_db_passwd: secret
+  notify: Restart_tomcat.service
+
+- name: Copy jar files
+  copy:
+    src: "/opt/qbroker/lib/{{item}}"
+    dest: /opt/qbroker/idservice/WEB-INF/lib/
+    remote_src: yes
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  with_items: "{{flow_jar_files}}"
+  notify: Restart_tomcat.service

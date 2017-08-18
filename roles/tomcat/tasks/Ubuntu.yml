@@ -5,21 +5,6 @@
     state: present
     update_cache: yes
 
-- name: Copy date.jsp
-  copy:
-    src: date.jsp
-    dest: /var/lib/tomcat7/webapps/ROOT
-    mode: 0644
-
-#- name: Template of tomcat.conf
-#  template:
-#    src: tomcat.conf.j2
-#    dest: /etc/tomcat7/tomcat.conf
-#    mode: 0644
-#  vars:
-#    nginx_user: tomcat7
-#  notify: Restart_tomcat
-
 - name: Get stats of monitrc
   stat:
     path: /etc/monit/monitrc

@@ -1,0 +1,105 @@
+{
+  "Name": "node_mapreduce",
+  "ClassName": "org.qbroker.node.MapReduceNode",
+  "Description": "map reduce on requests",
+  "Operation": "mapreduce",
+  "LinkName": "event",
+  "Capacity": "256",
+  "XAMode": "1",
+  "Debug": "1",
+  "DisplayMask": "0",
+  "Ruleset": [
+    {
+      "Name": "event",
+      "XAMode": "0",
+      "DisplayMask": "0",
+      "TimeToLive": "120",
+      "Quorum": "3",
+      "RCRequired": "false",
+      "JMSPropertyGroup": [
+        {
+          "path": "^\\/event$",
+          "name": "^[^:]+:[^:]+:.+$"
+        }
+      ],
+      "SelectedOutLink": [
+        {
+          "LinkTemplate": "request",
+          "FieldName": "path",
+          "Template": "/service"
+        },
+        {
+          "LinkTemplate": "request",
+          "FieldName": "path",
+          "Template": "/instance"
+        },
+        {
+          "LinkTemplate": "request",
+          "FieldName": "path",
+          "Template": "/component"
+        }
+      ],
+      "Aggregation": [
+        {
+          "FieldName": "ReturnCode",
+          "Operation": "sum",
+          "DefaultValue": "0"
+        }
+      ],
+      "BodyAggregation": {
+        "Operation": "merge",
+        "JSONPath": ".Record[0]",
+        "DataType": "map"
+      }
+    },
+    {
+      "Name": "item",
+      "XAMode": "0",
+      "DisplayMask": "0",
+      "TimeToLive": "60",
+      "Quorum": "1",
+      "RCRequired": "false",
+      "JMSPropertyGroup": [
+        {
+          "path": ".",
+          "name": "."
+        }
+      ],
+      "SelectedOutLink": [
+        {
+          "LinkTemplate": "request",
+          "FieldName": "path"
+        }
+      ],
+      "Aggregation": [
+        {
+          "FieldName": "ReturnCode",
+          "Operation": "first",
+          "DefaultValue": "0"
+        }
+      ],
+      "BodyAggregation": {
+        "Operation": "first",
+        "JSONPath": "."
+      }
+    }
+  ],
+  "OutLink": [
+    "json",
+    {
+      "Name": "failure_req",
+      "Capacity": "128",
+      "Partition": "0,32"
+    },
+    {
+      "Name": "nohit_req",
+      "Capacity": "128",
+      "Partition": "0,32"
+    },
+    {
+      "Name": "request",
+      "Capacity": "256",
+      "Partition": "128,128"
+    }
+  ]
+}

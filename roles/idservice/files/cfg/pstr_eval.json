@@ -1,0 +1,421 @@
+{
+  "Name": "pstr_eval",
+  "ClassName": "org.qbroker.persister.MessageEvaluator",
+  "Description": "test",
+  "URI": "eval://out",
+  "Operation": "evaluate",
+  "LinkName": "eval_out",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": {
+    "empty": {
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "^\\[\\]"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": ""
+      }
+    },
+    "not_empty": {
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "check"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": ""
+      }
+    },
+    "ok": {
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "OK "
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": ""
+      }
+    },
+    "failure": {
+      "JMSPropertyGroup": [
+        {
+          "TID": "^-1$"
+        }
+      ],
+      "StringProperty": {
+        "OriginalRC": "",
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "host_name": {
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "\\.(net|com)\\.$"
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "old_target",
+          "Template": [
+            "##body##"
+          ],
+          "Substitution": [
+            "s/^.* ([^ ]+)\\.$/$1/"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "old_target": ""
+      }
+    },
+    "move_body": {
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "."
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "json",
+          "Template": [
+            "##body##"
+          ]
+        },
+        {
+          "FieldName": "body",
+          "Template": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "save_body": {
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "."
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "tmp",
+          "Template": [
+            "##body##"
+          ]
+        },
+        {
+          "FieldName": "body",
+          "Template": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "recover_body": {
+      "JMSPropertyGroup": [
+        {
+          "json": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "body",
+          "Template": [
+            "##json##"
+          ]
+        },
+        {
+          "FieldName": "json",
+          "Template": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "swap_body": {
+      "JMSPropertyGroup": [
+        {
+          "OriginalRC": "^0$"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "body",
+          "Template": [
+            "##json##"
+          ]
+        },
+        {
+          "FieldName": "json",
+          "Template": [
+            "##tmp##"
+          ]
+        },
+        {
+          "FieldName": "tmp",
+          "Template": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "zero": {
+      "JMSPropertyGroup": [
+        {
+          "OriginalRC": "^0$"
+        }
+      ],
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "\"0\""
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "SQL",
+          "Substitution": [
+            "s/.//g"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "OriginalRC": "",
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "nonzero": {
+      "JMSPropertyGroup": [
+        {
+          "OriginalRC": "^0$"
+        }
+      ],
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "\"[1-9]"
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "SQL",
+          "Substitution": [
+            "s/.//g"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "OriginalRC": "",
+        "ReturnCode": "",
+        "TID": ""
+      }
+    },
+    "component_name": {
+      "JMSPropertyGroup": [
+        {
+          "name": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "name",
+          "Substitution": [
+            "s/^[^:]+:[^:]+://",
+            "s//:=lower/e"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": "",
+        "name": ""
+      }
+    },
+    "instance_name": {
+      "JMSPropertyGroup": [
+        {
+          "name": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "name",
+          "Substitution": [
+            "s/^[^:]+://",
+            "s/:.+$//",
+            "s/\\..*$//",
+            "s//:=lower/e"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": "",
+        "name": ""
+      }
+    },
+    "service_name": {
+      "JMSPropertyGroup": [
+        {
+          "name": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "name",
+          "Substitution": [
+            "s/:.+$//",
+            "s//:=lower/e"
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": "",
+        "name": ""
+      }
+    },
+    "instance_id": {
+      "JMSPropertyGroup": [
+        {
+          "OriginalRC": "^0$"
+        }
+      ],
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "\\d+"
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "Instance_ID",
+          "Template": [
+            "##body##"
+          ],
+          "Substitution": [
+            "s/[^0-9]//g"
+          ]
+        },
+        {
+          "FieldName": "SQL",
+          "Substitution": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": "",
+        "Instance_ID": ""
+      }
+    },
+    "service_id": {
+      "JMSPropertyGroup": [
+        {
+          "OriginalRC": "^0$"
+        }
+      ],
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "\\d+"
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "Service_ID",
+          "Template": [
+            "##body##"
+          ],
+          "Substitution": [
+            "s/[^0-9]//g"
+          ]
+        },
+        {
+          "FieldName": "SQL",
+          "Substitution": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": "",
+        "Service_ID": ""
+      }
+    },
+    "component_id": {
+      "JMSPropertyGroup": [
+        {
+          "OriginalRC": "^0$"
+        }
+      ],
+      "PatternGroup": [
+        {
+          "Pattern": [
+            "\\d+"
+          ]
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "Component_ID",
+          "Template": [
+            "##body##"
+          ],
+          "Substitution": [
+            "s/[^0-9]//g"
+          ]
+        },
+        {
+          "FieldName": "SQL",
+          "Substitution": [
+            ""
+          ]
+        }
+      ],
+      "StringProperty": {
+        "ReturnCode": "",
+        "TID": "",
+        "Component_ID": ""
+      }
+    }
+  }
+}

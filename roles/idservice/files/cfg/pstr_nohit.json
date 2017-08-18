@@ -1,0 +1,10 @@
+{
+  "Name": "pstr_nohit",
+  "ClassName": "org.qbroker.persister.LogPersister",
+  "URI": "log:///dev/null",
+  "Operation": "append",
+  "LinkName": "nohit",
+  "Template": "##body##\n",
+  "DisplayMask": "2"
+}
+

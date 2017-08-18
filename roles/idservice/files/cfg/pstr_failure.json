@@ -1,0 +1,13 @@
+{
+  "Name": "pstr_failure",
+  "ClassName": "org.qbroker.persister.LogPersister",
+  "URI": "log:///dev/null",
+  "Operation": "append",
+  "LinkName": "failure",
+  "Template": "##body##\n",
+  "DisplayMask": "6",
+  "StringProperty": {
+    "path": "",
+    "name": ""
+  }
+}
