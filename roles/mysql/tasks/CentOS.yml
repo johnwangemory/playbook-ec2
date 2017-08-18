@@ -76,6 +76,7 @@
   command: /usr/bin/mysql "{{mysql_db_name}}" -e 'show columns from services'
   register: table_check
   failed_when: False
+  changed_when: False
 
 - name: Copy eventid.sql
   copy:

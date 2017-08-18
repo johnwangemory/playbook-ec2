@@ -15,6 +15,7 @@ flow_json_files:
 
 flow_jar_files:
   - activation.jar
+  - commons-fileupload-1.2.2.jar
   - commons-io-1.4.jar
   - commons-net-3.3.jar
   - jakarta-oro-2.0.8.jar

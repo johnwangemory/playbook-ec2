@@ -22,3 +22,4 @@
     instance_id: "{{item.id}}"
     groups: ec2hosts
   with_items: "{{ec2_info.instances}}"
+  changed_when: False

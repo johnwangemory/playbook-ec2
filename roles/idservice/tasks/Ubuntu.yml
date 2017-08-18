@@ -1,12 +1,15 @@
 ---
 - name: Create dir of idservice/WEB-INF/lib
   file:
-    path: /opt/qbroker/idservice/WEB-INF/lib
+    path: "/opt/qbroker/{{item}}"
     state: directory
     owner: tomcat7
     group: tomcat7
     mode: 0755
-    recurse: yes
+  with_items:
+    - idservice
+    - idservice/WEB-INF
+    - idservice/WEB-INF/lib
 
 - name: Copy web.xml
   copy:
@@ -17,13 +20,19 @@
     mode: 0644
   notify: Restart_tomcat
 
-- name: Copy date.jsp
+- name: Copy jsp scripts
   copy:
-    src: date.jsp
+    src: "{{item}}"
     dest: /opt/qbroker/idservice/
     owner: tomcat7
     group: tomcat7
     mode: 0644
+  with_items:
+    - date.jsp
+    - getJSON.jsp
+    - getChildJSON.jsp
+    - toJSON.jsp
+    - toRCJSON.jsp
 
 - name: Copy idservice.xml
   copy:
@@ -81,6 +90,7 @@
     src: "/opt/qbroker/lib/{{item}}"
     dest: /opt/qbroker/idservice/WEB-INF/lib/
     remote_src: yes
+    force: no
     owner: tomcat7
     group: tomcat7
     mode: 0644

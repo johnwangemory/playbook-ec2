@@ -17,13 +17,19 @@
     mode: 0644
   notify: Restart_tomcat.service
 
-- name: Copy date.jsp
+- name: Copy jsp scripts
   copy:
-    src: date.jsp
+    src: "{{item}}"
     dest: /opt/qbroker/idservice/
-    owner: tomcat
-    group: tomcat
+    owner: tomcat7
+    group: tomcat7
     mode: 0644
+  with_items:
+    - date.jsp
+    - getJSON.jsp
+    - getChildJSON.jsp
+    - toJSON.jsp
+    - toRCJSON.jsp
 
 - name: Copy idservice.xml
   copy:
@@ -81,6 +87,7 @@
     src: "/opt/qbroker/lib/{{item}}"
     dest: /opt/qbroker/idservice/WEB-INF/lib/
     remote_src: yes
+    force: no
     owner: tomcat
     group: tomcat
     mode: 0644
