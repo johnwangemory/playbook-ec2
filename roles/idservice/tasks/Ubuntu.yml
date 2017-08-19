@@ -22,7 +22,7 @@
 
 - name: Copy jsp scripts
   copy:
-    src: "{{item}}"
+    src: "jsp/{{item}}"
     dest: /opt/qbroker/idservice/
     owner: tomcat7
     group: tomcat7
@@ -53,7 +53,7 @@
 
 - name: Copy json files
   copy:
-    src: "cfg/{{item}}"
+    src: "flow/{{item}}"
     dest: /opt/qbroker/flow/ID/
     owner: tomcat7
     group: tomcat7
