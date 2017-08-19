@@ -64,10 +64,19 @@
   with_items: "{{basic_ec2.instances}}"
   when: basic_ec2.instances|length > 0
 
-- name: Pause for 30 sec
-  pause:
-    seconds: 30
+- name: Set pause time
+  set_fact:
+    pause_sec: "{{pause_for_up}}"
+
+- name: Adjust pause time
+  set_fact:
+    pause_sec: "{{ (pause_for_up + 30)|int|abs }}"
   when: basic_ec2.instances|length > 0 and ami_info.results[0].name|search("CentOS")
+
+- name: Pause for a while
+  pause:
+    seconds: "{{pause_sec}}" 
+  when: basic_ec2.instances|length > 0 and pause_sec > 0
 
 - name: Add new instances to the group
   add_host:

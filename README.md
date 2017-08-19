@@ -37,19 +37,20 @@ ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e aws_region=us-east-1 -e 
 
 In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The following default variables will need to be customized to fit your choice:
 
-| Name                         | Value           | Description                    | File                             |
-| ---                          | ---             | ---                            | ---                              |
-| key_name                     | ylu             | name of your ssh key on AWS    | roles/ec2_launcher/vars/main.yml |
-| sg_name                      | ylu_sg          | name of the security group     | roles/ec2_launcher/vars/main.yml |
-| instance_tag                 | ylu_test        | tag name for your EC2 instance | roles/ec2_launcher/vars/main.yml |
-| instance_type                | t2.micro        | type of EC2 instance           | roles/ec2_launcher/vars/main.yml |
-| image_id                     | ami-8b92b4ee    | AMI of Ubuntu 16.04 LTS        | roles/ec2_launcher/vars/main.yml |
-| aws_region                   | us-east-2       | EC2 region of AWS              | roles/ec2_launcher/vars/main.yml |
-| vpc_id                       | vpc-e8c95f81    | id of an existing VPC          | roles/ec2_launcher/vars/main.yml |
-| subnect_id                   | subnet-5e7cd125 | id of a Subnet on the VPC      | roles/ec2_launcher/vars/main.yml |
-| sg_rules                     | ...             | list of rules of security group| roles/ec2_launcher/vars/main.yml |
-| default_user                 | ec2-user        | default user for ssh           | roles/ec2_launcher/vars/main.yml |
-| extra_sg_rules               | ...             | extra rules of security group| roles/activemq/vars/main.yml       |
+| Name                         | Value           | Description                    | File                                 |
+| ---                          | ---             | ---                            | ---                                  |
+| key_name                     | ylu             | name of your ssh key on AWS    | roles/ec2_launcher/defaults/main.yml |
+| sg_name                      | ylu_sg          | name of the security group     | roles/ec2_launcher/defaults/main.yml |
+| instance_tag                 | ylu_test        | tag name for your EC2 instance | roles/ec2_launcher/defaults/main.yml |
+| instance_type                | t2.micro        | type of EC2 instance           | roles/ec2_launcher/defaults/main.yml |
+| image_id                     | ami-8b92b4ee    | AMI of Ubuntu 16.04 LTS        | roles/ec2_launcher/defaults/main.yml |
+| aws_region                   | us-east-2       | EC2 region of AWS              | roles/ec2_launcher/defaults/main.yml |
+| vpc_id                       | vpc-e8c95f81    | id of an existing VPC          | roles/ec2_launcher/defaults/main.yml |
+| subnect_id                   | subnet-5e7cd125 | id of a Subnet on the VPC      | roles/ec2_launcher/defaults/main.yml |
+| default_user                 | ec2-user        | default user for ssh           | roles/ec2_launcher/defaults/main.yml |
+| pause_for_up                 | 15              | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
+| sg_rules                     | ...             | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
+| extra_sg_rules               | ...             | extra rules of security group  | roles/activemq/defaults/main.yml     |
 
 The playbook also requires boto and boto3 installed.
 

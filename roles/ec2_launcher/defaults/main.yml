@@ -8,6 +8,8 @@ sg_name: ylu_sg
 vpc_id: vpc-e8c95f81
 subnet_id: subnet-5e7cd125
 default_user: ec2-user 
+pause_for_up: 15
+
 sg_rules:
   - proto: tcp
     from_port: 22

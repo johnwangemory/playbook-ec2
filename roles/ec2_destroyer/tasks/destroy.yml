@@ -9,7 +9,7 @@
 
 - name: Pause for a minute
   pause:
-    seconds: 60
+    seconds: "{{pause_for_down}}" 
   when: ec2_info.instances|length > 0
 
 - name: Get ec2 security group facts (boto3 required)
