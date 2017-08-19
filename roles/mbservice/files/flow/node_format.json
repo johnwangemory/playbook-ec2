@@ -1,0 +1,60 @@
+{
+  "Name": "node_format",
+  "ClassName": "org.qbroker.node.FormatNode",
+  "Description": "format requests",
+  "Operation": "format",
+  "LinkName": "root",
+  "Capacity": "512",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "admin",
+      "PreferredOutLink": "escalation",
+      "JMSPropertyGroup": [
+        {
+          "short_name": "^Console$",
+          "service": "."
+        }
+      ]
+    },
+    {
+      "Name": "feeds",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "path": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "name",
+          "Template": [
+            "##path##"
+          ]
+        },
+        {
+          "FieldName": "jsp",
+          "Template": [
+            "/toRCJSON.jsp"
+          ]
+        },
+        {
+          "FieldName": "ReturnCode",
+          "Template": [
+            "0"
+          ]
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "MSG_OUT",
+    "failure",
+    {
+      "Name": "escalation",
+      "Capacity": "64",
+      "Partition": "0,32"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "Name": "pstr_msg",
+  "LinkName": "MSG_OUT",
+  "ClassName": "org.qbroker.persister.JMSPersister",
+  "ContextFactory": "{{mq_context_factory}}",
+  "URI": "{{mq_url}}",
+  "ConnectionFactoryName": "{{mq_connection_factory}}",
+  "QueueName": "{{mq_queue}}",
+  "Principal": "{{mq_user}}",
+  "Credentials": "{{mq_passwd}}",
+  "IsPhysical": "true",
+  "Operation": "put",
+  "DisplayMask": "2",
+  "Persistence": "2",
+  "StringProperty": {
+    "path": "",
+    "size": ""
+  }
+}

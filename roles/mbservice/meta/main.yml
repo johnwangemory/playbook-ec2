@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: monit
+  - role: java
+  - role: qbroker
+  - role: tomcat
+  - { role: nginx, when: web_frontend == 'nginx' }
+  - { role: apache2, when: web_frontend == 'apache' }

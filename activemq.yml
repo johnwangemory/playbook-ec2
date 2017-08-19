@@ -1,0 +1,20 @@
+---
+## Create EC2 instances
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  roles:
+    - ec2_launcher
+
+## Config EC2 instances
+- hosts: ec2hosts
+  gather_facts: true
+  become: true
+  vars:
+    ansible_ssh_private_key_file: "{{pem_file}}"
+
+  roles:
+    - common
+    - activemq
+    - mbservice

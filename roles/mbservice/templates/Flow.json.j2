@@ -1,0 +1,28 @@
+{
+  "Name": "Flow",
+  "ClassName": "org.qbroker.flow.QFlow",
+  "Site": "DEVOPS",
+  "Type": "QFlow",
+  "Category": "MB",
+  "Description": "message bridge",
+  "Operation": "move",
+  "XAMode": "1",
+  "Capacity": "512",
+  "Mode": "daemon",
+  "Debug": "5",
+  "FlowDebug": "37",
+  "LogDir": "{{log_dir}}",
+  "LogDatePattern": "'.'MM",
+  "ConfigDir": "/opt/qbroker/flow/MB",
+  "Heartbeat": "30",
+  "EscalationCapacity": "64",
+  "MaxNumberFlow": "1",
+  "Node": [
+    "node_format"
+  ],
+  "Persister": [
+    "pstr_msg",
+    "pstr_failure"
+  ]
+}
+

@@ -1,5 +1,5 @@
 ---
-- name: Create dir of idservice/WEB-INF/lib
+- name: Create dir of mbservice/WEB-INF/lib
   file:
     path: "/opt/qbroker/{{item}}"
     state: directory
@@ -7,14 +7,14 @@
     group: tomcat7
     mode: 0755
   with_items:
-    - idservice
-    - idservice/WEB-INF
-    - idservice/WEB-INF/lib
+    - mbservice
+    - mbservice/WEB-INF
+    - mbservice/WEB-INF/lib
 
 - name: Copy web.xml
   copy:
     src: web.xml
-    dest: /opt/qbroker/idservice/WEB-INF/
+    dest: /opt/qbroker/mbservice/WEB-INF/
     owner: tomcat7
     group: tomcat7
     mode: 0644
@@ -23,24 +23,24 @@
 - name: Copy jsp files
   copy:
     src: "jsp/{{item}}"
-    dest: /opt/qbroker/idservice/
+    dest: /opt/qbroker/mbservice/
     owner: tomcat7
     group: tomcat7
     mode: 0644
   with_items: "{{flow_jsp_files}}"
 
-- name: Copy idservice.xml
+- name: Copy mbservice.xml
   copy:
-    src: idservice.xml
+    src: mbservice.xml
     dest: /etc/tomcat7/Catalina/localhost/
     owner: tomcat7
     group: tomcat7
     mode: 0644
   notify: Restart_tomcat
 
-- name: Create dir of ID
+- name: Create dir of MB
   file:
-    path: /opt/qbroker/flow/ID
+    path: /opt/qbroker/flow/MB
     state: directory
     owner: tomcat7
     group: tomcat7
@@ -49,7 +49,7 @@
 - name: Copy json files
   copy:
     src: "flow/{{item}}"
-    dest: /opt/qbroker/flow/ID/
+    dest: /opt/qbroker/flow/MB/
     owner: tomcat7
     group: tomcat7
     mode: 0644
@@ -59,7 +59,7 @@
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
-    dest: /opt/qbroker/flow/ID/Flow.json
+    dest: /opt/qbroker/flow/MB/Flow.json
     owner: tomcat7
     group: tomcat7
     mode: 0644
@@ -67,23 +67,26 @@
     log_dir: /var/log/tomcat7
   notify: Restart_tomcat
 
-- name: Template of pstr_db_query.json
+- name: Template of pstr_msg.json
   template:
-    src: pstr_db_query.json.j2
-    dest: /opt/qbroker/flow/ID/pstr_db_query.json
+    src: pstr_msg.json.j2
+    dest: /opt/qbroker/flow/MB/pstr_msg.json
     owner: tomcat7
     group: tomcat7
     mode: 0644
   vars:
-    pg_db_name: eventdb
-    pg_db_user: eventdba
-    pg_db_passwd: secret
+    mq_url: "{{flow_mq_url}}"
+    mq_context_factory: "{{flow_context_factory}}"
+    mq_connection_factory: "{{flow_connection_factory}}"
+    mq_queue: "{{flow_queue}}"
+    mq_user: "{{flow_mq_user}}"
+    mq_passwd: "{{flow_mq_passwd}}"
   notify: Restart_tomcat
 
 - name: Copy jar files
   copy:
     src: "/opt/qbroker/lib/{{item}}"
-    dest: /opt/qbroker/idservice/WEB-INF/lib/
+    dest: /opt/qbroker/mbservice/WEB-INF/lib/
     remote_src: yes
     force: no
     owner: tomcat7
