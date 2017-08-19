@@ -23,7 +23,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
    </init-param>
    <init-param>
      <param-name>RestURI</param-name>
-     <param-value>/mb</param-value>
+     <param-value>/gw</param-value>
    </init-param>
    <init-param>
      <param-name>Timeout</param-name>

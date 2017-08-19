@@ -1,4 +1,13 @@
 ---
+- name: Copy idservice.xml
+  copy:
+    src: idservice.xml
+    dest: /etc/tomcat/Catalina/localhost/
+    owner: root
+    group: tomcat
+    mode: 0644
+  notify: Restart_tomcat.service
+
 - name: Create dir of idservice/WEB-INF/lib
   file:
     path: "/opt/qbroker/{{item}}"
@@ -28,15 +37,6 @@
     group: tomcat
     mode: 0644
   with_items: "{{flow_jsp_files}}"
-
-- name: Copy idservice.xml
-  copy:
-    src: idservice.xml
-    dest: /etc/tomcat/Catalina/localhost/
-    owner: tomcat
-    group: tomcat
-    mode: 0644
-  notify: Restart_tomcat.service
 
 - name: Create dir of ID
   file:
