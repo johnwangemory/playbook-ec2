@@ -9,6 +9,8 @@ Listen 443
     SSLCertificateKeyFile "{{conf_dir}}/server.key"
 
     ProxyRequests Off
-    ProxyPass "/idservice" "http://localhost:8080/mbservice"
-    ProxyPassReverse "/idservice" "http://localhost:8080/mbservice"
+    ProxyPass "/mbservice" "http://localhost:8080/mbservice"
+    ProxyPassReverse "/mbservice" "http://localhost:8080/mbservice"
+    ProxyPass "/admin" "http://localhost:8161/admin"
+    ProxyPassReverse "/admin" "http://localhost:8161/admin"
 </VirtualHost>
