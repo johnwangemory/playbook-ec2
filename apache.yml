@@ -1,4 +1,5 @@
 ---
+# Provision an EC2 instance and configure the given role with Apache2 as the web frontend
 ## Create EC2 instances
 - hosts: localhost
   connection: local
@@ -13,7 +14,8 @@
   become: true
   vars:
     ansible_ssh_private_key_file: "{{pem_file}}"
+    myrole: idservice
 
   roles:
     - common
-    - { role: idservice, web_frontend: apache }
+    - { role: "{{myrole}}", web_frontend: apache }

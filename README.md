@@ -1,6 +1,6 @@
 # playbook-ec2
 
-Ansible Playbook to provision EC2 instances with list and terminate plays. All the playbooks are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only
+Ansible Playbook to provision EC2 instances with list and terminate plays. All the playbooks are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only. Two web applications, idservice and mbservice, have been fully tested. Within these web applications, roles for Nginx, Apache2, Tomcat7, ActiveMQ and Postgresql are used.
 
 This playbook treats the EC2 instance immutable on its EC2 properties, such as AMI, Type, VPC, Security Group, Networks, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
 
@@ -10,9 +10,14 @@ Tested with images of Ubuntu and CentOS only
 
 ## Description
 
-To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS:
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem provision.yml
+```
+
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the web application of mbservice:
+```
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e myrole=mbservice provision.yml
 ```
 
 To terminate the launched instances:
@@ -25,12 +30,12 @@ To list the launched instances:
 ansible-playbook -i hosts list.yml
 ```
 
-To run the playbook to provision an EC2 instance of CentOS 7:
+To run the playbook to provision an EC2 instance of CentOS 7 with the default web application:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e image_id=ami-9cbf9bf9 provision.yml
 ```
 
-To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS in a different region:
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in a different region:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e aws_region=us-east-1 -e vpc_id=vpc-db3fdda2 -e subnet_id=subnet-af7351ca -e image_id=ami-cd0f5cb6 provision.yml
 ```
