@@ -1,11 +1,11 @@
 daemonize yes
 pidfile {{pidfile}}
-port 6379
+port {{redis_port}}
 tcp-backlog 511
-bind 127.0.0.1
+bind {{redis_bind_ip}}
 timeout 0
 tcp-keepalive 300
-loglevel notice
+loglevel {{redis_log_level}}
 logfile {{logfile}}
 databases 16
 save 900 1
@@ -15,7 +15,7 @@ stop-writes-on-bgsave-error yes
 rdbcompression yes
 rdbchecksum yes
 dbfilename dump.rdb
-dir /var/lib/redis
+dir {{redis_dir}}
 slave-serve-stale-data yes
 slave-read-only yes
 repl-diskless-sync no

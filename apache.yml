@@ -16,5 +16,4 @@
 
   roles:
     - common
-    - postgresql
     - { role: idservice, web_frontend: apache }

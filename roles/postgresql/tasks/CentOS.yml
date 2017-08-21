@@ -37,7 +37,7 @@
   become: yes
   become_user: postgres
   postgresql_user:
-    name: "{{pg_db_owner}}"
+    name: "{{pg_db_user}}"
     password: "{{pg_db_passwd}}"
     state: present
 
@@ -46,7 +46,7 @@
   become_user: postgres
   postgresql_db:
     name: "{{pg_db_name}}"
-    owner: "{{pg_db_owner}}"
+    owner: "{{pg_db_user}}"
     encoding: UTF-8
     template: template1
     state: present

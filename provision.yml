@@ -16,5 +16,4 @@
 
   roles:
     - common
-    - postgresql
     - idservice

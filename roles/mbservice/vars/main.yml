@@ -22,9 +22,9 @@ flow_jar_files:
   - qbroker-1.2.0.jar
   - xercesImpl.jar
 
-flow_mq_url: 'tcp://localhost:61616'
-flow_context_factory: org.apache.activemq.jndi.ActiveMQInitialContextFactory
-flow_connection_factory: QueueConnectionFactory
+flow_mq_url: "tcp://localhost:{{amq_broker_port}}"
+flow_context_factory: "{{amq_context_factory}}"
+flow_qcf: "{{amq_queue_connection_factory}}"
 flow_queue: MSG_OUT
-flow_mq_user: admin
-flow_mq_passwd: admin
+flow_mq_user: "{{amq_broker_user}}"
+flow_mq_passwd: "{{amq_broker_passwd}}"

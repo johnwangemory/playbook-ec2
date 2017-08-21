@@ -1,0 +1,10 @@
+monit_port: 2812
+idfile: /var/lib/monit/id
+statefile: /var/lib/monit/state
+includedir: /etc/monit/conf.d 
+monit_user: monit
+monit_passwd: monit
+monit_allow_list:
+  - 170.140.201.0/24
+  - 75.131.197.0/24
+  - localhost

@@ -4,6 +4,23 @@ amq_pkg_name: apache-activemq
 amq_version: 5.14.3
 amq_repo_url: https://archive.apache.org/dist/activemq
 
+amq_broker_ip: 127.0.0.1
+amq_broker_port: 61616
+amq_broker_user: system
+amq_broker_passwd: manager
+amq_guest_passwd: password
+amq_store_usage: 5
+amq_temp_usage: 3
+amq_pending_limit: 1000
+amq_context_factory: org.apache.activemq.jndi.ActiveMQInitialContextFactory
+amq_queue_connection_factory: QueueConnectionFactory
+amq_topic_connection_factory: TopicConnectionFactory
+
+amq_admin_ip: 127.0.0.1
+amq_admin_port: 8161
+amq_admin_user: admin
+amq_admin_passwd: admin
+
 extra_sg_rules:
   - proto: tcp
     from_port: 8161

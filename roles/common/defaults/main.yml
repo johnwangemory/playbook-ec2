@@ -1,0 +1,12 @@
+pkg_list:
+  - jq
+  - git
+  - lsof
+  - expect
+
+sysctl_props:
+  - net.ipv4.tcp_tw_reuse
+  - net.ipv4.tcp_tw_recycle
+  - net.ipv6.conf.all.disable_ipv6
+  - net.ipv6.conf.default.disable_ipv6
+  - net.ipv6.conf.lo.disable_ipv6

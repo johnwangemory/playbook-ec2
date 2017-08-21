@@ -83,13 +83,6 @@
     owner: tomcat7
     group: tomcat7
     mode: 0644
-  vars:
-    mq_url: "{{flow_mq_url}}"
-    mq_context_factory: "{{flow_context_factory}}"
-    mq_connection_factory: "{{flow_connection_factory}}"
-    mq_queue: "{{flow_queue}}"
-    mq_user: "{{flow_mq_user}}"
-    mq_passwd: "{{flow_mq_passwd}}"
   notify: Restart_tomcat
 
 - name: Copy jar files
