@@ -5,5 +5,5 @@
   gather_facts: false
 
   tasks:
-    - include_vars: roles/ec2_launcher/vars/main.yml
+    - include_vars: roles/ec2_launcher/defaults/main.yml
     - include: roles/ec2_launcher/tasks/query.yml
