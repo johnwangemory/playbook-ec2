@@ -84,7 +84,7 @@
     dest: /etc/monit.d/activemq.monit
     mode: 0644
   vars:
-    pidfile: /var/run/activemq.pid
+    pidfile: /opt/activemq/data/activemq.pid
     start_program: '/usr/bin/systemctl start activemq'
     stop_program: '/usr/bin/systemctl stop activemq'
   when: st_monitrc.stat.exists

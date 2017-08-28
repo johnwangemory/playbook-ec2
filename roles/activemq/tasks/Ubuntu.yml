@@ -92,7 +92,7 @@
     dest: /etc/monit/conf.d/activemq.monit
     mode: 0644
   vars:
-    pidfile: /var/run/activemq.pid
+    pidfile: /opt/activemq/data/activemq.pid
     start_program: '/usr/sbin/service activemq start'
     stop_program: '/usr/sbin/service activemq stop'
   when: st_monitrc.stat.exists
