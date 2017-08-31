@@ -1,8 +1,8 @@
 # playbook-ec2
 
-Ansible Playbook to provision EC2 instances with list and terminate plays. All the playbooks are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only. Two web applications, idservice and mbservice, have been fully tested. Within these web applications, roles for Nginx, Apache2, Tomcat7, ActiveMQ and Postgresql are used.
+This is an Ansible Playbook to provision EC2 instances with list and terminate plays. All the playbooks are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only. Two web applications, idservice and mbservice, have been fully tested with Nginx and Apache. Within these web applications, roles for Nginx, Apache2, Tomcat7, ActiveMQ and Postgresql are used.
 
-This playbook treats the EC2 instance immutable on its EC2 properties, such as AMI, Type, VPC, Security Group, Networks, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
+This playbook treats the EC2 instance immutable on most of the EC2 properties, such as AMI, Type, VPC, Networks, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
 
 ## Status
 
@@ -10,12 +10,17 @@ Tested with images of Ubuntu and CentOS only
 
 ## Description
 
-To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application:
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application and the web frontend of Nginx:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem provision.yml
 ```
 
-To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the web application of mbservice:
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application and the web frontend of Apache:
+```
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem apache.yml
+```
+
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the web application of mbservice and the web frontend of Nginx:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e myrole=mbservice provision.yml
 ```
@@ -30,7 +35,7 @@ To list the launched instances:
 ansible-playbook -i hosts list.yml
 ```
 
-To run the playbook to provision an EC2 instance of CentOS 7 with the default web application:
+To run the playbook to provision an EC2 instance of CentOS 7 with the default web application and the web frontend of Nginx:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e image_id=ami-9cbf9bf9 provision.yml
 ```
@@ -48,7 +53,7 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | sg_name                      | ylu_sg          | name of the security group     | roles/ec2_launcher/defaults/main.yml |
 | instance_tag                 | ylu_test        | tag name for your EC2 instance | roles/ec2_launcher/defaults/main.yml |
 | instance_type                | t2.micro        | type of EC2 instance           | roles/ec2_launcher/defaults/main.yml |
-| image_id                     | ami-8b92b4ee    | AMI of Ubuntu 16.04 LTS        | roles/ec2_launcher/defaults/main.yml |
+| image_id                     | ami-8b92b4ee    | AMI id for your OS platform    | roles/ec2_launcher/defaults/main.yml |
 | aws_region                   | us-east-2       | EC2 region of AWS              | roles/ec2_launcher/defaults/main.yml |
 | vpc_id                       | vpc-e8c95f81    | id of an existing VPC          | roles/ec2_launcher/defaults/main.yml |
 | subnect_id                   | subnet-5e7cd125 | id of a Subnet on the VPC      | roles/ec2_launcher/defaults/main.yml |
