@@ -13,3 +13,5 @@ else
     sudo yum install epel-release -y
   fi
 fi
+
+sudo mkdir /var/cache/ansible

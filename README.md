@@ -63,5 +63,6 @@ The playbook also requires boto and boto3 installed.
 Yannan Lu <yannanlu@yahoo.com>
 
 ## See Also
+* [Ansible Docs] (http://docs.ansible.com)
 * [CentOS EC2 AMI List] (https://wiki.centos.org/Cloud/AWS)
 * [Ubuntu EC2 AMI Finder] (https://cloud-images.ubuntu.com/locator/ec2/)
