@@ -1,7 +1,7 @@
 ---
 - name: Install MySQL community repo
   yum:
-    name: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+    name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
     state: present
 
 - name: Install mysql package
