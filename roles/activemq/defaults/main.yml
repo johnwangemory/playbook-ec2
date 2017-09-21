@@ -25,7 +25,7 @@ extra_sg_rules:
   - proto: tcp
     from_port: 8161
     to_port: 8161
-    cidr_ip: 170.140.201.0/24
+    cidr_ip: 170.140.0.0/16
   - proto: tcp
     from_port: 8161
     to_port: 8161

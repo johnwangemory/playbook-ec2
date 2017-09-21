@@ -14,11 +14,15 @@ sg_rules:
   - proto: tcp
     from_port: 22
     to_port: 22
-    cidr_ip: 0.0.0.0/0
+    cidr_ip: 170.140.0.0/16
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 75.131.197.0/24
   - proto: tcp
     from_port: 2812
     to_port: 2812
-    cidr_ip: 170.140.201.0/24
+    cidr_ip: 170.140.0.0/16
   - proto: tcp
     from_port: 2812
     to_port: 2812
@@ -26,7 +30,7 @@ sg_rules:
   - proto: tcp
     from_port: 443
     to_port: 443
-    cidr_ip: 170.140.201.0/24
+    cidr_ip: 170.140.0.0/16
   - proto: tcp
     from_port: 443
     to_port: 443
