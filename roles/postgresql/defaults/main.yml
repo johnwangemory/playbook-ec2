@@ -1,3 +1,14 @@
-pg_db_name: eventdb
-pg_db_user: eventdba
-pg_db_passwd: secret
+postgresql_port: 5432
+postgresql_user: postgres
+postgresql_group: postgres
+postgresql_dir: /etc/postgresql
+postgresql_db_name: eventdb
+postgresql_db_user: eventdba
+postgresql_db_passwd: secret
+
+postgresql_pkg_name: "{{ 'postgresql-server' if ansible_distribution == 'CentOS' else 'postgresql' }}"
+postgresql_pkg_version: "{{ '9.2.18-1.el7' if ansible_distribution == 'CentOS' else '9.5+173' }}"
+postgresql_homedir: "{{ '/var/lib/pgsql' if ansible_distribution == 'CentOS' else '/var/lib/postgresql' }}"
+postgresql_datadir: "{{ '/var/lib/pgsql/data' if ansible_distribution == 'CentOS' else '/var/lib/postgresql/9.5/main' }}"
+postgresql_cfgdir: "{{ '/var/lib/pgsql/data' if ansible_distribution == 'CentOS' else '/etc/postgresql/9.5/main' }}"
+postgresql_pidfile: "{{ '/var/run/postgresql/postgresql.pid' if ansible_distribution == 'CentOS' else '/var/run/postgresql/9.5-main.pid' }}"

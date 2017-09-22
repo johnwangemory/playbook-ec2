@@ -1,14 +1,14 @@
 ---
 - name: Create group account for activemq
   group:
-    name: "{{amq_group}}"
+    name: "{{activemq_group}}"
     state: present
 
 - name: Create user account for activemq
   user:
-    name: "{{amq_user}}"
+    name: "{{activemq_user}}"
     comment: ActiveMQ
-    group: "{{amq_group}}"
+    group: "{{activemq_group}}"
     state: present
     shell: /sbin/nologin
     createhome: no
@@ -31,29 +31,29 @@
 
 - name: Gets the tarball
   get_url:
-    url: "{{amq_repo_url}}/{{amq_version}}/{{amq_pkg_name}}-{{amq_version}}-bin.tar.gz"
+    url: "{{activemq_repo_url}}/{{activemq_version}}/{{activemq_pkg_name}}-{{activemq_version}}-bin.tar.gz"
     dest: /var/cache/ansible/
   register: new_archive
 
 - name: Get stats of /opt/activemq
   stat:
-    path: "/opt/{{amq_pkg_name}}-{{amq_version}}"
+    path: "/opt/{{activemq_pkg_name}}-{{activemq_version}}"
     get_md5: no
     get_checksum: no
   register: st_activemq
 
 - name: Unarchive source
   unarchive:
-    src: "/var/cache/ansible/{{amq_pkg_name}}-{{amq_version}}-bin.tar.gz"
+    src: "/var/cache/ansible/{{activemq_pkg_name}}-{{activemq_version}}-bin.tar.gz"
     dest: /opt
     remote_src: yes
-    owner: "{{amq_user}}"
-    group: "{{amq_group}}"
+    owner: "{{activemq_user}}"
+    group: "{{activemq_group}}"
   when: new_archive|changed or not st_activemq.stat.exists
 
 - name: Create symlink of /opt/activemq
   file:
-    src: "/opt/{{amq_pkg_name}}-{{amq_version}}"
+    src: "/opt/{{activemq_pkg_name}}-{{activemq_version}}"
     dest: /opt/activemq
     state: link
 
@@ -61,8 +61,8 @@
   template:
     src: "{{item}}.j2"
     dest: "/opt/activemq/conf/{{item}}"
-    owner: "{{amq_user}}"
-    group: "{{amq_group}}"
+    owner: "{{activemq_user}}"
+    group: "{{activemq_group}}"
     mode: 0644
   with_items:
     - activemq.xml

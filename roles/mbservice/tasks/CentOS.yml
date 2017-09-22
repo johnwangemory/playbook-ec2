@@ -45,7 +45,7 @@
     owner: tomcat
     group: tomcat
     mode: 0644
-  with_items: "{{flow_jsp_files}}"
+  with_items: "{{mbservice_jsp_files}}"
 
 - name: Create dir of MB
   file:
@@ -62,7 +62,7 @@
     owner: tomcat
     group: tomcat
     mode: 0644
-  with_items: "{{flow_json_files}}"
+  with_items: "{{mbservice_json_files}}"
   notify: Restart_tomcat.service
 
 - name: Template of Flow.json
@@ -94,5 +94,5 @@
     owner: tomcat
     group: tomcat
     mode: 0644
-  with_items: "{{flow_jar_files}}"
+  with_items: "{{mbservice_jar_files}}"
   notify: Restart_tomcat.service

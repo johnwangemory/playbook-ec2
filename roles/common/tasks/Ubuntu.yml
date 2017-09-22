@@ -4,20 +4,11 @@
     name: "{{item}}"
     state: present
     update_cache: yes
-  with_items:
-    - jq
-    - git
-    - lsof
-    - expect
+  with_items: "{{common_pkg_list}}"
 
 - name: Update sysctl.conf
   sysctl:
     name: "{{item}}"
     value: 1
     sysctl_set: yes
-  with_items:
-    - net.ipv4.tcp_tw_reuse
-    - net.ipv4.tcp_tw_recycle
-    - net.ipv6.conf.all.disable_ipv6
-    - net.ipv6.conf.default.disable_ipv6
-    - net.ipv6.conf.lo.disable_ipv6
+  with_items: "{{common_sysctl_props}}"

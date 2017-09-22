@@ -1,7 +1,7 @@
 ---
 - name: Install Apache2 package
   apt:
-    name: apache2
+    name: "{{apache2_pkg_name}}={{apache2_pkg_version}}"
     state: present
     update_cache: yes
 

@@ -20,7 +20,7 @@
 
 - name: Merge extra_sg_rules to sg_rules
   set_fact:
-    sg_rules: "{{ec2.sg_rules}} + {{extra_sg_rules}}"
+    sg_rules: "{{ec2.sg_rules}} + {{activemq_extra_sg_rules}}"
   when: extra_sg_rules|length > 0
 
 - name: Update security group

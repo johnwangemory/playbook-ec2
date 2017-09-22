@@ -1,7 +1,7 @@
 ---
 - name: Install Tomcat package
   apt:
-    name: tomcat7
+    name: "{{tomcat_pkg_name}}={{tomcat_pkg_version}}"
     state: present
     update_cache: yes
 

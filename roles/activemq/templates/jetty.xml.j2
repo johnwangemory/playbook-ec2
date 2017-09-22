@@ -78,8 +78,8 @@
     <bean id="contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
     </bean>
     <bean id="jettyPort" class="org.apache.activemq.web.WebConsolePort" init-method="start">
-        <property name="host" value="{{amq_admin_ip}}"/>
-        <property name="port" value="{{amq_admin_port}}"/>
+        <property name="host" value="{{activemq_admin_ip}}"/>
+        <property name="port" value="{{activemq_admin_port}}"/>
     </bean>
     <bean id="Server" depends-on="jettyPort" class="org.eclipse.jetty.server.Server"
         destroy-method="stop">

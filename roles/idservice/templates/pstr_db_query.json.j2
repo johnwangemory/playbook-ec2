@@ -1,11 +1,11 @@
 {
   "Name": "pstr_db_query",
   "ClassName": "org.qbroker.persister.JDBCPersister",
-  "URI": "jdbc:postgresql://localhost:5432/{{pg_db_name}}",
+  "URI": "jdbc:postgresql://localhost:{{db_port}}/{{db_name}}",
   "LinkName": "query",
   "Operation": "query",
-  "Username": "{{pg_db_user}}",
-  "Password": "{{pg_db_passwd}}",
+  "Username": "{{db_user}}",
+  "Password": "{{db_passwd}}",
   "ResultType": "8",
   "DisplayMask": "6",
   "StringProperty": {

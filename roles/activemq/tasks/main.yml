@@ -1,4 +1,4 @@
 ---
 - include: update_sg.yml   # add the extra rules to the security group
-  when: amq_admin_ip != '127.0.0.1'
+  when: activemq_admin_ip != '127.0.0.1'
 - include: "{{ansible_distribution}}.yml"   # install and config activemq

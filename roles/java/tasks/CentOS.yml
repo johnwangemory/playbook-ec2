@@ -1,6 +1,6 @@
 ---
 - name: Install Java package
   yum:
-    name: java-1.8.0-openjdk.x86_64
+    name: "{{java_pkg_name}}-{{java_pkg_version}}"
     state: present
     update_cache: yes

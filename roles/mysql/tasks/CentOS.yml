@@ -1,7 +1,7 @@
 ---
 - name: Install MySQL community repo
   yum:
-    name: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+    name: "{{mysql_pkg_repo_url}}/{{mysql_repo_pkg_name}}"
     state: present
 
 - name: Install mysql package
@@ -10,7 +10,7 @@
     state: present
     update_cache: yes
   with_items:
-    - mysql-server
+    - "{{mysql_pkg_name}}-{{mysql_pkg_version}}"
     - MySQL-python
 
 - name: Make sure mysqld is up

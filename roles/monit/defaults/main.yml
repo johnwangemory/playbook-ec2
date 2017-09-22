@@ -1,9 +1,12 @@
+monit_pkg_name: monit
+monit_pkg_version: "{{ '5.14-1.el7' if ansible_distribution == 'CentOS' else '1:5.16-2' }}"
 monit_port: 2812
-idfile: /var/lib/monit/id
-statefile: /var/lib/monit/state
-includedir: /etc/monit/conf.d 
 monit_user: monit
 monit_passwd: monit
+monit_pemfile: monit.pem
+monit_idfile: /var/lib/monit/id
+monit_statefile: /var/lib/monit/state
+monit_includedir: /etc/monit/conf.d 
 monit_allow_list:
   - 170.140.0.0/16
   - 75.131.197.0/24

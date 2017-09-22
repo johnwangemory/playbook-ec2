@@ -1,27 +1,27 @@
-amq_user: activemq
-amq_group: activemq
-amq_pkg_name: apache-activemq
-amq_version: 5.14.3
-amq_repo_url: https://archive.apache.org/dist/activemq
+activemq_user: activemq
+activemq_group: activemq
+activemq_pkg_name: apache-activemq
+activemq_version: 5.14.3
+activemq_repo_url: https://archive.apache.org/dist/activemq
 
-amq_broker_ip: 127.0.0.1
-amq_broker_port: 61616
-amq_broker_user: system
-amq_broker_passwd: manager
-amq_guest_passwd: password
-amq_store_usage: 5
-amq_temp_usage: 3
-amq_pending_limit: 1000
-amq_context_factory: org.apache.activemq.jndi.ActiveMQInitialContextFactory
-amq_queue_connection_factory: QueueConnectionFactory
-amq_topic_connection_factory: TopicConnectionFactory
+activemq_broker_ip: 127.0.0.1
+activemq_broker_port: 61616
+activemq_broker_user: system
+activemq_broker_passwd: manager
+activemq_guest_passwd: password
+activemq_store_usage: 5
+activemq_temp_usage: 3
+activemq_pending_limit: 1000
+activemq_context_factory: org.apache.activemq.jndi.ActiveMQInitialContextFactory
+activemq_queue_connection_factory: QueueConnectionFactory
+activemq_topic_connection_factory: TopicConnectionFactory
 
-amq_admin_ip: 127.0.0.1
-amq_admin_port: 8161
-amq_admin_user: admin
-amq_admin_passwd: admin
+activemq_admin_ip: 127.0.0.1
+activemq_admin_port: 8161
+activemq_admin_user: admin
+activemq_admin_passwd: admin
 
-extra_sg_rules:
+activemq_extra_sg_rules:
   - proto: tcp
     from_port: 8161
     to_port: 8161

@@ -1,7 +1,7 @@
 ---
 - name: Install Redis package
   apt:
-    name: redis-server
+    name: "{{redis_pkg_name}}={{redis_pkg_version}}"
     state: present
     update_cache: yes
 

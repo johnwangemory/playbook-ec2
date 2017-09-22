@@ -18,7 +18,7 @@
               <policyEntries>
                 <policyEntry topic=">" >
                   <pendingMessageLimitStrategy>
-                    <constantPendingMessageLimitStrategy limit="{{amq_pending_limit}}"/>
+                    <constantPendingMessageLimitStrategy limit="{{activemq_pending_limit}}"/>
                   </pendingMessageLimitStrategy>
                 </policyEntry>
               </policyEntries>
@@ -36,15 +36,15 @@
                     <memoryUsage percentOfJvmHeap="70" />
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="{{amq_store_usage}} gb"/>
+                    <storeUsage limit="{{activemq_store_usage}} gb"/>
                 </storeUsage>
                 <tempUsage>
-                    <tempUsage limit="{{amq_temp_usage}} gb"/>
+                    <tempUsage limit="{{activemq_temp_usage}} gb"/>
                 </tempUsage>
             </systemUsage>
         </systemUsage>
         <transportConnectors>
-            <transportConnector name="openwire" uri="tcp://{{amq_broker_ip}}:{{amq_broker_port}}?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="openwire" uri="tcp://{{activemq_broker_ip}}:{{activemq_broker_port}}?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
         </transportConnectors>
         <shutdownHooks>
             <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />

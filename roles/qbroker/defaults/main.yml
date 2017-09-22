@@ -1,5 +1,5 @@
-qb_user: qbadm
-qb_group: qb
-qb_repo_url: https://75.131.197.149
-qb_tarball: qblite.tgz
-validate_certs: no
+qbroker_user: qbadm
+qbroker_group: qb
+qbroker_repo_url: https://75.131.197.149
+qbroker_tarball: qblite.tgz
+qbroker_validate_certs: no

@@ -5,7 +5,7 @@
     state: present
     update_cache: yes
   with_items:
-    - postgresql-server
+    - "{{postgresql_pkg_name}}-{{postgresql_pkg_version}}"
     - python-psycopg2
 
 - name: Get stats of pg_hba.conf
@@ -37,16 +37,16 @@
   become: yes
   become_user: postgres
   postgresql_user:
-    name: "{{pg_db_user}}"
-    password: "{{pg_db_passwd}}"
+    name: "{{postgresql_db_user}}"
+    password: "{{postgresql_db_passwd}}"
     state: present
 
 - name: Create database
   become: yes
   become_user: postgres
   postgresql_db:
-    name: "{{pg_db_name}}"
-    owner: "{{pg_db_user}}"
+    name: "{{postgresql_db_name}}"
+    owner: "{{postgresql_db_user}}"
     encoding: UTF-8
     template: template1
     state: present
@@ -54,7 +54,7 @@
 - name: Check table of services
   become: yes
   become_user: postgres
-  command: /usr/bin/psql "{{pg_db_name}}" -c '\d services'
+  command: /usr/bin/psql "{{postgresql_db_name}}" -c '\d services'
   register: table_check
   failed_when: False
   changed_when: False
@@ -69,7 +69,7 @@
 - name: Load schema of eventid.sql
   become: yes
   become_user: postgres
-  command: /usr/bin/psql "{{pg_db_name}}" -f /tmp/eventid.sql
+  command: /usr/bin/psql "{{postgresql_db_name}}" -f /tmp/eventid.sql
   when: "'service_id' not in table_check.stdout"
 
 - name: Grant privileges on tables

@@ -5,7 +5,7 @@
     state: present
     update_cache: yes
   with_items:
-    - mysql-server
+    - "{{mysql_pkg_name}}={{mysql_pkg_version}}"
     - python-mysqldb
 
 - name: Make sure mysqld is up

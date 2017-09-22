@@ -1,1 +1,32 @@
 web_frontend: nginx
+
+mbservice_mq_url: "tcp://localhost:{{activemq_broker_port}}"
+mbservice_context_factory: "{{activemq_context_factory}}"
+mbservice_qcf: "{{activemq_queue_connection_factory}}"
+mbservice_queue: MSG_OUT
+mbservice_mq_user: "{{activemq_broker_user}}"
+mbservice_mq_passwd: "{{activemq_broker_passwd}}"
+
+mbservice_jsp_files:
+  - date.jsp
+  - getJSON.jsp
+  - getChildJSON.jsp
+  - toJSON.jsp
+  - toRCJSON.jsp
+
+mbservice_json_files:
+  - node_format.json
+  - pstr_failure.json
+
+mbservice_jar_files:
+  - activation.jar
+  - commons-fileupload-1.2.2.jar
+  - commons-io-1.4.jar
+  - commons-net-3.3.jar
+  - jakarta-oro-2.0.8.jar
+  - jms.jar
+  - log4j-1.2.12.jar
+  - mail.jar
+  - activemq-all-5.3.1.jar
+  - qbroker-1.2.0.jar
+  - xercesImpl.jar

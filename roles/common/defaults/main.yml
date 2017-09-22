@@ -1,10 +1,10 @@
-pkg_list:
+common_pkg_list:
   - jq
   - git
   - lsof
   - expect
 
-sysctl_props:
+common_sysctl_props:
   - net.ipv4.tcp_tw_reuse
   - net.ipv4.tcp_tw_recycle
   - net.ipv6.conf.all.disable_ipv6

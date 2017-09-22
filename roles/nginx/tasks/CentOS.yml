@@ -1,7 +1,7 @@
 ---
 - name: Install Nginx package
   yum:
-    name: nginx
+    name: "{{nginx_pkg_name}}-{{nginx_pkg_version}}"
     state: present
     update_cache: yes
 
