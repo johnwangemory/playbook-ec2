@@ -1,2 +1,2 @@
-java_pkg_name: "{{ 'java-1.8.0-openjdk.x86_64' if ansible_distribution == 'CentOS' else 'openjdk-8-jdk' }}"
-java_pkg_version: "{{ '1.8.0.141-1.b16.el7_3' if ansible_distribution == 'CentOS' else '8u131-b11-2ubuntu1.16.04.3' }}"
+java_pkg_name: "{{ 'java-1.8.0-openjdk' if ansible_distribution == 'CentOS' else 'openjdk-8-jdk' }}"
+java_pkg_version: "{{ '1.8.0.144-0.b01.el7_4' if ansible_distribution == 'CentOS' else '8u131-b11-2ubuntu1.16.04.3' }}"

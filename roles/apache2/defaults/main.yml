@@ -1,5 +1,5 @@
 apache2_pkg_name: "{{ 'httpd' if ansible_distribution == 'CentOS' else 'apache2' }}"
-apache2_pkg_version: "{{ '2.4.6-45.el7.centos.4' if ansible_distribution == 'CentOS' else '2.4.18-2ubuntu3.4' }}"
+apache2_pkg_version: "{{ '2.4.6-67.el7.centos.2' if ansible_distribution == 'CentOS' else '2.4.18-2ubuntu3.5' }}"
 apache2_dir: "{{ '/etc/httpd' if ansible_distribution == 'CentOS' else '/etc/apache2' }}"
 apache2_modsdir: "{{ '/etc/httpd/modules' if ansible_distribution == 'CentOS' else '/var/lib/apache2/modules' }}"
 apache2_logdir: "{{ '/var/log/httpd' if ansible_distribution == 'CentOS' else '/var/log/apache2' }}"

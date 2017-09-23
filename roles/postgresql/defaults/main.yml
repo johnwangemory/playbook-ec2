@@ -7,7 +7,7 @@ postgresql_db_user: eventdba
 postgresql_db_passwd: secret
 
 postgresql_pkg_name: "{{ 'postgresql-server' if ansible_distribution == 'CentOS' else 'postgresql' }}"
-postgresql_pkg_version: "{{ '9.2.18-1.el7' if ansible_distribution == 'CentOS' else '9.5+173' }}"
+postgresql_pkg_version: "{{ '9.2.23-1.el7_4' if ansible_distribution == 'CentOS' else '9.5+173' }}"
 postgresql_homedir: "{{ '/var/lib/pgsql' if ansible_distribution == 'CentOS' else '/var/lib/postgresql' }}"
 postgresql_datadir: "{{ '/var/lib/pgsql/data' if ansible_distribution == 'CentOS' else '/var/lib/postgresql/9.5/main' }}"
 postgresql_cfgdir: "{{ '/var/lib/pgsql/data' if ansible_distribution == 'CentOS' else '/etc/postgresql/9.5/main' }}"
