@@ -1,6 +1,6 @@
 ---
 - name: Install Java package
   yum:
-    name: "{{java_pkg_name}}-{{java_pkg_version}}"
+    name: "{{java_pkg_name}}"
     state: present
     update_cache: yes

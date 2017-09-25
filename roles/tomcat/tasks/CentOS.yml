@@ -1,7 +1,7 @@
 ---
 - name: Install Tomcat package
   yum:
-    name: "{{tomcat_pkg_name}}-{{tomcat_pkg_version}}"
+    name: "{{tomcat_pkg_name}}"
     state: present
     update_cache: yes
 

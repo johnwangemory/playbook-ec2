@@ -1,7 +1,7 @@
 ---
 - name: Install Monit package
   apt:
-    name: "{{monit_pkg_name}}={{monit_pkg_version}}"
+    name: "{{monit_pkg_name}}"
     state: present
     update_cache: yes
 

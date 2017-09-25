@@ -1,7 +1,7 @@
 ---
 - name: Install Apache package
   yum:
-    name: "{{apache2_pkg_name}}-{{apache2_pkg_version}}"
+    name: "{{apache2_pkg_name}}"
     state: present
     update_cache: yes
 
