@@ -5,21 +5,21 @@
     state: present
     update_cache: yes
 
-- name: Copy monit.pem
+- name: Copy pemfile
   copy:
-    src: monit.pem
-    dest: /etc/monit.d/
+    src: "{{monit_pemfile}}"
+    dest: "{{monit_includedir}}/"
     mode: 0600
   notify: Restart_monit.service
 
 - name: Template of monitrc.j2
   template:
     src: monitrc.j2
-    dest: /etc/monitrc
+    dest: "{{monit_dir}}/monitrc"
     mode: 0600
   vars:
-    idfile: /var/.monit.id
-    statefile: /var/.monit.state
-    pemfile: /etc/monit.d/monit.pem
-    includedir: /etc/monit.d
+    idfile: "{{monit_idfile}}"
+    statefile: "{{monit_statefile}}"
+    pemfile: "{{monit_includedir}}/{{monit_pemfile}}"
+    includedir: "{{monit_includedir}}
   notify: Restart_monit.service

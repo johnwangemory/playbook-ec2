@@ -1,7 +1,12 @@
 {
   "Name": "pstr_db_query",
   "ClassName": "org.qbroker.persister.JDBCPersister",
+{% if db_type == 'postgresql' %}
   "URI": "jdbc:postgresql://localhost:{{db_port}}/{{db_name}}",
+{% else %}
+  "URI": "jdbc:mysql://localhost:{{db_port}}/{{db_name}}",
+  "MaxIdleTime": "28500",
+{% endif %}
   "LinkName": "query",
   "Operation": "query",
   "Username": "{{db_user}}",

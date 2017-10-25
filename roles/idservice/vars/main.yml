@@ -1,0 +1,8 @@
+---
+postgresql_db_name: eventdb
+postgresql_db_user: eventdba
+postgresql_db_passwd: secret
+
+mysql_db_name: eventdb
+mysql_db_user: eventdba
+mysql_db_passwd: secret

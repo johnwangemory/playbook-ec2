@@ -11,7 +11,7 @@
     group: "{{qbroker_group}}"
     state: present
     shell: /bin/bash
-    home: /opt/qbroker
+    home: "{{qbroker_dir}}"
     createhome: no
 
 - name: Create dir of /var/cache/ansible
@@ -31,7 +31,7 @@
 
 - name: Get stats of /opt/qbroker
   stat:
-    path: /opt/qbroker
+    path: "{{qbroker_dir}}"
     get_md5: no
     get_checksum: no
   register: st_qbroker

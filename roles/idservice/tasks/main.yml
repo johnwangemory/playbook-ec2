@@ -1,3 +1,7 @@
 ---
+- include: postgresql.yml
+  when: web_frontend == 'nginx'
+- include: mysql.yml
+  when: web_frontend == 'apache'
 - include: "{{ansible_distribution}}.yml"                  # config webapp
 - include: "{{ansible_distribution}}_{{web_frontend}}.yml" # config web_frontend

@@ -2,7 +2,7 @@
 - name: Copy server.crt and server.key
   copy:
     src: "{{item}}"
-    dest: /etc/apache2/
+    dest: "{{apache2_dir}}/"
     mode: 0600
   with_items:
     - server.crt
@@ -12,16 +12,16 @@
 - name: Copy apache2.conf
   copy:
     src: apache2.conf
-    dest: /etc/apache2/
+    dest: "{{apache2_dir}}/"
     mode: 0644
   notify: Restart_apache
 
 - name: Template of default.conf.j2
   template:
     src: default.conf.j2
-    dest: /etc/apache2/sites-available/000-default.conf
+    dest: "{{apache2_dir}}/sites-available/000-default.conf"
     mode: 0644
   vars:
-    conf_dir: /etc/apache2
-    mods_dir: /usr/lib/apache2/modules
+    conf_dir: "{{apache2_dir}}"
+    mods_dir: "{{apache2_modsdir}}"
   notify: Restart_apache

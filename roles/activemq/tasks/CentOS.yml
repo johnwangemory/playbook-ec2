@@ -73,7 +73,7 @@
 
 - name: Get stats of monitrc
   stat:
-    path: /etc/monitrc
+    path: "{{monit_dir}}/monitrc"
     get_md5: no
     get_checksum: no
   register: st_monitrc
@@ -81,10 +81,10 @@
 - name: Template of activemq.monit
   template:
     src: activemq.monit.j2
-    dest: /etc/monit.d/activemq.monit
+    dest: "{{monit_includedir}}/activemq.monit"
     mode: 0644
   vars:
-    pidfile: /opt/activemq/data/activemq.pid
+    pidfile: "{{activemq_pidfile}}"
     start_program: '/usr/bin/systemctl start activemq'
     stop_program: '/usr/bin/systemctl stop activemq'
   when: st_monitrc.stat.exists

@@ -7,7 +7,7 @@
 
 - name: Get stats of monitrc
   stat: 
-    path: /etc/monit/monitrc
+    path: "{{monit_dir}}/monitrc"
     get_md5: no
     get_checksum: no
   register: st_monitrc
@@ -15,11 +15,11 @@
 - name: Template of apache2.monit
   template:
     src: apache2.monit.j2
-    dest: /etc/monit/conf.d/apache2.monit
+    dest: "{{monit_includedir}}/apache2.monit"
     mode: 0644
   vars:
-    pidfile: /var/run/apache2/apache2.pid
-    start_program: '/usr/sbin/service apache2 start'
-    stop_program: '/usr/sbin/service apache2 stop'
+    pidfile: "{{apache2_pidfile}}"
+    start_program: '/usr/sbin/service {{apache2_pkg_name}} start'
+    stop_program: '/usr/sbin/service {{apache2_pkg_name}} stop'
   when: st_monitrc.stat.exists
   notify: Restart_monit

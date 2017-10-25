@@ -1,5 +1,7 @@
+---
 activemq_user: activemq
 activemq_group: activemq
+activemq_pidfile: /opt/activemq/data/activemq.pid
 activemq_pkg_name: apache-activemq
 activemq_version: 5.14.3
 activemq_repo_url: https://archive.apache.org/dist/activemq

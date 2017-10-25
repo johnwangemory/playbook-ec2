@@ -35,11 +35,19 @@
           "Success": "done_req",
           "Failure": "query"
         },
+{% if db_type == 'postgresql' %}
         {
           "Success": "query",
           "FieldName": "SQL",
           "Template": "INSERT INTO components (component_id, component_name, description) VALUES (nextval('component_id_seq'), %%name%%, 'NEW')"
         },
+{% else %}
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "INSERT INTO components (component_name, description) VALUES (%%name%%, 'NEW')"
+        },
+{% endif %}
         {
           "Success": "query",
           "FieldName": "SQL",
@@ -79,11 +87,19 @@
           "Success": "done_req",
           "Failure": "query"
         },
+{% if db_type == 'postgresql' %}
         {
           "Success": "query",
           "FieldName": "SQL",
           "Template": "INSERT INTO instances (instance_id, instance_name, description) VALUES (nextval('instance_id_seq'), %%name%%, 'NEW')"
         },
+{% else %}
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "INSERT INTO instances (instance_name, description) VALUES (%%name%%, 'NEW')"
+        },
+{% endif %}
         {
           "Success": "query",
           "FieldName": "SQL",
@@ -123,11 +139,19 @@
           "Success": "done_req",
           "Failure": "query"
         },
+{% if db_type == 'postgresql' %}
         {
           "Success": "query",
           "FieldName": "SQL",
           "Template": "INSERT INTO services (service_id, service_name, description) VALUES (nextval('service_id_seq'), %%name%%, 'NEW')"
         },
+{% else %}
+        {
+          "Success": "query",
+          "FieldName": "SQL",
+          "Template": "INSERT INTO services (service_name, description) VALUES (%%name%%, 'NEW')"
+        },
+{% endif %}
         {
           "Success": "query",
           "FieldName": "SQL",

@@ -1,3 +1,4 @@
+---
 web_frontend: nginx
 
 mbservice_mq_url: "tcp://localhost:{{activemq_broker_port}}"

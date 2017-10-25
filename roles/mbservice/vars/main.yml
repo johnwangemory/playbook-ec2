@@ -1,0 +1,7 @@
+---
+activemq_broker_user: system
+activemq_broker_passwd: manager
+activemq_guest_passwd: password
+
+activemq_admin_user: admin
+activemq_admin_passwd: admin

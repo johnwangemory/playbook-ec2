@@ -67,34 +67,9 @@
     encoding: utf8
     state: present
 
-- name: Check table of services
-  command: /usr/bin/mysql "{{mysql_db_name}}" -e 'show columns from services'
-  register: table_check
-  failed_when: False
-  changed_when: False
-
-- name: Copy eventid.sql
-  copy:
-    src: eventid.sql
-    dest: /tmp/
-    mode: 0644
-  when: "'service_id' not in table_check.stdout"
-
-- name: Load schema of eventid.sql
-  mysql_db:
-    name: "{{mysql_db_name}}"
-    state: import
-    target: /tmp/eventid.sql
-  when: "'service_id' not in table_check.stdout"
-
-- name: Cleanup eventid.sql
-  file:
-    path: /tmp/eventid.sql
-    state: absent
-
 - name: Get stats of monitrc
   stat: 
-    path: /etc/monit/monitrc
+    path: "{{monit_dir}}/monitrc"
     get_md5: no
     get_checksum: no
   register: st_monitrc
@@ -102,7 +77,7 @@
 - name: Copy mysqld.monit
   copy:
     src: mysqld.monit
-    dest: /etc/monit/conf.d/
+    dest: "{{monit_includedir}}/"
     mode: 0644
   when: st_monitrc.stat.exists
   notify: Restart_monit

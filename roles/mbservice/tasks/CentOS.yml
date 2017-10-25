@@ -2,27 +2,27 @@
 - name: Copy tomcat_web.xml to enable PUT
   copy:
     src: tomcat_web.xml
-    dest: /etc/tomcat/web.xml
+    dest: "{{tomcat_dir}}/web.xml"
     owner: root
-    group: tomcat
+    group: "{{tomcat_group}}"
     mode: 0644
   notify: Restart_tomcat.service
 
 - name: Copy mbservice.xml
   copy:
     src: mbservice.xml
-    dest: /etc/tomcat/Catalina/localhost/
+    dest: "{{tomcat_dir}}/Catalina/localhost/"
     owner: root
-    group: tomcat
+    group: "{{tomcat_group}}"
     mode: 0644
   notify: Restart_tomcat.service
 
 - name: Create dir of mbservice/WEB-INF/lib
   file:
-    path: "/opt/qbroker/{{item}}"
+    path: "{{qbroker_dir}}/{{item}}"
     state: directory
-    owner: tomcat
-    group: tomcat
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0755
   with_items:
     - mbservice
@@ -32,35 +32,35 @@
 - name: Copy web.xml
   copy:
     src: web.xml
-    dest: /opt/qbroker/mbservice/WEB-INF/
-    owner: tomcat
-    group: tomcat 
+    dest: "{{qbroker_dir}}/mbservice/WEB-INF/"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   notify: Restart_tomcat.service
 
 - name: Copy jsp files
   copy:
     src: "jsp/{{item}}"
-    dest: /opt/qbroker/mbservice/
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/mbservice/"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   with_items: "{{mbservice_jsp_files}}"
 
 - name: Create dir of MB
   file:
-    path: /opt/qbroker/flow/MB
+    path: "{{qbroker_dir}}/flow/MB"
     state: directory
-    owner: tomcat
-    group: tomcat
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0755
 
 - name: Copy json files
   copy:
     src: "flow/{{item}}"
-    dest: /opt/qbroker/flow/MB/
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/flow/MB/"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   with_items: "{{mbservice_json_files}}"
   notify: Restart_tomcat.service
@@ -68,31 +68,31 @@
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
-    dest: /opt/qbroker/flow/MB/Flow.json
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/flow/MB/Flow.json"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   vars:
-    log_dir: /var/log/tomcat
+    log_dir: "{{tomcat_logdir}}"
   notify: Restart_tomcat.service
 
 - name: Template of pstr_msg.json
   template:
     src: pstr_msg.json.j2
-    dest: /opt/qbroker/flow/MB/pstr_msg.json
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/flow/MB/pstr_msg.json"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   notify: Restart_tomcat.service
 
 - name: Copy jar files
   copy:
-    src: "/opt/qbroker/lib/{{item}}"
-    dest: /opt/qbroker/mbservice/WEB-INF/lib/
+    src: "{{qbroker_dir}}/lib/{{item}}"
+    dest: "{{qbroker_dir}}/mbservice/WEB-INF/lib/"
     remote_src: yes
     force: no
-    owner: tomcat
-    group: tomcat
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   with_items: "{{mbservice_jar_files}}"
   notify: Restart_tomcat.service

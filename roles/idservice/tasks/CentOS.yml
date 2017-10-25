@@ -2,18 +2,18 @@
 - name: Copy idservice.xml
   copy:
     src: idservice.xml
-    dest: /etc/tomcat/Catalina/localhost/
+    dest: "{{tomcat_dir}}/Catalina/localhost/"
     owner: root
-    group: tomcat
+    group: "{{tomcat_group}}"
     mode: 0644
   notify: Restart_tomcat.service
 
 - name: Create dir of idservice/WEB-INF/lib
   file:
-    path: "/opt/qbroker/{{item}}"
+    path: "{{qbroker_dir}}/{{item}}"
     state: directory
-    owner: tomcat
-    group: tomcat
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0755
   with_items:
     - idservice
@@ -23,35 +23,35 @@
 - name: Copy web.xml
   copy:
     src: web.xml
-    dest: /opt/qbroker/idservice/WEB-INF/
-    owner: tomcat
-    group: tomcat 
+    dest: "{{qbroker_dir}}/idservice/WEB-INF/"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   notify: Restart_tomcat.service
 
 - name: Copy jsp files
   copy:
     src: "jsp/{{item}}"
-    dest: /opt/qbroker/idservice/
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/idservice/"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   with_items: "{{idservice_jsp_files}}"
 
 - name: Create dir of ID
   file:
-    path: /opt/qbroker/flow/ID
+    path: "{{qbroker_dir}}/flow/ID"
     state: directory
-    owner: tomcat
-    group: tomcat
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0755
 
 - name: Copy json files
   copy:
     src: "flow/{{item}}"
-    dest: /opt/qbroker/flow/ID/
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/flow/ID/"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   with_items: "{{idservice_json_files}}"
   notify: Restart_tomcat.service
@@ -59,36 +59,65 @@
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
-    dest: /opt/qbroker/flow/ID/Flow.json
-    owner: tomcat
-    group: tomcat
+    dest: "{{qbroker_dir}}/flow/ID/Flow.json"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   vars:
-    log_dir: /var/log/tomcat
+    log_dir: "{{tomcat_logdir}}"
   notify: Restart_tomcat.service
 
-- name: Template of pstr_db_query.json
+- name: Template of node_collect.json
   template:
-    src: pstr_db_query.json.j2
-    dest: /opt/qbroker/flow/ID/pstr_db_query.json
-    owner: tomcat
-    group: tomcat
+    src: node_collect.json.j2
+    dest: "{{qbroker_dir}}/flow/ID/node_collect.json"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   vars:
-    db_name: eventdb
-    db_port: 5432
-    db_user: eventdba
-    db_passwd: secret
+    db_type: "{{ 'postgresql' if web_frontend == 'nginx' else 'mysql' }}"
+  notify: Restart_tomcat
+
+- name: Template of pstr_db_query.json for postgresql
+  template:
+    src: pstr_db_query.json.j2
+    dest: "{{qbroker_dir}}/flow/ID/pstr_db_query.json"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
+    mode: 0644
+  vars:
+    db_type: postgresql
+    db_port: "{{postgresql_port}}"
+    db_name: "{{postgresql_db_name}}"
+    db_user: "{{postgresql_db_user}}"
+    db_passwd: "{{postgresql_db_passwd}}"
+  when: web_frontend == 'nginx'
+  notify: Restart_tomcat.service
+
+- name: Template of pstr_db_query.json for mysql
+  template:
+    src: pstr_db_query.json.j2
+    dest: "{{qbroker_dir}}/flow/ID/pstr_db_query.json"
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
+    mode: 0644
+  vars:
+    db_type: mysql
+    db_port: "{{mysql_port}}"
+    db_name: "{{mysql_db_name}}"
+    db_user: "{{mysql_db_user}}"
+    db_passwd: "{{mysql_db_passwd}}"
+  when: web_frontend == 'apache'
   notify: Restart_tomcat.service
 
 - name: Copy jar files
   copy:
-    src: "/opt/qbroker/lib/{{item}}"
-    dest: /opt/qbroker/idservice/WEB-INF/lib/
+    src: "{{qbroker_dir}}/lib/{{item}}"
+    dest: "{{qbroker_dir}}/idservice/WEB-INF/lib/"
     remote_src: yes
     force: no
-    owner: tomcat
-    group: tomcat
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
     mode: 0644
   with_items: "{{idservice_jar_files}}"
   notify: Restart_tomcat.service

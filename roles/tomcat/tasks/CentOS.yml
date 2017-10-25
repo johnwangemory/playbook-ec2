@@ -7,7 +7,7 @@
 
 - name: Get stats of monitrc
   stat:
-    path: /etc/monitrc
+    path: "{{monit_dir}}/monitrc"
     get_md5: no
     get_checksum: no
   register: st_monitrc
@@ -15,12 +15,12 @@
 - name: Template of tomcat.monit
   template:
     src: tomcat.monit.j2
-    dest: /etc/monit.d/tomcat.monit
+    dest: "{{monit_includedir}}/tomcat.monit"
     mode: 0644
   vars:
-    pattern: '.base=/usr/share/tomcat '
-    start_program: '/usr/bin/systemctl start tomcat'
-    stop_program: '/usr/bin/systemctl stop tomcat'
+    pattern: '.base={{tomcat_basedir}} '
+    start_program: '/usr/bin/systemctl start {{tomcat_pkg_name}}'
+    stop_program: '/usr/bin/systemctl stop {{tomcat_pkg_name}}'
   when: st_monitrc.stat.exists
   notify: Restart_monit.service
 

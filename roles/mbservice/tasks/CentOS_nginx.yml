@@ -2,7 +2,7 @@
 - name: Copy server.crt and server.key
   copy:
     src: "{{item}}"
-    dest: /etc/nginx/
+    dest: "{{nginx_dir}}/"
     mode: 0600
   with_items:
     - server.crt
@@ -12,6 +12,6 @@
 - name: Copy default.conf with proxy_pass
   copy:
     src: default.conf
-    dest: /etc/nginx/conf.d/
+    dest: "{{nginx_dir}}/conf.d/"
     mode: 0644
   notify: Restart_nginx.service

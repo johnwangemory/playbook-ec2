@@ -10,21 +10,21 @@
 
 - name: Get stats of pg_hba.conf
   stat:
-    path: /var/lib/pgsql/data/pg_hba.conf
+    path: "{{postgresql_cfgdir}}/pg_hba.conf"
     get_md5: no
     get_checksum: no
   register: st_pghba
 
 - name: Init the DB
-  command: /usr/bin/initdb -D /var/lib/pgsql/data
+  command: "/usr/bin/initdb -D {{postgresql_datadir}}"
   become: yes
-  become_user: postgres
+  become_user: "{{postgresql_user}}"
   when: not st_pghba.stat.exists
 
 - name: Copy pg_hba.conf
   copy:
     src: pg_hba.conf
-    dest: /var/lib/pgsql/data/
+    dest: "{{postgresql_cfgdir}}/"
     mode: 0600
 
 - name: Make sure postgresql is up
@@ -35,7 +35,7 @@
 
 - name: Create user for the db
   become: yes
-  become_user: postgres
+  become_user: "{{postgresql_user}}"
   postgresql_user:
     name: "{{postgresql_db_user}}"
     password: "{{postgresql_db_passwd}}"
@@ -43,7 +43,7 @@
 
 - name: Create database
   become: yes
-  become_user: postgres
+  become_user: "{{postgresql_user}}"
   postgresql_db:
     name: "{{postgresql_db_name}}"
     owner: "{{postgresql_db_user}}"
@@ -51,57 +51,9 @@
     template: template1
     state: present
 
-- name: Check table of services
-  become: yes
-  become_user: postgres
-  command: /usr/bin/psql "{{postgresql_db_name}}" -c '\d services'
-  register: table_check
-  failed_when: False
-  changed_when: False
-
-- name: Copy eventid.sql
-  copy:
-    src: eventid.sql
-    dest: /tmp/
-    mode: 0644
-  when: "'service_id' not in table_check.stdout"
-
-- name: Load schema of eventid.sql
-  become: yes
-  become_user: postgres
-  command: /usr/bin/psql "{{postgresql_db_name}}" -f /tmp/eventid.sql
-  when: "'service_id' not in table_check.stdout"
-
-- name: Grant privileges on tables
-  become: yes
-  become_user: postgres
-  postgresql_privs:
-    database: eventdb
-    role: eventdba
-    type: table
-    objs: services,instances,components
-    privs: SELECT,UPDATE,INSERT,DELETE
-    state: present
-
-- name: Grant privileges on sequences
-  become: yes
-  become_user: postgres
-  postgresql_privs:
-    database: eventdb
-    role: eventdba
-    type: sequence
-    objs: service_id_seq,instance_id_seq,component_id_seq
-    privs: SELECT,UPDATE
-    state: present
-
-- name: Cleanup eventid.sql
-  file:
-    path: /tmp/eventid.sql
-    state: absent
-
 - name: Get stats of monitrc
   stat:
-    path: /etc/monitrc
+    path: "{{monit_dir}}/monitrc"
     get_md5: no
     get_checksum: no
   register: st_monitrc
@@ -109,9 +61,9 @@
 - name: Template of postgres.monit
   template:
     src: postgres.monit.j2
-    dest: /etc/monit.d/postgres.monit
+    dest: "{{monit_includedir}}/postgres.monit"
     mode: 0644
   vars:
-    pidfile: /var/run/postgresql/postmaster.pid
+    pidfile: "{{postgresql_pidfile}}"
   when: st_monitrc.stat.exists
   notify: Restart_monit.service
