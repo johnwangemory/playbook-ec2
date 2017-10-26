@@ -10,7 +10,7 @@
 
 - name: Make sure mysqld is up
   service:
-    name: mysql
+    name: "{{mysql_service_name}}"
     state: started
     enabled: yes
 

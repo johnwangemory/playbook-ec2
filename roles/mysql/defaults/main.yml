@@ -5,14 +5,17 @@ mysql_user: mysql
 mysql_group: mysql
 mysql_pidfile: /var/run/mysqld/mysqld.pid
 mysql_root_passwd: MySQL
+mysql_root_passwd_hash: '*1799AB5202FE2E9958365F9B3ECBBF53657254C7'
 mysql_db_name: testdb
 mysql_db_user: guest
 mysql_db_passwd: secret
+mysql_db_passwd_hash: '*14e65567abdb5135d0cfd9a70b3032c179a49ee7' 
+mysql_se_mode: ''
 
 mysql_pkg_name: "{{ 'mysql-community-server' if ansible_distribution == 'CentOS' else 'mysql-server' }}"
 mysql_pkg_version: "{{ '5.7.19-1.el7' if ansible_distribution == 'CentOS' else '5.7.19-0ubuntu0.16.04.1' }}"
 mysql_pkg_repo_url: "{{ 'https://dev.mysql.com/get' if ansible_distribution == 'CentOS' else '' }}"
 mysql_repo_pkg_name: "{{ 'mysql57-community-release-el7-9.noarch.rpm' if ansible_distribution == 'CentOS' else '' }}"
 mysql_service_name: "{{ 'mysqld' if ansible_distribution == 'CentOS' else 'mysql' }}"
-mysql_dir: "{{ '/var/lib/mysql' if ansible_distribution == 'CentOS' else '/etc/mysql' }}"
+mysql_dir: "{{ '/etc' if ansible_distribution == 'CentOS' else '/etc/mysql' }}"
 mysql_logfile: "{{ '/var/log/mysqld.log' if ansible_distribution == 'CentOS' else '/var/log/mysql/mysql.log' }}"

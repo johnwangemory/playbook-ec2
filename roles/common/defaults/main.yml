@@ -1,4 +1,5 @@
 ---
+common_wait_timeout: 600
 common_pkg_list:
   - jq
   - git

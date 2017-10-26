@@ -64,6 +64,7 @@
     dest: "{{monit_includedir}}/postgres.monit"
     mode: 0644
   vars:
-    pidfile: "{{postgresql_pidfile}}"
+    pattern: "{{postgresql_pattern}}"
+    pidfile: ''
   when: st_monitrc.stat.exists
   notify: Restart_monit.service

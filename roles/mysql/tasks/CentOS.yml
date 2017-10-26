@@ -13,9 +13,15 @@
     - "{{mysql_pkg_name}}"
     - MySQL-python
 
+- name: Set SELinux permissive
+  selinux:
+    policy: targeted
+    state: permissive
+  when: mysql_se_mode == 'permissive' 
+
 - name: Make sure mysqld is up
   service:
-    name: mysql
+    name: "{{mysql_service_name}}"
     state: started
     enabled: yes
 
@@ -26,17 +32,18 @@
     get_checksum: no
   register: st_mycnf
 
-- name: Update MySQL root password
-  mysql_user:
-    name: root
-    host: "{{item}}"
-    password: "{{mysql_root_passwd}}"
-    state: present
-  with_items:
-    - "{{ansible_hostname}}"
-    - 127.0.0.1
-    - ::1
-    - localhost
+- name: Pause for 10 sec
+  pause:
+    seconds: 10
+  when: not st_mycnf.stat.exists
+
+- name: Grep temporary password
+  shell: "/usr/bin/grep 'temporary password' {{mysql_logfile}} | /usr/bin/awk '{print $NF}'"
+  register: temp_passwd
+  when: not st_mycnf.stat.exists
+
+- name: Reset root password
+  shell: "echo \"alter user 'root'@'localhost' identified with mysql_native_password as '{{mysql_root_passwd_hash}}'\" | /usr/bin/mysql --connect-expired-password -u root -p'{{temp_passwd.stdout}}'"
   when: not st_mycnf.stat.exists
 
 - name: Template for .my.cnf
@@ -44,6 +51,7 @@
     src: root.cnf.j2
     dest: ~/.my.cnf
     mode: 0600
+  when: not st_mycnf.stat.exists
 
 - name: Ensure Anonymous users are not in the database
   mysql_user:
@@ -59,12 +67,24 @@
     name: test
     state: absent
 
+- name: Create db user with password hash
+  shell: "echo \"create user '{{mysql_db_user}}'@'localhost' identified with mysql_native_password as '{{mysql_db_passwd_hash}}'\" | /usr/bin/mysql -u root -p'{{mysql_root_passwd}}'"
+  when: mysql_db_passwd_hash != ''
+
+- name: Grant priviliges for user
+  mysql_user:
+    name: "{{mysql_db_user}}"
+    priv: '*.*:ALL'
+    state: present
+  when: mysql_db_passwd_hash != ''
+
 - name: Create user for the db
   mysql_user:
     name: "{{mysql_db_user}}"
     password: "{{mysql_db_passwd}}"
     priv: '*.*:ALL'
     state: present
+  when: mysql_db_passwd_hash == ''
 
 - name: Create database
   mysql_db:

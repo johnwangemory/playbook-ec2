@@ -21,5 +21,5 @@
     idfile: "{{monit_idfile}}"
     statefile: "{{monit_statefile}}"
     pemfile: "{{monit_includedir}}/{{monit_pemfile}}"
-    includedir: "{{monit_includedir}}
+    includedir: "{{monit_includedir}}"
   notify: Restart_monit.service

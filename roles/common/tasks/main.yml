@@ -1,8 +1,9 @@
 ---
-- name: Wait for the initialization complete
+- name: Wait for python
   wait_for:
     path: /var/cache/ansible
     state: present
     sleep: 5
+    timeout: "{{common_wait_timeout}}"
 
 - include: "{{ansible_distribution}}.yml"      # install packages

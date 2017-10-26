@@ -76,7 +76,7 @@
     mode: 0644
   vars:
     db_type: "{{ 'postgresql' if web_frontend == 'nginx' else 'mysql' }}"
-  notify: Restart_tomcat
+  notify: Restart_tomcat.service
 
 - name: Template of pstr_db_query.json for postgresql
   template:

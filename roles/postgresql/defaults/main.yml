@@ -1,7 +1,6 @@
 ---
 postgresql_user: postgres
 postgresql_group: postgres
-postgresql_dir: /etc/postgresql
 postgresql_port: 5432
 postgresql_db_name: testdb
 postgresql_db_user: guest
@@ -13,3 +12,4 @@ postgresql_homedir: "{{ '/var/lib/pgsql' if ansible_distribution == 'CentOS' els
 postgresql_datadir: "{{ '/var/lib/pgsql/data' if ansible_distribution == 'CentOS' else '/var/lib/postgresql/9.5/main' }}"
 postgresql_cfgdir: "{{ '/var/lib/pgsql/data' if ansible_distribution == 'CentOS' else '/etc/postgresql/9.5/main' }}"
 postgresql_pidfile: "{{ '/var/run/postgresql/postgresql.pid' if ansible_distribution == 'CentOS' else '/var/run/postgresql/9.5-main.pid' }}"
+postgresql_pattern: "{{ '/usr/bin/postgres -D ' if ansible_distribution == 'CentOS' else '' }}"
