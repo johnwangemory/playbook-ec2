@@ -32,7 +32,7 @@
   get_url:
     url: "{{activemq_repo_url}}/{{activemq_version}}/{{activemq_pkg_name}}-{{activemq_version}}-bin.tar.gz"
     dest: /var/cache/ansible/
-  when: not st_activemq.stat.exists
+  when: not st_amq_tarball.stat.exists
   register: new_archive_amq
 
 - name: Get stats of /opt/activemq
