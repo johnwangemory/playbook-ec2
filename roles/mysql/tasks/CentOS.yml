@@ -67,11 +67,16 @@
     name: test
     state: absent
 
+- name: Check db user
+  command: "/usr/bin/mysql -u {{mysql_db_user}} -p'{{mysql_db_passwd}}' {{mysql_db_name}}" 
+  register: check_db_user
+  ignore_errors: True
+
 - name: Create db user with password hash
   shell: "echo \"create user '{{mysql_db_user}}'@'localhost' identified with mysql_native_password as '{{mysql_db_passwd_hash}}'\" | /usr/bin/mysql -u root -p'{{mysql_root_passwd}}'"
-  when: mysql_db_passwd_hash != ''
+  when: check_db_user|failed and mysql_db_passwd_hash != ''
 
-- name: Grant priviliges for user
+- name: Grant privileges for user
   mysql_user:
     name: "{{mysql_db_user}}"
     priv: '*.*:ALL'
