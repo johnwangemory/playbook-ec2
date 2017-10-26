@@ -21,11 +21,19 @@
     group: root
     mode: 0755
 
+- name: Get stats of amq tarball
+  stat:
+    path: "/var/cache/ansible/{{activemq_pkg_name}}-{{activemq_version}}-bin.tar.gz"
+    get_md5: no
+    get_checksum: no
+  register: st_amq_tarball
+
 - name: Gets the tarball
   get_url:
     url: "{{activemq_repo_url}}/{{activemq_version}}/{{activemq_pkg_name}}-{{activemq_version}}-bin.tar.gz"
     dest: /var/cache/ansible/
-  register: new_archive
+  when: not st_activemq.stat.exists
+  register: new_archive_amq
 
 - name: Get stats of /opt/activemq
   stat:
@@ -41,7 +49,7 @@
     remote_src: yes
     owner: "{{activemq_user}}"
     group: "{{activemq_group}}"
-  when: new_archive|changed or not st_activemq.stat.exists
+  when: new_archive_amq|changed or not st_activemq.stat.exists
 
 - name: Create symlink of /opt/activemq
   file:

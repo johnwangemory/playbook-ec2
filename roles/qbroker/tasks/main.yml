@@ -22,12 +22,20 @@
     group: root
     mode: 0755
 
+- name: Get stats of qbroker.tgz
+  stat:
+    path: "/var/cache/ansible/{{qbroker_tarball}}"
+    get_md5: no
+    get_checksum: no
+  register: st_qb_tarball
+
 - name: Get the tarball
   get_url:
     url: "{{qbroker_repo_url}}/{{qbroker_tarball}}"
     dest: /var/cache/ansible/
     validate_certs: "{{qbroker_validate_certs}}"
-  register: new_archive
+  when: not st_qb_tarball.stat.exists
+  register: new_archive_qb
 
 - name: Get stats of /opt/qbroker
   stat:
@@ -43,4 +51,4 @@
     remote_src: yes
     owner: "{{qbroker_user}}"
     group: "{{qbroker_group}}"
-  when: new_archive|changed or not st_qbroker.stat.exists
+  when: new_archive_qb|changed or not st_qbroker.stat.exists
