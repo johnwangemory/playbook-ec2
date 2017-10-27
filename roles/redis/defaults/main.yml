@@ -2,8 +2,8 @@
 redis_port: 6379
 redis_bind_ip: 127.0.0.1
 redis_log_level: notice
-redis_pkg_name: "{{ 'redis' if ansible_distribution == 'CentOS' else 'redis-server' }}"
-redis_pkg_version: "{{ '3.2.10-2.el7' if ansible_distribution == 'CentOS' else '2:3.0.6-1' }}"
-redis_dir: "{{ '/etc' if ansible_distribution == 'CentOS' else '/etc/redis' }}"
-redis_logfile: "{{ '/var/log/redis/redis.log' if ansible_distribution == 'CentOS' else '/var/log/redis/redis-server.log' }}"
-redis_pidfile: "{{ '/var/run/redis/redis.pid' if ansible_distribution == 'CentOS' else '/var/run/redis/redis-server.pid' }}"
+redis_pkg_name: "{{ 'redis' if ansible_distribution in ['RedHat','CentOS'] else 'redis-server' }}"
+redis_pkg_version: "{{ '3.2.10-2.el7' if ansible_distribution in ['RedHat','CentOS'] else '2:3.0.6-1' }}"
+redis_dir: "{{ '/etc' if ansible_distribution in ['RedHat','CentOS'] else '/etc/redis' }}"
+redis_logfile: "{{ '/var/log/redis/redis.log' if ansible_distribution in ['RedHat','CentOS'] else '/var/log/redis/redis-server.log' }}"
+redis_pidfile: "{{ '/var/run/redis/redis.pid' if ansible_distribution in ['RedHat','CentOS'] else '/var/run/redis/redis-server.pid' }}"
