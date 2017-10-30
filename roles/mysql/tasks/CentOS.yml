@@ -13,12 +13,6 @@
     - "{{mysql_pkg_name}}"
     - MySQL-python
 
-- name: Set SELinux permissive
-  selinux:
-    policy: targeted
-    state: permissive
-  when: mysql_se_mode == 'permissive' 
-
 - name: Make sure mysqld is up
   service:
     name: "{{mysql_service_name}}"

@@ -10,7 +10,6 @@ mysql_db_name: testdb
 mysql_db_user: guest
 mysql_db_passwd: secret
 mysql_db_passwd_hash: '*14e65567abdb5135d0cfd9a70b3032c179a49ee7' 
-mysql_se_mode: ''
 
 mysql_pkg_name: "{{ 'mysql-community-server' if ansible_distribution in ['RedHat','CentOS'] else 'mysql-server' }}"
 mysql_pkg_version: "{{ '5.7.19-1.el7' if ansible_distribution in ['RedHat','CentOS'] else '5.7.19-0ubuntu0.16.04.1' }}"
