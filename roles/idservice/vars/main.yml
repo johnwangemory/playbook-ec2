@@ -6,4 +6,5 @@ postgresql_db_passwd: secret
 mysql_db_name: eventdb
 mysql_db_user: eventdba
 mysql_db_passwd: secret
-mysql_se_mode: permissive
+
+tomcat_se_permissive: "{{ True if web_frontend == 'apache' else False }}"
