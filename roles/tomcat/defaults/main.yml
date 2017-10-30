@@ -1,7 +1,7 @@
 ---
 tomcat_port: 8080
 tomcat_bind_ip: 127.0.0.1
-tomcat_se_permissive: False
+tomcat_se_mode: ''
 tomcat_pkg_name: "{{ 'tomcat' if ansible_distribution in ['RedHat','CentOS'] else 'tomcat7' }}"
 tomcat_pkg_version: "{{ '7.0.76-2.el7' if ansible_distribution in ['RedHat','CentOS'] else '7.0.68-1ubuntu0.1' }}"
 tomcat_dir: "{{ '/etc/tomcat' if ansible_distribution in ['RedHat','CentOS'] else '/etc/tomcat7' }}"

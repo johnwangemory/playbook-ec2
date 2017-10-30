@@ -7,4 +7,4 @@ mysql_db_name: eventdb
 mysql_db_user: eventdba
 mysql_db_passwd: secret
 
-tomcat_se_permissive: "{{ True if web_frontend == 'apache' else False }}"
+tomcat_se_mode: "{{ 'permissive' if web_frontend == 'apache' else '' }}"

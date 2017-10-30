@@ -34,4 +34,4 @@
   selinux_permissive:
     name: tomcat_t
     permissive: true
-  when: tomcat_se_permissive
+  when: tomcat_se_mode == 'permissive'
