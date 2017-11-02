@@ -69,7 +69,7 @@
 
 - name: Create db user with password hash
   shell: "echo \"create user '{{mysql_db_user}}'@'localhost' identified with mysql_native_password as '{{mysql_db_passwd_hash}}'\" | /usr/bin/mysql -u root -p'{{mysql_root_passwd}}'"
-  when: check_db_user|failed and mysql_db_passwd_hash != ''
+  when: check_db_user.rc != 0 and mysql_db_passwd_hash != ''
 
 - name: Grant privileges for user
   mysql_user:
