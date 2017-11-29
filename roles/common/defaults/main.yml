@@ -5,6 +5,11 @@ common_pkg_list:
   - git
   - lsof
   - expect
+  - python-pip
+
+common_module_list:
+  - boto
+  - awscli
 
 common_sysctl_props:
   - net.ipv4.tcp_tw_reuse

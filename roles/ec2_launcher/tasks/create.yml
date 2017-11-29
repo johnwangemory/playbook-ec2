@@ -44,6 +44,7 @@
         delete_on_termination: true
     vpc_subnet_id: "{{subnet_id}}"
     assign_public_ip: yes
+    instance_profile_name: "{{iam_role}}"
     wait: yes
   when: basic_firewall.group_id is defined and ami_info.results|length > 0
   register: basic_ec2

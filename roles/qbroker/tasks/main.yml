@@ -29,11 +29,16 @@
     get_checksum: no
   register: st_qb_tarball
 
+#- name: Get the tarball
+#  get_url:
+#    url: "{{qbroker_repo_url}}/{{qbroker_tarball}}"
+#    dest: /var/cache/ansible/
+#    validate_certs: "{{qbroker_validate_certs}}"
+#  when: not st_qb_tarball.stat.exists
+#  register: new_archive_qb
+
 - name: Get the tarball
-  get_url:
-    url: "{{qbroker_repo_url}}/{{qbroker_tarball}}"
-    dest: /var/cache/ansible/
-    validate_certs: "{{qbroker_validate_certs}}"
+  command: "aws s3 cp {{qbroker_repo_url}}/{{qbroker_tarball}} /var/cache/ansible/"
   when: not st_qb_tarball.stat.exists
   register: new_archive_qb
 

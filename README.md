@@ -57,6 +57,7 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | aws_region                   | us-east-2       | EC2 region of AWS              | roles/ec2_launcher/defaults/main.yml |
 | vpc_id                       | vpc-e8c95f81    | id of an existing VPC          | roles/ec2_launcher/defaults/main.yml |
 | subnect_id                   | subnet-5e7cd125 | id of a Subnet on the VPC      | roles/ec2_launcher/defaults/main.yml |
+| iam_role                     | S3GetRole       | IAM Role for the instance      | roles/ec2_launcher/defaults/main.yml |
 | default_user                 | ec2-user        | default user for ssh           | roles/ec2_launcher/defaults/main.yml |
 | pause_for_up                 | 15              | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
 | sg_rules                     | ...             | list of rules of security group| roles/ec2_launcher/defaults/main.yml |

@@ -2,6 +2,6 @@
 qbroker_user: qbadm
 qbroker_group: qb
 qbroker_dir: /opt/qbroker
-qbroker_repo_url: https://75.131.197.149
+qbroker_repo_url: s3://ylutest/qbroker
 qbroker_tarball: qblite.tgz
 qbroker_validate_certs: no
