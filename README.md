@@ -2,7 +2,9 @@
 
 This is a role-based Ansible Playbook to provision EC2 instances with list and terminate plays. All the roles are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only. Two web applications, idservice and mbservice, have been fully tested with Nginx and Apache. Within these web applications, roles for Nginx, Apache2, Tomcat7, ActiveMQ and Postgresql are used.
 
-This playbook treats the EC2 instance immutable on most of the EC2 properties, such as AMI, Type, VPC, Networks, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
+This playbook treats the EC2 instance immutable on most of the EC2 properties, such as AMI, Type, VPC, Subnet, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
+
+This playbook also requires access to AWS S3 services. Therefore, it is assumed that a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variable of qbroker_repo_url in case it is different from the default value.
 
 ## Status
 
@@ -45,6 +47,11 @@ To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the de
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e aws_region=us-east-1 -e vpc_id=vpc-db3fdda2 -e subnet_id=subnet-af7351ca -e image_id=ami-cd0f5cb6 provision.yml
 ```
 
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in the default region and a different qbroker_repo_url:
+```
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e qbroker_repo_url=s3://ylutest1/qbroker provision.yml
+```
+
 In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The following default variables will need to be customized to fit your choice:
 
 | Name                         | Value           | Description                    | File                                 |
@@ -61,7 +68,7 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | default_user                 | ec2-user        | default user for ssh           | roles/ec2_launcher/defaults/main.yml |
 | pause_for_up                 | 15              | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
 | sg_rules                     | ...             | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
-| extra_sg_rules               | ...             | extra rules of security group  | roles/activemq/defaults/main.yml     |
+| qbroker_repo_url             | ...             | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
 
 The playbook also requires boto and boto3 installed.
 
