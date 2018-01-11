@@ -52,7 +52,7 @@ To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the de
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e qbroker_repo_url=s3://ylutest1/qbroker provision.yml
 ```
 
-In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The following default values of the variables will need to be customized to fit your choice:
+In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The default values of the following variables may need to be customized to fit your choice:
 
 | Name                         | Value                | Description                    | File                                 |
 | ---                          | ---                  | ---                            | ---                                  |
