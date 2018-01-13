@@ -1,0 +1,16 @@
+LoadModule ssl_module {{mods_dir}}/mod_ssl.so
+LoadModule proxy_module {{mods_dir}}/mod_proxy.so
+LoadModule proxy_http_module {{mods_dir}}/mod_proxy_http.so
+
+Listen 443
+<VirtualHost *:443>
+    SSLEngine on
+    SSLCertificateFile "{{conf_dir}}/server.crt"
+    SSLCertificateKeyFile "{{conf_dir}}/server.key"
+
+    ProxyRequests Off
+    ProxyPass "/idservice" "http://localhost:8080/idservice"
+    ProxyPassReverse "/idservice" "http://localhost:8080/idservice"
+</VirtualHost>
+
+Listen 80

@@ -27,14 +27,14 @@ To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the we
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e myrole=mbservice provision.yml
 ```
 
-To terminate the launched instances:
+To terminate the launched instances in a specific region, such as us-east-1:
 ```
-ansible-playbook -i hosts terminate.yml
+ansible-playbook -i hosts -e aws_region=us-east-1 terminate.yml
 ```
 
-To list the launched instances:
+To list the launched instances in a specific region, such as us-east-1:
 ```
-ansible-playbook -i hosts list.yml
+ansible-playbook -i hosts -e aws_region=us-east-1 list.yml
 ```
 
 To run the playbook to provision an EC2 instance of CentOS 7 with the default web application and the web frontend of Nginx:
@@ -50,6 +50,11 @@ ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e aws_region=us-east-1 -e 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in the default region and a different qbroker_repo_url:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e qbroker_repo_url=s3://ylutest1/qbroker provision.yml
+```
+
+To run the plackbook to provision an EC2 instance of CentOS 7 with Apache2 for Architecture Rotation Project:
+```
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem rotation.yml
 ```
 
 In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The default values of the following variables may need to be customized to fit your choice:
@@ -68,6 +73,7 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | default_user                 | ec2-user             | default user for ssh           | roles/ec2_launcher/defaults/main.yml |
 | pause_for_up                 | 15                   | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
 | sg_rules                     | ...                  | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
+| extra_sg_rules               | ...                  | list of extra rules of sgroup  | roles/ec2_launcher/defaults/main.yml |
 | qbroker_repo_url             | s3://ylutest/qbroker | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
 
 The playbook also requires boto and boto3 installed.

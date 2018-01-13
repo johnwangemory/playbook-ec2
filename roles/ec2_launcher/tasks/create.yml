@@ -21,7 +21,7 @@
     description: "A Security group"
     region: "{{aws_region}}"
     vpc_id: "{{vpc_id}}"
-    rules: "{{sg_rules}}"
+    rules: "{{sg_rules}} + {{extra_sg_rules}}"
     rules_egress:
       - proto: all
         cidr_ip: 0.0.0.0/0

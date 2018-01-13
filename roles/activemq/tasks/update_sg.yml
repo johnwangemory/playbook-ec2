@@ -18,10 +18,10 @@
   set_fact:
     sg_rules: []
 
-- name: Merge extra_sg_rules to sg_rules
+- name: Merge activemq_extra_sg_rules to sg_rules
   set_fact:
     sg_rules: "{{ec2.sg_rules}} + {{activemq_extra_sg_rules}}"
-  when: extra_sg_rules|length > 0
+  when: activemq_extra_sg_rules|length > 0
 
 - name: Update security group
   become: no
