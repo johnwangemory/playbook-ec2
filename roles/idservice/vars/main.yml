@@ -7,4 +7,6 @@ mysql_db_name: eventdb
 mysql_db_user: eventdba
 mysql_db_passwd: secret
 
+qbroker_security_plugin: qbroker-security-1.0.0.jar
+
 tomcat_se_mode: "{{ 'permissive' if web_frontend == 'apache' else '' }}"

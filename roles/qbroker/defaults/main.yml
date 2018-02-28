@@ -3,5 +3,6 @@ qbroker_user: qbadm
 qbroker_group: qb
 qbroker_dir: /opt/qbroker
 qbroker_repo_url: s3://ylutest/qbroker
-qbroker_tarball: qblite.tgz
+qbroker_tarball: qblite-1.0.0.tgz
 qbroker_validate_certs: no
+qbroker_security_plugin:

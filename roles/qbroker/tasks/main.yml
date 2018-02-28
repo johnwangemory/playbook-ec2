@@ -22,7 +22,7 @@
     group: root
     mode: 0755
 
-- name: Get stats of qbroker.tgz
+- name: Get stats of qbroker-x.y.z.tgz
   stat:
     path: "/var/cache/ansible/{{qbroker_tarball}}"
     get_md5: no
@@ -57,3 +57,6 @@
     owner: "{{qbroker_user}}"
     group: "{{qbroker_group}}"
   when: new_archive_qb|changed or not st_qbroker.stat.exists
+
+- include: security_plugin.yml
+  when: qbroker_security_plugin != None

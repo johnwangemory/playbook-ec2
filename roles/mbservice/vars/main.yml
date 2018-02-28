@@ -5,3 +5,5 @@ activemq_guest_passwd: password
 
 activemq_admin_user: admin
 activemq_admin_passwd: admin
+
+qbroker_security_plugin: qbroker-security-1.0.0.jar
