@@ -22,7 +22,7 @@
     group: root
     mode: 0755
 
-- name: Get stats of qbroker-x.y.z.tgz
+- name: Get stats of qblite-x.y.z.tgz
   stat:
     path: "/var/cache/ansible/{{qbroker_tarball}}"
     get_md5: no

@@ -12,7 +12,7 @@ Tested with images of Ubuntu and CentOS only
 
 ## Description
 
-To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application plus the database of Postgresql and the web frontend of Nginx:
+To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS on the default AWS profile and with the default web application plus the database of Postgresql and the web frontend of Nginx:
 ```
 ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem provision.yml
 ```
@@ -24,17 +24,17 @@ ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem apache.yml
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the web application of mbservice and the web frontend of Nginx:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e myrole=mbservice provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e wrapper_role=mbservice provision.yml
 ```
 
 To terminate the launched instances in a specific region, such as us-east-1:
 ```
-ansible-playbook -i hosts -e aws_region=us-east-1 terminate.yml
+ansible-playbook -i hosts -e region=us-east-1 terminate.yml
 ```
 
-To list the launched instances in a specific region, such as us-east-1:
+To list the launched instances on a non-default profile:
 ```
-ansible-playbook -i hosts -e aws_region=us-east-1 list.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e profile=test provision.yml
 ```
 
 To run the playbook to provision an EC2 instance of CentOS 7 with the default web application and the web frontend of Nginx:
@@ -44,15 +44,15 @@ ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e image_id=ami-9cbf9bf9 pr
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in a different region:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e aws_region=us-east-1 -e vpc_id=vpc-db3fdda2 -e subnet_id=subnet-af7351ca -e image_id=ami-cd0f5cb6 provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e region=us-east-1 -e vpc_id=vpc-db3fdda2 -e subnet_id=subnet-af7351ca -e image_id=ami-cd0f5cb6 provision.yml
 ```
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in the default region and a different qbroker_repo_url:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e qbroker_repo_url=s3://ylutest1/qbroker provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e profile=rotation -e qbroker_repo_url=s3://ylutest1/qbroker provision.yml
 ```
 
-In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The default values of the following variables may need to be customized to fit your choice:
+In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key for either the default profile or a specific profile. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The default values of the following variables may need to be customized to fit your choice:
 
 | Name                         | Value                | Description                    | File                                 |
 | ---                          | ---                  | ---                            | ---                                  |
@@ -61,7 +61,8 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | instance_tag                 | ylu_test             | tag name for your EC2 instance | roles/ec2_launcher/defaults/main.yml |
 | instance_type                | t2.micro             | type of EC2 instance           | roles/ec2_launcher/defaults/main.yml |
 | image_id                     | ami-8b92b4ee         | AMI id for your OS platform    | roles/ec2_launcher/defaults/main.yml |
-| aws_region                   | us-east-2            | EC2 region of AWS              | roles/ec2_launcher/defaults/main.yml |
+| profile                      | default              | AWS profile name               | roles/ec2_launcher/defaults/main.yml |
+| region                       | us-east-2            | EC2 region of AWS              | roles/ec2_launcher/defaults/main.yml |
 | vpc_id                       | vpc-e8c95f81         | id of an existing VPC          | roles/ec2_launcher/defaults/main.yml |
 | subnect_id                   | subnet-5e7cd125      | id of a Subnet on the VPC      | roles/ec2_launcher/defaults/main.yml |
 | iam_role                     | S3GetRole            | IAM Role for the instance      | roles/ec2_launcher/defaults/main.yml |
@@ -69,6 +70,7 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | pause_for_up                 | 15                   | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
 | sg_rules                     | ...                  | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
 | extra_sg_rules               | ...                  | list of extra rules of sgroup  | roles/ec2_launcher/defaults/main.yml |
+| wrapper_role                 | idservice            | name of the wrapper role       | provision.yml, apache.yml            |
 | qbroker_repo_url             | s3://ylutest/qbroker | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
 
 The playbook also requires boto and boto3 installed.

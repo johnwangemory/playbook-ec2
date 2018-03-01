@@ -1,7 +1,8 @@
 ---
 - name: Query facts on the AMI
   ec2_ami_find:
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     ami_id: "{{image_id}}"
   register: ami_info
 
@@ -19,7 +20,8 @@
   ec2_group:
     name: "{{sg_name}}"
     description: "A Security group"
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     vpc_id: "{{vpc_id}}"
     rules: "{{sg_rules}} + {{extra_sg_rules}}"
     rules_egress:
@@ -31,7 +33,8 @@
 - name: Create an EC2 instance
   ec2:
     key_name: "{{key_name}}"
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     group_id: "{{basic_firewall.group_id}}"
     instance_type: "{{instance_type}}"
     image: "{{image_id}}"

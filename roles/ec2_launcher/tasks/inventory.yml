@@ -1,7 +1,8 @@
 ---
 - name: Query facts on the AMI
   ec2_ami_find:
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     ami_id: "{{ec2_info.instances[0].image_id}}"
   register: ami_info
 

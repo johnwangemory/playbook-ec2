@@ -1,8 +1,9 @@
 ---
-- name: Terminate queried instances in {{aws_region}}
+- name: Terminate queried instances in {{region}}
   ec2:
     state: 'absent'
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     instance_ids: "{{item.id}}"
   with_items: "{{ec2_info.instances}}"
   when: ec2_info.instances|length > 0
@@ -24,7 +25,8 @@
 
 - name: Get ec2 security group facts (boto3 required)
   ec2_group_facts:
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     filters:
       vpc_id: "{{vpc_id}}"
       group_name: "{{sg_name}}"
@@ -33,6 +35,7 @@
 - name: Take security group down
   ec2_group:
     name: "{{sg_name}}"
-    region: "{{aws_region}}"
+    profile: "{{profile}}"
+    region: "{{region}}"
     state: 'absent'
   when: ec2_info.instances|length > 0 or ec2_sg_info.security_groups|length > 0
