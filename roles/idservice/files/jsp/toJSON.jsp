@@ -1,4 +1,4 @@
-<%@page language="java" contentType="text/plain" %><%@page import="java.util.Map" %><%@page import="java.util.Iterator" %><%@page import="javax.servlet.http.HttpServletRequest" %><%!
+<%@page language="java" contentType="application/json" %><%@page import="java.util.Map" %><%@page import="java.util.Iterator" %><%@page import="javax.servlet.http.HttpServletRequest" %><%!
   /** retrieving data from the response and returns them in a JSON */
   private String getMsg(HttpServletRequest req) {
     String msg = null, key = req.getContextPath();

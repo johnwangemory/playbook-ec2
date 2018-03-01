@@ -1,4 +1,4 @@
-<%@page language="java" contentType="text/plain" %><%@page import="java.util.Map" %><%@page import="javax.servlet.http.HttpServletRequest" %><%!
+<%@page language="java" contentType="application/json" %><%@page import="java.util.Map" %><%@page import="javax.servlet.http.HttpServletRequest" %><%!
   /** retrieving ReturnCode from the response and returns an XML */
   private String getRC(HttpServletRequest req) {
     String msg = null, key = req.getContextPath();
