@@ -11,11 +11,11 @@ qbroker_security_plugin: qbroker-security-1.0.0.jar
 
 tomcat_se_mode: "{{ 'permissive' if web_frontend == 'apache' else '' }}"
 
-apache2_location:
+apache2_locations:
   - service: idservice
     proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
 
-nginx_location:
+nginx_locations:
   - service: idservice
     proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
     expire: 'off'

@@ -27,6 +27,8 @@
     src: default.conf.j2
     dest: "{{nginx_dir}}/conf.d/default.conf"
     mode: 0644
+  vars:
+    locations: "{{nginx_locations}}"
   notify: Restart_nginx
 
 - name: Get stats of monitrc

@@ -13,8 +13,7 @@
     group: "{{tomcat_group}}"
     mode: 0644
   vars:
-    allow_listing: "{{tomcat_allow_listing}}"
-    read_only: "{{tomcat_read_only}}"
+    is_readonly: "{{tomcat_is_readonly}}"
   notify: Restart_tomcat.service
 
 - name: Get stats of monitrc

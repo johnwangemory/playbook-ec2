@@ -8,4 +8,4 @@ apache2_pidfile: "{{ '/var/run/httpd/httpd.pid' if ansible_distribution in ['Red
 apache2_user: "{{ 'apache' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
 apache2_group: "{{ 'apache' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
 
-apache2_location: []
+apache2_locations: []

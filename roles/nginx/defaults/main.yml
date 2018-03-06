@@ -8,4 +8,4 @@ nginx_pkg_version: "{{ '1.10.2-1.el7' if ansible_distribution in ['RedHat','Cent
 nginx_user: "{{ 'nginx' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
 nginx_group: "{{ 'nginx' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
 
-nginx_location: []
+nginx_locations: []

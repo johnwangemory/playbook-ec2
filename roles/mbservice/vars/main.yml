@@ -7,17 +7,17 @@ activemq_admin_user: admin
 activemq_admin_passwd: admin
 
 # to allow PUT method
-tomcat_read_only: 'false'
+tomcat_is_readonly: 'false'
 
 qbroker_security_plugin: qbroker-security-1.0.0.jar
 
-apache2_location:
+apache2_locations:
   - service: mbservice
     proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
   - service: admin
     proxy: "http://{{activemq_admin_ip}}:{{activemq_admin_port}}"
 
-nginx_location:
+nginx_locations:
   - service: mbservice
     proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
     expire: 'off'

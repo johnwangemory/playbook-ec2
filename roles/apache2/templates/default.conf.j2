@@ -9,7 +9,7 @@ Listen 443
     SSLCertificateKeyFile "{{conf_dir}}/server.key"
 
     ProxyRequests Off
-{% for item in apache2_location %}
+{% for item in locations %}
     ProxyPass "/{{item.service}}" "{{item.proxy}}/{{item.service}}"
     ProxyPassReverse "/{{item.service}}" "{{item.proxy}}/{{item.service}}"
 {% endfor %}

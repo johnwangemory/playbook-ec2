@@ -28,6 +28,7 @@
     dest: "{{apache2_dir}}/sites-available/000-default.conf"
     mode: 0644
   vars:
+    locations: "{{apache2_locations}}"
     conf_dir: "{{apache2_dir}}"
     mods_dir: "{{apache2_modsdir}}"
   notify: Restart_apache

@@ -29,7 +29,7 @@ server {
 
   rewrite_log off;
 
-{% for item in nginx_location %}
+{% for item in locations %}
   location ^~ /{{item.service}}/ {
     proxy_pass {{item.proxy}};
     expires {{item.expire}};
