@@ -22,6 +22,10 @@ activemq_admin_ip: 127.0.0.1
 activemq_admin_port: 8161
 activemq_admin_user: admin
 activemq_admin_passwd: admin
+activemq_admin_location:
+  service: admin
+  proxy: "http://{{activemq_admin_ip}}:{{activemq_admin_port}}"
+  expire: 'off'
 
 activemq_extra_sg_rules:
   - proto: tcp

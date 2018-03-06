@@ -8,6 +8,11 @@ mbservice_queue: MSG_OUT
 mbservice_mq_user: "{{activemq_broker_user}}"
 mbservice_mq_passwd: "{{activemq_broker_passwd}}"
 
+mbservice_location:
+  service: mbservice
+  proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
+  expire: 'off'
+
 mbservice_jsp_files:
   - date.jsp
   - getJSON.jsp

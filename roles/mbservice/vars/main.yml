@@ -12,15 +12,9 @@ tomcat_is_readonly: 'false'
 qbroker_security_plugin: qbroker-security-1.0.0.jar
 
 apache2_locations:
-  - service: mbservice
-    proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
-  - service: admin
-    proxy: "http://{{activemq_admin_ip}}:{{activemq_admin_port}}"
+  - "{{mbservice_location}}"
+  - "{{activemq_admin_location}}"
 
 nginx_locations:
-  - service: mbservice
-    proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
-    expire: 'off'
-  - service: admin
-    proxy: "http://{{activemq_admin_ip}}:{{activemq_admin_port}}"
-    expire: 'off'
+  - "{{mbservice_location}}"
+  - "{{activemq_admin_location}}"

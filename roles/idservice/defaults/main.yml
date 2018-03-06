@@ -1,6 +1,11 @@
 ---
 web_frontend: nginx
 
+idservice_location:
+  service: idservice
+  proxy: "http://{{tomcat_bind_ip}}:{{tomcat_port}}"
+  expire: 'off'
+
 idservice_jsp_files:
   - date.jsp
   - getJSON.jsp
