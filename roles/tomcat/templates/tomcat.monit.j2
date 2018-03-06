@@ -7,9 +7,9 @@ check process tomcat matching "{{pattern}}"
     if children > 25 for 3 cycles then restart
     if 3 restarts within 5 cycles then timeout
 
-{% if myrole is defined %}
-check host {{myrole}} with address 127.0.0.1
-    if failed port 8080 protocol http
-    and request /{{myrole}}/date.jsp with content = "Today is "
+{% if wrapper_role is defined %}
+check host {{wrapper_role}} with address 127.0.0.1
+    if failed port {{port}} protocol http
+    and request /{{wrapper_role}}/date.jsp with content = "Today is "
     for 10 cycles then alert
 {% endif %}

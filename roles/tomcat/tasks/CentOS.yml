@@ -19,6 +19,7 @@
     mode: 0644
   vars:
     pattern: '.base={{tomcat_basedir}} '
+    port: "{{tomcat_port}}"
     start_program: '/usr/bin/systemctl start {{tomcat_pkg_name}}'
     stop_program: '/usr/bin/systemctl stop {{tomcat_pkg_name}}'
   when: st_monitrc.stat.exists
