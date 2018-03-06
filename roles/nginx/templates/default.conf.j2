@@ -29,10 +29,12 @@ server {
 
   rewrite_log off;
 
-  location ^~ /idservice/ {
-    proxy_pass http://127.0.0.1:8080;
-    expires off;
+{% for item in nginx_location %}
+  location ^~ /{{item.service}}/ {
+    proxy_pass {{item.proxy}};
+    expires {{item.expire}};
   }
+{% endfor %}
 
   location = /server-status {
     stub_status on;

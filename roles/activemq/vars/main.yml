@@ -1,0 +1,8 @@
+apache2_location:
+  - service: admin
+    proxy: "http://{{activemq_admin_ip}}:{{activemq_admin_port}}"
+
+nginx_location:
+  - service: admin
+    proxy: "http://{{activemq_admin_ip}}:{{activemq_admin_port}}"
+    expire: 'off'

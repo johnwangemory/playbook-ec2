@@ -7,3 +7,5 @@ apache2_logdir: "{{ '/var/log/httpd' if ansible_distribution in ['RedHat','CentO
 apache2_pidfile: "{{ '/var/run/httpd/httpd.pid' if ansible_distribution in ['RedHat','CentOS'] else '/var/run/apache2/apache2.pid' }}"
 apache2_user: "{{ 'apache' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
 apache2_group: "{{ 'apache' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
+
+apache2_location: []

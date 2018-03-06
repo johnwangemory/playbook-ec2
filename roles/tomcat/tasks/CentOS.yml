@@ -5,6 +5,18 @@
     state: present
     update_cache: yes
 
+- name: Template of web.xml
+  template:
+    src: web.xml.j2
+    dest: "{{tomcat_dir}}/web.xml"
+    owner: root
+    group: "{{tomcat_group}}"
+    mode: 0644
+  vars:
+    allow_listing: "{{tomcat_allow_listing}}"
+    read_only: "{{tomcat_read_only}}"
+  notify: Restart_tomcat.service
+
 - name: Get stats of monitrc
   stat:
     path: "{{monit_dir}}/monitrc"

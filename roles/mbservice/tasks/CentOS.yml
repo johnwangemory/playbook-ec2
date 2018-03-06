@@ -1,13 +1,4 @@
 ---
-- name: Copy tomcat_web.xml to enable PUT
-  copy:
-    src: tomcat_web.xml
-    dest: "{{tomcat_dir}}/web.xml"
-    owner: root
-    group: "{{tomcat_group}}"
-    mode: 0644
-  notify: Restart_tomcat.service
-
 - name: Copy mbservice.xml
   copy:
     src: mbservice.xml

@@ -9,6 +9,8 @@ Listen 443
     SSLCertificateKeyFile "{{conf_dir}}/server.key"
 
     ProxyRequests Off
-    ProxyPass "/idservice" "http://localhost:8080/idservice"
-    ProxyPassReverse "/idservice" "http://localhost:8080/idservice"
+{% for item in apache2_location %}
+    ProxyPass "/{{item.service}}" "{{item.proxy}}/{{item.service}}"
+    ProxyPassReverse "/{{item.service}}" "{{item.proxy}}/{{item.service}}"
+{% endfor %}
 </VirtualHost>

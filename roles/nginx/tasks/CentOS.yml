@@ -12,6 +12,23 @@
     mode: 0644
   notify: Restart_nginx.service
 
+- name: Copy server.crt and server.key
+  copy:
+    src: "{{item}}"
+    dest: "{{nginx_dir}}/"
+    mode: 0600
+  with_items:
+    - server.crt
+    - server.key
+  notify: Restart_nginx.service
+
+- name: Template of default.conf
+  template:
+    src: default.conf.j2
+    dest: "{{nginx_dir}}/conf.d/default.conf"
+    mode: 0644
+  notify: Restart_nginx.service
+
 - name: Get stats of monitrc
   stat:
     path: "{{monit_dir}}/monitrc"

@@ -11,6 +11,33 @@
     state: present
     update_cache: yes
 
+- name: Copy server.crt and server.key
+  copy:
+    src: "{{item}}"
+    dest: "{{apache2_dir}}/"
+    mode: 0600
+  with_items:
+    - server.crt
+    - server.key
+  notify: Restart_apache.service
+
+- name: Copy httpd.conf
+  copy:
+    src: httpd.conf
+    dest: "{{apache2_dir}}/conf/"
+    mode: 0644
+  notify: Restart_apache.service
+
+- name: Template of default.conf.j2
+  template:
+    src: default.conf.j2
+    dest: "{{apache2_dir}}/conf.d/ssl.conf"
+    mode: 0644
+  vars:
+    conf_dir: "{{apache2_dir}}"
+    mods_dir: "{{apache2_modsdir}}"
+  notify: Restart_apache.service
+
 - name: Get stats of monitrc
   stat:
     path: "{{monit_dir}}/monitrc"
