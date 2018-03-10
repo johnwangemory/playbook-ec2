@@ -1,0 +1,40 @@
+---
+- name: Copy elasticsearch.repo
+  copy:
+    src: elasticsearch.repo
+    dest: "/etc/yum.repos.d/"
+    mode: 0644
+
+- name: Install ElasticSearch package
+  yum:
+    name: "{{elasticsearch_pkg_name}}"
+    state: present
+    update_cache: yes
+
+- name: Template of jvm.options
+  template:
+    src: jvm.options.j2
+    dest: /etc/elasticsearch/jvm.options
+    mode: 0640
+  vars:
+    heapsize: "{{elasticsearch_heapsize}}"
+  notify: Restart_elasticsearch.service
+
+- name: Get stats of monitrc
+  stat:
+    path: "{{monit_dir}}/monitrc"
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of elasticsearch.monit
+  template:
+    src: elasticsearch.monit.j2
+    dest: "{{monit_includedir}}/elasticsearch.monit"
+    mode: 0644
+  vars:
+    pidfile: "{{elasticsearch_pidfile}}"
+    start_program: '/usr/bin/systemctl start {{elasticsearch_pkg_name}}'
+    stop_program: '/usr/bin/systemctl stop {{elasticsearch_pkg_name}}'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service

@@ -1,0 +1,8 @@
+---
+elasticsearch_port: 9200
+elasticsearch_bind_ip: 127.0.0.1
+elasticsearch_pkg_name: elasticsearch
+elasticsearch_dir: /etc/elasticsearch
+elasticsearch_heapsize: 512m
+elasticsearch_logfile: /var/log/elasticsearch/elasticsearch.log
+elasticsearch_pidfile: "{{ '/var/run/elasticsearch/elasticsearch.pid' if ansible_distribution in ['RedHat','CentOS'] else '/var/run/elasticsearch.pid' }}"

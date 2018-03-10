@@ -1,0 +1,34 @@
+---
+- name: Install ElasticSearch package
+  apt:
+    name: "{{elasticsearch_pkg_name}}"
+    state: present
+    update_cache: yes
+
+- name: Template of elasticsearch for /etc/default
+  template:
+    src: elasticsearch.j2
+    dest: /etc/default/elasticsearch
+    mode: 0644
+  vars:
+    heapsize: "{{elasticsearch_heapsize}}"
+  notify: Restart_elasticsearch
+
+- name: Get stats of monitrc
+  stat:
+    path: "{{monit_dir}}/monitrc"
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of elasticsearch.monit
+  template:
+    src: elasticsearch.monit.j2
+    dest: "{{monit_includedir}}/elasticsearch.monit"
+    mode: 0644
+  vars:
+    pidfile: "{{elasticsearch_pidfile}}"
+    start_program: '/usr/sbin/service {{elasticsearch_pkg_name}} start'
+    stop_program: '/usr/sbin/service {{elasticsearch_pkg_name}} stop'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit

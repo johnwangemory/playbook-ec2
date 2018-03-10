@@ -1,0 +1,7 @@
+---
+influxdb_port: 8086
+influxdb_bind_ip: 127.0.0.1
+influxdb_pkg_name: influxdb
+influxdb_dir: /etc/influxdb
+influxdb_logfile: /var/log/influxdb/influxd.log
+influxdb_pidfile: /var/run/influxdb/influxd.pid
