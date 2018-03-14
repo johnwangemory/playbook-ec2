@@ -4,7 +4,7 @@ This is a role-based Ansible Playbook to provision EC2 instances with list and t
 
 This playbook treats the EC2 instance immutable on most of the EC2 properties, such as Region, AMI, Type, VPC, Subnet, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
 
-This playbook also requires access to AWS S3 services. Therefore, it is assumed that a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variable of qbroker_repo_url in case it is different from the default value.
+This playbook also requires access to AWS S3 service for the artifact of qblite-1.0.0.tgz. Therefore, it is assumed that the artifact is already uploaded to a S3 bucket and a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variable of qbroker_repo_url in case it is different from the default value.
 
 ## Status
 
