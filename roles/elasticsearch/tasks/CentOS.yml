@@ -1,9 +1,11 @@
 ---
-- name: Copy elasticsearch.repo
-  copy:
-    src: elasticsearch.repo
-    dest: "/etc/yum.repos.d/"
-    mode: 0644
+- name: Add elasticsearch repo
+  yum_repository:
+    name: "elasticsearch"
+    description: "elasticsearch repo"
+    baseurl: "{{elasticsearch_repo_uri}}"
+    gpgkey: "{{elasticsearch_gpg_key}}"
+    state: present
 
 - name: Install ElasticSearch package
   yum:
@@ -15,7 +17,7 @@
   template:
     src: jvm.options.j2
     dest: /etc/elasticsearch/jvm.options
-    mode: 0640
+    mode: 0644
   vars:
     heapsize: "{{elasticsearch_heapsize}}"
   notify: Restart_elasticsearch.service

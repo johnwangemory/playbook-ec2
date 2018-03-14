@@ -1,0 +1,42 @@
+---
+- name: Add cassandra repo
+  yum_repository:
+    name: "cassandra"
+    description: "cassandra repo"
+    baseurl: "{{cassandra_repo_uri}}"
+    gpgkey: "{{cassandra_gpg_key}}"
+    state: present
+
+- name: Install Cassadra package
+  yum:
+    name: "{{cassandra_pkg_name}}"
+    state: present
+    update_cache: yes
+
+- name: Template of jvm.options
+  template:
+    src: jvm.options.j2
+    dest: "{{cassandra_dir}}/jvm.options"
+    mode: 0644
+  vars:
+    heapsize: "{{cassandra_heapsize}}"
+  notify: Restart_cassandra.service
+
+- name: Get stats of monitrc
+  stat:
+    path: "{{monit_dir}}/monitrc"
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of cassandra.monit
+  template:
+    src: cassandra.monit.j2
+    dest: "{{monit_includedir}}/cassandra.monit"
+    mode: 0644
+  vars:
+    pidfile: "{{cassandra_pidfile}}"
+    start_program: '/usr/bin/systemctl start {{cassandra_pkg_name}}'
+    stop_program: '/usr/bin/systemctl stop {{cassandra_pkg_name}}'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service

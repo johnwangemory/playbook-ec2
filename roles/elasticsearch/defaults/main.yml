@@ -6,3 +6,5 @@ elasticsearch_dir: /etc/elasticsearch
 elasticsearch_heapsize: 512m
 elasticsearch_logfile: /var/log/elasticsearch/elasticsearch.log
 elasticsearch_pidfile: "{{ '/var/run/elasticsearch/elasticsearch.pid' if ansible_distribution in ['RedHat','CentOS'] else '/var/run/elasticsearch.pid' }}"
+elasticsearch_repo_uri: "{{ 'https://artifacts.elastic.co/packages/6.x/yum' if ansible_distribution in ['RedHat','CentOS'] else None }}"
+elasticsearch_gpg_key: "{{ 'https://artifacts.elastic.co/GPG-KEY-elasticsearch' if ansible_distribution in ['RedHat','CentOS'] else None }}"

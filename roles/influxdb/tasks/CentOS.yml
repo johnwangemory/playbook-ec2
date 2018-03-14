@@ -1,15 +1,18 @@
 ---
-- name: Copy influxdb.repo
-  copy:
-    src: influxdb.repo
-    dest: "/etc/yum.repos.d/"
-    mode: 0644
+- name: Add influxdb repo
+  yum_repository:
+    name: "influxdb"
+    description: "influxdb repo"
+    baseurl: "{{influxdb_repo_uri}}"
+    gpgkey: "{{influxdb_gpg_key}}"
+    state: present
 
 - name: Install InfluxDB package
   yum:
     name: "{{influxdb_pkg_name}}"
     state: present
     update_cache: yes
+  notify: Restart_influxdb.service
 
 - name: Get stats of monitrc
   stat:

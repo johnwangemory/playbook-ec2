@@ -2,9 +2,8 @@ check process tomcat matching "{{pattern}}"
     start program = "{{start_program}}"
     stop program = "{{stop_program}}"
     if does not exist 5 cycles then restart
-    if cpu usage > 25% for 5 cycles then alert
-    if memory usage > 25% for 5 cycles then restart
-    if children > 25 for 3 cycles then restart
+    if cpu usage > 45% for 5 cycles then alert
+    if memory usage > 45% for 5 cycles then alert
     if 3 restarts within 5 cycles then timeout
 
 {% if wrapper_role is defined %}

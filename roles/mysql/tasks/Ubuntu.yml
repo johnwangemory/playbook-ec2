@@ -74,10 +74,12 @@
     get_checksum: no
   register: st_monitrc
 
-- name: Copy mysqld.monit
-  copy:
-    src: mysqld.monit
-    dest: "{{monit_includedir}}/"
+- name: Template mysqld.monit
+  template:
+    src: mysqld.monit.j2
+    dest: "{{monit_includedir}}/mysqld.monit"
     mode: 0644
+  vars:
+    pidfile: "{{mysql_pidfile}}"
   when: st_monitrc.stat.exists
   notify: Restart_monit

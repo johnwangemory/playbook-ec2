@@ -1,0 +1,19 @@
+storage:
+  dbPath: {{dbpath}}
+  journal:
+    enabled: true
+
+{% if pidfile is defined %}
+processManagement:
+  fork: true
+  pidFilePath: {{pidfile}}
+
+{% endif %}
+systemLog:
+  destination: file
+  logAppend: true
+  path: {{logfile}}
+
+net:
+  port: {{port}}
+  bindIp: {{bind_ip}}

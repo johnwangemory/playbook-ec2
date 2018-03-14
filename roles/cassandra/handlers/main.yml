@@ -1,0 +1,12 @@
+---
+- name: Restart_cassandra
+  service:
+    name: cassandra
+    enabled: yes
+    state: restarted
+
+- name: Restart_cassandra.service
+  systemd:
+    name: cassandra
+    enabled: yes
+    state: restarted
