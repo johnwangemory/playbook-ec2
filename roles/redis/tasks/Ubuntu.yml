@@ -9,10 +9,16 @@
   template:
     src: redis.conf.j2
     dest: "{{redis_dir}}/redis.conf"
+    owner: "{{redis_user}}"
+    group: "{{redis_group}}"
     mode: 0640
   vars:
+    port: "{{redis_port}}"
+    bind_ip: "{{redis_bind_ip}}"
+    db_dir: "{{redis_db_dir}}"
     pidfile: "{{redis_pidfile}}"
     logfile: "{{redis_logfile}}"
+    log_level: "{{redis_log_level}}"
   notify: Restart_redis
 
 - name: Get stats of monitrc

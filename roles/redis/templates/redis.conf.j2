@@ -1,11 +1,11 @@
 daemonize yes
 pidfile {{pidfile}}
-port {{redis_port}}
-tcp-backlog 511
-bind {{redis_bind_ip}}
+port {{port}}
+tcp-backlog 127
+bind {{bind_ip}}
 timeout 0
-tcp-keepalive 300
-loglevel {{redis_log_level}}
+tcp-keepalive 0
+loglevel {{log_level}}
 logfile {{logfile}}
 databases 16
 save 900 1
@@ -15,7 +15,7 @@ stop-writes-on-bgsave-error yes
 rdbcompression yes
 rdbchecksum yes
 dbfilename dump.rdb
-dir {{redis_dir}}
+dir {{db_dir}}
 slave-serve-stale-data yes
 slave-read-only yes
 repl-diskless-sync no
