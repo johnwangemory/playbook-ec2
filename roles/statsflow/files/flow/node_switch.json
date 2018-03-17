@@ -1,0 +1,42 @@
+{
+  "Name": "node_switch",
+  "ClassName": "org.qbroker.node.SwitchNode",
+  "Description": "switch stats events",
+  "Operation": "switch",
+  "LinkName": "metric",
+  "Capacity": "256",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "jvm",
+      "Type": "preferred",
+      "PreferredOutLink": "null",
+      "JMSPropertyGroup": [
+        {
+          "name": "^jvm_agent$"
+        }
+      ]
+    },
+    {
+      "Name": "jms",
+      "Type": "preferred",
+      "PreferredOutLink": "influx",
+      "JMSPropertyGroup": [
+        {
+          "name": "_(jms|q|chl|jlog|jmx)$"
+        },
+        {
+          "type": "^(SonicMQ|Number|Synthetic)Monitor$"
+        },
+        {
+          "type": "^(STATS|stopwatch|xcode)$"
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "influx",
+    "null"
+  ]
+}

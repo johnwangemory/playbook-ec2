@@ -1,21 +1,20 @@
-log_format qb_standard  '[$time_local] $remote_addr $remote_user "$request" '
+log_format my_standard  '[$time_local] $remote_addr $remote_user "$request" '
                           '$status $body_bytes_sent "$http_referer" '
                           '"$http_user_agent" "$http_host" D=${request_time}s';
 
-server {
-  listen 443 ssl default_server;
+log_format postdata '$msec $remote_addr $request_body';
 
-  server_name _;
+server {
+  listen {{port}};
+
+  server_name {{server_name}};
   server_tokens off;
 
-  ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
-  ssl_certificate {{cfgdir}}/server.crt;
-  ssl_certificate_key {{cfgdir}}/server.key;
-
+  root {{docroot}};
   index index.html index.htm home.html;
 
-  access_log  {{logdir}}/default.access.log qb_standard;
-  error_log  {{logdir}}/default.error.log warn;
+  access_log  {{logdir}}/{{server_name}}.access.log my_standard;
+  error_log  {{logdir}}/{{server_name}}.error.log warn;
 
   sendfile on;
   tcp_nopush on;
@@ -29,12 +28,22 @@ server {
 
   rewrite_log off;
 
-{% for item in locations %}
-  location ^~ /{{item.service}}/ {
+{% for item in log_locations %}
+  location = /{{item.service}} {
+    if ($request_method != POST) {
+      return 405;
+    }
+    access_log {{logdir}}/{{item.service}}.log postdata;
     proxy_pass {{item.proxy}};
-    expires {{item.expire}};
   }
 {% endfor %}
+
+{% if log_locations|length > 0 %}
+  location = /logsink {
+    access_log off;
+    return 200;
+  }
+{% endif %}
 
   location = /server-status {
     stub_status on;

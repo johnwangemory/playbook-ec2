@@ -1,0 +1,7 @@
+---
+- name: Restart_qbroker
+  systemd:
+    name: qbroker
+    enabled: yes
+    state: restarted
+  when: qbroker_service_id != None and qbroker_webcontext == None

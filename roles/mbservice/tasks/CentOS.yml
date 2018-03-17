@@ -1,89 +1,22 @@
 ---
-- name: Copy mbservice.xml
-  copy:
-    src: mbservice.xml
-    dest: "{{tomcat_dir}}/Catalina/localhost/"
-    owner: root
-    group: "{{tomcat_group}}"
-    mode: 0644
-  notify: Restart_tomcat.service
-
-- name: Create dir of mbservice/WEB-INF/lib
-  file:
-    path: "{{qbroker_dir}}/{{item}}"
-    state: directory
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0755
-  with_items:
-    - mbservice
-    - mbservice/WEB-INF
-    - mbservice/WEB-INF/lib
-
-- name: Copy web.xml
-  copy:
-    src: web.xml
-    dest: "{{qbroker_dir}}/mbservice/WEB-INF/"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  notify: Restart_tomcat.service
-
-- name: Copy jsp files
-  copy:
-    src: "jsp/{{item}}"
-    dest: "{{qbroker_dir}}/mbservice/"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  with_items: "{{mbservice_jsp_files}}"
-
-- name: Create dir of MB
-  file:
-    path: "{{qbroker_dir}}/flow/MB"
-    state: directory
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0755
-
-- name: Copy json files
-  copy:
-    src: "flow/{{item}}"
-    dest: "{{qbroker_dir}}/flow/MB/"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  with_items: "{{mbservice_json_files}}"
-  notify: Restart_tomcat.service
-
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
-    dest: "{{qbroker_dir}}/flow/MB/Flow.json"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/Flow.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
   vars:
+    id: "{{qbroker_service_id}}"
+    qb_dir: "{{qbroker_dir}}"
     log_dir: "{{tomcat_logdir}}"
   notify: Restart_tomcat.service
 
 - name: Template of pstr_msg.json
   template:
     src: pstr_msg.json.j2
-    dest: "{{qbroker_dir}}/flow/MB/pstr_msg.json"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/pstr_msg.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
-  notify: Restart_tomcat.service
-
-- name: Copy jar files
-  copy:
-    src: "{{qbroker_dir}}/lib/{{item}}"
-    dest: "{{qbroker_dir}}/mbservice/WEB-INF/lib/"
-    remote_src: yes
-    force: no
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  with_items: "{{mbservice_jar_files}}"
   notify: Restart_tomcat.service

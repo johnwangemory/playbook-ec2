@@ -1,0 +1,8 @@
+{
+  "Name": "pstr_null",
+  "ClassName": "org.qbroker.persister.LogPersister",
+  "URI": "log:///dev/null",
+  "Operation": "append",
+  "LinkName": "null",
+  "DisplayMask": "0"
+}

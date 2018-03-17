@@ -1,0 +1,39 @@
+{
+  "Name": "Flow",
+  "Site": "LITS",
+  "Category": "STATS",
+  "Type": "QFlow",
+  "Operation": "move",
+  "Description": "a flow to process metrics",
+  "LogDir": "{{log_dir}}",
+  "LogDatePattern": "'.'ww",
+  "ConfigDir": "{{qb_dir}}/flow/STATS",
+  "XAMode": "1",
+  "Capacity": "256",
+  "Mode": "daemon",
+  "Heartbeat": "30",
+  "Debug": "5",
+  "FlowDebug": "37",
+  "EscalationCapacity": "64",
+  "MaxNumberFlow": "1",
+  "OpenSSLPlugin": "org.qbroker.security.Decryptor",
+  "Reporter": [
+    "rpt_global_var"
+  ],
+  "Receiver": [
+    "rcvr_stats_log"
+  ],
+  "Node": [
+    "node_parser",
+    "node_stats_parser",
+    "node_format",
+    "node_influx_format",
+    "node_switch"
+  ],
+  "Persister": [
+    "pstr_influx",
+    "pstr_null",
+    "pstr_failure",
+    "pstr_nohit"
+  ]
+}

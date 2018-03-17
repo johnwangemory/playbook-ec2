@@ -1,0 +1,11 @@
+[Unit]
+Description=QBroker Flow {{id}}
+After=network-online.target
+[Service]
+Type=forking
+ExecStart={{qb_dir}}/init.d/S50QFlow_{{id}} start
+ExecStop={{qb_dir}}/init.d/S50QFlow_{{id}} stop
+User={{qb_user}}
+Group={{qb_group}}
+[Install]
+WantedBy=multi-user.target

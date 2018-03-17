@@ -1,9 +1,12 @@
 ---
+influxdb_user: influxdb
+influxdb_group: influxdb
 influxdb_port: 8086
 influxdb_bind_ip: 127.0.0.1
 influxdb_pkg_name: influxdb
 influxdb_dir: /etc/influxdb
 influxdb_logfile: /var/log/influxdb/influxd.log
 influxdb_pidfile: /var/run/influxdb/influxd.pid
-influxdb_repo_uri: "{{'https://repos.influxdata.com/rhel/$releasever/$basearch/stable' if ansible_distribution in ['RedHat','CentOS'] else None}}"
-influxdb_gpg_key: "{{'https://repos.influxdata.com/influxdb.key' if ansible_distribution in ['RedHat','CentOS'] else None}}"
+influxdb_repo_uri: "{{'https://repos.influxdata.com/rhel/$releasever/$basearch/stable' if ansible_distribution in ['RedHat','CentOS'] else 'deb https://repos.influxdata.com/ubuntu xenial stable'}}"
+influxdb_gpg_key: 'https://repos.influxdata.com/influxdb.key'
+influxdb_db_name:

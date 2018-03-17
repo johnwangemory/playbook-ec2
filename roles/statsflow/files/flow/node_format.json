@@ -1,0 +1,165 @@
+{
+  "Name": "node_format",
+  "ClassName": "org.qbroker.node.FormatNode",
+  "Description": "format stats events",
+  "Operation": "format",
+  "LinkName": "stats",
+  "Capacity": "256",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "StringProperty": {
+    "type": "",
+    "Queue": "",
+    "hostname": "",
+    "name": ""
+  },
+  "Ruleset": [
+    {
+      "Name": "bypass",
+      "PreferredOutLink": "data",
+      "JMSPropertyGroup": [
+        {
+          "type": "^SonicMQMonitor$",
+          "name": "(Queue|broker|broker\\d)$"
+        },
+        {
+          "type": "^NumberMonitor$"
+        },
+        {
+          "name": "_(jms|q|chl)$"
+        },
+        {
+          "type": "^(STATS|stopwatch|xcode)$"
+        },
+        {
+          "name": "_(count|memory|.count|conn|.time)_jmx$"
+        },
+        {
+          "name": "^jvm_(om|qb|ed)$"
+        }
+      ]
+    },
+    {
+      "Name": "sonic_t",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "type": "^SonicMQMonitor$",
+          "name": "Topic"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "subID",
+          "Template": [
+            "##name##"
+          ],
+          "Substitution": [
+            "s/^.+(.)$/$1/"
+          ]
+        },
+        {
+          "FieldName": "Queue",
+          "Template": [
+            "##Queue##_##subID##"
+          ],
+          "Substitution": [
+            "s/^\\[.+\\]\\]//",
+            "s/_[a-zA-Z]$//"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "synthetic",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "type": "^SyntheticMonitor$"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "Duration",
+          "Template": [
+            "(##Code## < 0) ? 100000 : ##Duration##"
+          ],
+          "Substitution": [
+            "s//:=eval/e"
+          ]
+        },
+        {
+          "FieldName": "Count",
+          "Template": [
+            "(##Code## < 0) ? 0 : 1"
+          ],
+          "Substitution": [
+            "s//:=eval/e"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "jlog",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "name": "_jlog$"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "Qmgr",
+          "Template": [
+            "##Queue##"
+          ],
+          "Substitution": [
+            "s/\\/[^\\/]+$//",
+            "s/^\\///",
+            "s/\\//_/g"
+          ]
+        },
+        {
+          "FieldName": "Queue",
+          "Template": [
+            "##Queue##"
+          ],
+          "Substitution": [
+            "s/^.*\\/([^\\/]+)$/$1/",
+            "s/\\./_/g"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "jmx",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "name": "_jmx$"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "Qmgr",
+          "Template": [
+            "MS2"
+          ]
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "data",
+    {
+      "Name": "failure",
+      "Capacity": "256",
+      "Partition": "128,64"
+    },
+    {
+      "Name": "nohit",
+      "Capacity": "256",
+      "Partition": "128,64"
+    }
+  ]
+}

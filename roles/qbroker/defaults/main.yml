@@ -3,6 +3,15 @@ qbroker_user: qbadm
 qbroker_group: qb
 qbroker_dir: /opt/qbroker
 qbroker_repo_url: s3://ylutest/qbroker
-qbroker_tarball: qblite-1.0.0.tgz
+qbroker_artifact: qblite-1.0.0.tgz
+qbroker_java_opts: "-server -Dfile.encoding=UTF8 -Xmx256M"
 qbroker_validate_certs: no
+qbroker_systemd_dir: "{{'/usr/lib/systemd' if ansible_distribution in ['RedHat','CentOS'] else '/lib/systemd'}}"
 qbroker_security_plugin:
+qbroker_logdir:
+qbroker_webapp_context:
+qbroker_service_id:
+
+qbroker_jar_files: []
+qbroker_json_files: []
+qbroker_jsp_files: []

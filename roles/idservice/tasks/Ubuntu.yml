@@ -1,76 +1,21 @@
 ---
-- name: Copy idservice.xml
-  copy:
-    src: idservice.xml
-    dest: "{{tomcat_dir}}/Catalina/localhost/"
-    owner: root
-    group: "{{tomcat_group}}"
-    mode: 0644
-  notify: Restart_tomcat
-
-- name: Create dir of idservice/WEB-INF/lib
-  file:
-    path: "{{qbroker_dir}}/{{item}}"
-    state: directory
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0755
-  with_items:
-    - idservice
-    - idservice/WEB-INF
-    - idservice/WEB-INF/lib
-
-- name: Copy web.xml
-  copy:
-    src: web.xml
-    dest: "{{qbroker_dir}}/idservice/WEB-INF/"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  notify: Restart_tomcat
-
-- name: Copy jsp files
-  copy:
-    src: "jsp/{{item}}"
-    dest: "{{qbroker_dir}}/idservice/"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  with_items: "{{idservice_jsp_files}}"
-
-- name: Create dir of ID
-  file:
-    path: "{{qbroker_dir}}/flow/ID"
-    state: directory
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0755
-
-- name: Copy json files
-  copy:
-    src: "flow/{{item}}"
-    dest: "{{qbroker_dir}}/flow/ID/"
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  with_items: "{{idservice_json_files}}"
-  notify: Restart_tomcat
-
 - name: Template of Flow.json
   template:
     src: Flow.json.j2
-    dest: "{{qbroker_dir}}/flow/ID/Flow.json"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/Flow.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
   vars:
+    id: "{{qbroker_service_id}}" 
+    qb_dir: "{{qbroker_dir}}"
     log_dir: "{{tomcat_logdir}}"
   notify: Restart_tomcat
 
 - name: Template of node_collect.json
   template:
     src: node_collect.json.j2
-    dest: "{{qbroker_dir}}/flow/ID/node_collect.json"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/node_collect.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
@@ -81,7 +26,7 @@
 - name: Template of pstr_db_query.json for postgresql
   template:
     src: pstr_db_query.json.j2
-    dest: "{{qbroker_dir}}/flow/ID/pstr_db_query.json"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/pstr_db_query.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
@@ -97,7 +42,7 @@
 - name: Template of pstr_db_query.json for mysql
   template:
     src: pstr_db_query.json.j2
-    dest: "{{qbroker_dir}}/flow/ID/pstr_db_query.json"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/pstr_db_query.json"
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
@@ -108,16 +53,4 @@
     db_user: "{{mysql_db_user}}"
     db_passwd: "{{mysql_db_passwd}}"
   when: web_frontend == 'apache'
-  notify: Restart_tomcat
-
-- name: Copy jar files
-  copy:
-    src: "{{qbroker_dir}}/lib/{{item}}"
-    dest: "{{qbroker_dir}}/idservice/WEB-INF/lib/"
-    remote_src: yes
-    force: no
-    owner: "{{tomcat_user}}"
-    group: "{{tomcat_group}}"
-    mode: 0644
-  with_items: "{{idservice_jar_files}}"
   notify: Restart_tomcat

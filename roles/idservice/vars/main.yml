@@ -8,6 +8,11 @@ mysql_db_user: eventdba
 mysql_db_passwd: secret
 
 qbroker_security_plugin: qbroker-security-1.0.0.jar
+qbroker_webapp_context: idservice
+qbroker_service_id: ID
+qbroker_jar_files: "{{idservice_jar_files}}"
+qbroker_json_files: "{{idservice_json_files}}"
+qbroker_jsp_files: "{{idservice_jsp_files}}"
 
 tomcat_se_mode: "{{ 'permissive' if web_frontend == 'apache' else '' }}"
 

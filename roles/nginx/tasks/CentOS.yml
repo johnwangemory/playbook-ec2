@@ -10,6 +10,11 @@
     src: nginx.conf.j2
     dest: "{{nginx_dir}}/nginx.conf"
     mode: 0644
+  vars:
+    cfgdir: "{{nginx_dir}}"
+    user: "{{nginx_user}}"
+    logdir: "{{nginx_logdir}}"
+    pidfile: "{{nginx_pidfile}}"
   notify: Restart_nginx.service
 
 - name: Copy server.crt and server.key
@@ -28,7 +33,23 @@
     dest: "{{nginx_dir}}/conf.d/default.conf"
     mode: 0644
   vars:
+    cfgdir: "{{nginx_dir}}"
+    logdir: "{{nginx_logdir}}"
     locations: "{{nginx_locations}}"
+  notify: Restart_nginx.service
+
+- name: Template of server.conf
+  template:
+    src: server.conf.j2
+    dest: "{{nginx_dir}}/conf.d/server.conf"
+    mode: 0644
+  vars:
+    port: "{{nginx_extra_server.port}}"
+    server_name: "{{nginx_extra_server.server_name}}"
+    docroot: "{{nginx_extra_server.docroot}}"
+    logdir: "{{nginx_logdir}}"
+    log_locations: "{{nginx_log_locations}}"
+  when: nginx_extra_server|length > 0
   notify: Restart_nginx.service
 
 - name: Get stats of monitrc

@@ -1,0 +1,19 @@
+{
+  "Name": "rpt_global_var",
+  "ClassName": "org.qbroker.monitor.StaticReport",
+  "Category": "STATIC",
+  "Type": "StaticReport",
+  "Site": "LITS",
+  "Description": "define a set of globals",
+  "Step": "1",
+  "ReportName": "GlobalProperties",
+  "ReportClass": "org.qbroker.flow.QFlow",
+  "StringProperty": {
+    "HOSTNAME": "##HOSTNAME##",
+    "hostname": "##hostname##",
+    "LOG_FILE": "{{log_file}}",
+    "DB_URL": "{{db_url}}",
+    "Template": "${hostname} ${HOSTNAME} ${DB_URL} ${LOG_FILE}"
+  }
+}
+

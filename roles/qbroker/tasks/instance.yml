@@ -1,0 +1,76 @@
+---
+- name: Create dir for flow
+  file:
+    path: "{{qbroker_dir}}/flow/{{qbroker_service_id}}"
+    state: directory
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0775
+
+- name: Copy json files
+  copy:
+    src: "../../{{qbroker_service_id|lower}}flow/files/flow/{{item}}"
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0664
+  with_items: "{{qbroker_json_files}}"
+  notify: Restart_qbroker
+
+- name: Template of QFlow.sh
+  template:
+    src: QFlow.sh.j2
+    dest: "{{qbroker_dir}}/bin/QFlow_{{qbroker_service_id}}.sh"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0775
+  vars:
+    id: "{{qbroker_service_id}}" 
+    qb_dir: "{{qbroker_dir}}"
+    log_dir: "{{qbroker_logdir}}"
+    java_opts: "{{qbroker_java_opts}}"
+    jar_files: "{{qbroker_jar_files}}"
+  notify: Restart_qbroker
+
+- name: Template of QFlow.init
+  template:
+    src: QFlow.init.j2
+    dest: "{{qbroker_dir}}/init.d/S50QFlow_{{qbroker_service_id}}"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0775
+  vars:
+    id: "{{qbroker_service_id}}" 
+    qb_dir: "{{qbroker_dir}}"
+    qb_user: "{{qbroker_user}}"
+  notify: Restart_qbroker
+
+- name: Template of qbroker.service
+  template:
+    src: qbroker.service.j2
+    dest: "{{qbroker_systemd_dir}}/system/qbroker.service"
+    mode: 0644
+  vars:
+    id: "{{qbroker_service_id}}" 
+    qb_dir: "{{qbroker_dir}}"
+    qb_user: "{{qbroker_user}}"
+    qb_group: "{{qbroker_group}}"
+  notify: Restart_qbroker
+
+- name: Get stats of monitrc
+  stat:
+    path: "{{monit_dir}}/monitrc"
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of qbroker.monit
+  template:
+    src: qbroker.monit.j2
+    dest: "{{monit_includedir}}/qbroker.monit"
+    mode: 0644
+  vars:
+    id: "{{qbroker_service_id}}"
+    qb_dir: "{{qbroker_dir}}"
+  when: st_monitrc.stat.exists
+  notify: Restart_monit

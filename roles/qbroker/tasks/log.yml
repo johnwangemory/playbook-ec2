@@ -1,0 +1,21 @@
+---
+- name: Create log dir
+  file:
+    path: "{{qbroker_logdir}}"
+    state: directory
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0775
+
+- name: Create sub dirs for logs
+  file:
+    path: "{{qbroker_logdir}}/{{item}}"
+    state: directory
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0775
+  with_items:
+    - stats
+    - archive
+    - checkpoint
+    - .status

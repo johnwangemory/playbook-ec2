@@ -9,3 +9,6 @@ nginx_user: "{{ 'nginx' if ansible_distribution in ['RedHat','CentOS'] else 'www
 nginx_group: "{{ 'nginx' if ansible_distribution in ['RedHat','CentOS'] else 'www-data' }}"
 
 nginx_locations: []
+
+nginx_extra_server: {}
+nginx_log_locations: []

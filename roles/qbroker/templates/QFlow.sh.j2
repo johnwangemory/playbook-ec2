@@ -1,0 +1,139 @@
+#!/bin/bash
+
+DAEMON=org.qbroker.flow.QFlow
+QBDIR={{qb_dir}}
+LOGDIR={{log_dir}}
+ID={{id}}
+JAVA_OPTS="{{java_opts}}"
+JAVA=/usr/bin/java
+PS=/bin/ps
+
+CLASSPATH=\
+{% for f in jar_files %}
+$QBDIR/lib/{{f}}:\
+{% endfor %}
+$QBDIR/lib/:$CLASSPATH
+export CLASSPATH
+
+TZ=US/Eastern
+export TZ
+
+## get pids for QFlow daemon processes with string patterns
+getDaemonprocs() {
+
+case $# in
+1)
+        ## get the line with the pattern and without "grep"
+        pids=`$PS auxwww |
+             /bin/grep $1 |
+             /usr/bin/awk '{
+             if ($(NF-1) != "/bin/grep") print $2
+             }' ORS=' '`
+        ;;
+2)
+        ## get the line with the pattern and ending with the 2nd pattern
+        pids=`$PS auxwww |
+             /bin/grep $1 |
+             /usr/bin/awk '{
+             if ($(NF-2) == CMD) print $2
+             }' ORS=' ' CMD=$2`
+        ;;
+*)
+        return 1
+        ;;
+esac
+
+        if [ "$pids" != "" ]
+        then
+             echo $pids
+             return 0
+        fi
+        return 1
+}
+
+case $1 in
+'start')
+
+    if [ -r $QBDIR/flow/${ID}/Flow.json ]; then
+
+        QFLOW_PIDS=`getDaemonprocs QF_${ID} $DAEMON`
+
+        ## gracefully shutdown the QBroker flow first
+        test "$QFLOW_PIDS" != "" && /bin/kill $QFLOW_PIDS
+
+        cd $QBDIR/bin
+        $JAVA -DQF_${ID} -DLoggerName=QFlow_${ID} ${JAVA_OPTS} $DAEMON -I $QBDIR/flow/${ID}/Flow.json >> $LOGDIR/QFlow_${ID}.out 2>&1 &
+    fi
+    ;;
+
+'stop')
+
+    if [ -r $QBDIR/flow/${ID}/Flow.json ]; then
+
+        QFLOW_PIDS=`getDaemonprocs QF_${ID} $DAEMON`
+
+        ## gracefully shutdown the QBroker flow first
+        test "$QFLOW_PIDS" != "" && /bin/kill $QFLOW_PIDS
+
+        for retry in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+        do
+            QFLOW_PIDS=`getDaemonprocs QF_${ID} $DAEMON`
+            test "$QFLOW_PIDS" = "" && break 
+            /bin/sleep 3
+        done
+
+        QFLOW_PIDS=`getDaemonprocs QF_${ID} $DAEMON`
+
+        ## confirm the shutdown is successful
+        if [ "$QFLOW_PIDS" != "" ]
+        then
+             /bin/kill $QFLOW_PIDS
+
+             /bin/sleep 3
+             QFLOW_PIDS=`getDaemonprocs QF_${ID} $DAEMON`
+
+             ## kill all the hanging processes forcefully
+             test "$QFLOW_PIDS" != "" && /bin/kill -9 $QFLOW_PIDS
+        fi
+    fi
+    ;;
+
+'restart')
+    $0 stop
+    /bin/sleep 2
+    $0 start
+    ;;
+
+'status')
+    QFLOW_PIDS=`getDaemonprocs QF_${ID} $DAEMON`
+    if [ "$QFLOW_PIDS" != "" ]
+    then
+        echo "QF_${ID} (pid $QFLOW_PIDS) is running..."
+    else
+        echo "QF_${ID} is stopped"
+    fi
+    ;;
+
+'failover'|'query'|'disable'|'enable'|'reload')
+    exec 2>&1
+    exec 1>/dev/null
+    $JAVA $DAEMON -I $QBDIR/flow/${ID}/Flow.json -A $1 -C $2 -N $3
+    ;;
+
+'shutdown')
+    $JAVA $DAEMON -I $QBDIR/flow/${ID}/Flow.json -A stop -C $2 -N $3
+    ;;
+
+'show')
+    cd $QBDIR/bin
+    $JAVA $DAEMON -I $QBDIR/flow/${ID}/Flow.json -l
+    ;;
+
+*'.json')
+    $JAVA org.qbroker.json.JSON2Map -a parse -f $1
+    ;;
+
+*)
+    echo "usage: $0 {start|stop|restart|status|show|shutdown|failover|query|reload}"
+    ;;
+esac

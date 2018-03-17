@@ -1,0 +1,24 @@
+---
+- name: Template of Flow.json
+  template:
+    src: Flow.json.j2
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/Flow.json"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0664
+  vars:
+    qb_dir: "{{qbroker_dir}}"
+    log_dir: "{{qbroker_logdir}}"
+  notify: Restart_qbroker
+
+- name: Template of rpt_global_var.json
+  template:
+    src: rpt_global_var.json.j2
+    dest: "{{qbroker_dir}}/flow/{{qbroker_service_id}}/rpt_global_var.json"
+    owner: "{{qbroker_user}}"
+    group: "{{qbroker_group}}"
+    mode: 0664
+  vars:
+    log_file: "{{nginx_logdir}}/{{statsflow_log_location.service}}.log"
+    db_url: "http://{{influxdb_bind_ip}}:{{influxdb_port}}/write?db={{statsflow_db_name}}"
+  notify: Restart_qbroker

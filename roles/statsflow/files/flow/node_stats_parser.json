@@ -1,0 +1,338 @@
+{
+  "Name": "node_stats_parser",
+  "ClassName": "org.qbroker.node.ParserNode",
+  "Description": "parse stats data of event",
+  "Operation": "parse",
+  "LinkName": "parsed",
+  "Capacity": "256",
+  "XAMode": "1",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "StringProperty": {
+    "type": "",
+    "hostname": "",
+    "name": ""
+  },
+  "Ruleset": [
+    {
+      "Name": "bypass",
+      "PreferredOutLink": "stats",
+      "JMSPropertyGroup": [
+        {
+          "type": "^(STATS|stopwatch|xcode)$"
+        }
+      ]
+    },
+    {
+      "Name": "sonic",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "type": "^SonicMQMonitor$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "LogTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Qmgr": "([^:]+):"
+        },
+        {
+          "Queue": "([^ ]+) "
+        },
+        {
+          "Enq": "(\\d+) "
+        },
+        {
+          "Deq": "(\\d+) "
+        },
+        {
+          "Leftover": "(\\d+) "
+        },
+        {
+          "Ipps": "(\\d+) "
+        },
+        {
+          "Opps": "(\\d+)"
+        }
+      ]
+    },
+    {
+      "Name": "jlog",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_jlog$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "LogTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Queue": "[^:]+:..([^ ]+) "
+        },
+        {
+          "Enq": "(\\d+) "
+        },
+        {
+          "Deq": "(\\d+) "
+        },
+        {
+          "Leftover": "(\\d+) "
+        },
+        {
+          "Ipps": "(\\d+) "
+        },
+        {
+          "Opps": "(\\d+)"
+        }
+      ]
+    },
+    {
+      "Name": "jms",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_(jms|q)$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "LogTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Qmgr": "\\d+ \\d+ \\d+ ([^:]+):"
+        },
+        {
+          "Queue": "([^ ]+) "
+        },
+        {
+          "Enq": "(\\d+) "
+        },
+        {
+          "Deq": "(\\d+) "
+        },
+        {
+          "Leftover": "(\\d+) "
+        },
+        {
+          "Ipps": "(\\d+) "
+        },
+        {
+          "Opps": "(\\d+)"
+        }
+      ]
+    },
+    {
+      "Name": "num",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "type": "^NumberMonitor$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "CollectTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Key": "([^ ]+) "
+        },
+        {
+          "Count": "(\\d+)$"
+        }
+      ]
+    },
+    {
+      "Name": "synthetic",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "type": "^SyntheticMonitor$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "CollectTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Key": "([^ ]+) "
+        },
+        {
+          "Code": "(\\d+) "
+        },
+        {
+          "Duration": "(\\d+)$"
+        }
+      ]
+    },
+    {
+      "Name": "jmx_count",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_count_jmx$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "CollectTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Key": "([^ ]+) "
+        },
+        {
+          "Count": "\\d+ (\\d+)$"
+        }
+      ]
+    },
+    {
+      "Name": "jmx_memory",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_memory_jmx$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "CollectTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Key": "([^ ]+) "
+        },
+        {
+          "Memory": ".* (\\d+)$"
+        }
+      ]
+    },
+    {
+      "Name": "jmx_number",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_(.count|conn|.time)_jmx$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "CollectTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Key": "([^ ]+) "
+        },
+        {
+          "Count": ".* (\\d+)$"
+        }
+      ]
+    },
+    {
+      "Name": "jmx",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_jmx$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "LogTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Queue": "([^ ]+) "
+        },
+        {
+          "Enq": "(\\d+) "
+        },
+        {
+          "Deq": "(\\d+) "
+        },
+        {
+          "Leftover": "(\\d+) "
+        },
+        {
+          "Ipps": "(\\d+) "
+        },
+        {
+          "Opps": "(\\d+)"
+        }
+      ]
+    },
+    {
+      "Name": "jvm",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "^jvm_om$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "LogTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "owner": "([^ ]+)\\s+"
+        },
+        {
+          "pid": "(\\d+)\\s+"
+        },
+        {
+          "cpu": "(\\d+\\.\\d+) "
+        },
+        {
+          "body": "(.*)$"
+        }
+      ]
+    },
+    {
+      "Name": "channel",
+      "ClassName": "org.qbroker.common.SimpleParser",
+      "JMSPropertyGroup": [
+        {
+          "name": "_chl$"
+        }
+      ],
+      "ParserArgument": [
+        {
+          "LogTime": "^(\\d\\d\\d\\d\\/\\d+\\/\\d+\\.\\d+:\\d+:\\d+\\.\\d\\d\\d\\.\\w+) "
+        },
+        {
+          "Qmgr": "([^:]+):"
+        },
+        {
+          "Queue": "[^:]+:([^ ]+) "
+        },
+        {
+          "Enq": "(\\d+) "
+        },
+        {
+          "Deq": "(\\d+) "
+        },
+        {
+          "Leftover": "(\\d+) "
+        },
+        {
+          "Ipps": "(\\d+) "
+        },
+        {
+          "Opps": "(\\d+)"
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "stats",
+    {
+      "Name": "failure",
+      "Capacity": "256",
+      "Partition": "64,64"
+    },
+    {
+      "Name": "nohit",
+      "Capacity": "256",
+      "Partition": "64,64"
+    }
+  ]
+}
