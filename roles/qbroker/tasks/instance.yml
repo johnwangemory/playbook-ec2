@@ -64,7 +64,7 @@
     get_checksum: no
   register: st_monitrc
 
-- name: Template of qbroker.monit
+- name: Template of qbroker.monit for Ubuntu
   template:
     src: qbroker.monit.j2
     dest: "{{monit_includedir}}/qbroker.monit"
@@ -72,5 +72,16 @@
   vars:
     id: "{{qbroker_service_id}}"
     qb_dir: "{{qbroker_dir}}"
-  when: st_monitrc.stat.exists
+  when: st_monitrc.stat.exists and ansible_distribution in ['Debian', 'Ubuntu']
   notify: Restart_monit
+
+- name: Template of qbroker.monit for CentOS
+  template:
+    src: qbroker.monit.j2
+    dest: "{{monit_includedir}}/qbroker.monit"
+    mode: 0644
+  vars:
+    id: "{{qbroker_service_id}}"
+    qb_dir: "{{qbroker_dir}}"
+  when: st_monitrc.stat.exists and ansible_distribution in ['RedHat', 'CentOS']
+  notify: Restart_monit.service

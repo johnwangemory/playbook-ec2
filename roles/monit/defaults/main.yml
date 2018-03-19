@@ -10,6 +10,7 @@ monit_dir: "{{ '/etc' if ansible_distribution in ['RedHat','CentOS'] else '/etc/
 monit_includedir: "{{ '/etc/monit.d' if ansible_distribution in ['RedHat','CentOS'] else '/etc/monit/conf.d' }}"
 monit_idfile: "{{ '/var/.monit.id' if ansible_distribution in ['RedHat','CentOS'] else '/var/lib/monit/id' }}"
 monit_statefile: "{{ '/var/.monit.state' if ansible_distribution in ['RedHat','CentOS'] else '/var/lib/monit/state' }}"
+monit_os_release_file: "{{ '/etc/redhat-release' if ansible_distribution in ['RedHat','CentOS'] else '/etc/lsb-release' }}"
 
 monit_allow_list:
   - 10.0.0.0/8

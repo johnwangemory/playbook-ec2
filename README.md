@@ -19,7 +19,7 @@ ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem provision.yml
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application plus the database of MySQL and the web frontend of Apache:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem apache.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e web_frontend=apache provision.yml
 ```
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the web application of mbservice and the web frontend of Nginx:
@@ -70,7 +70,8 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | pause_for_up                 | 15                   | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
 | sg_rules                     | ...                  | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
 | extra_sg_rules               | ...                  | list of extra rules of sgroup  | roles/ec2_launcher/defaults/main.yml |
-| wrapper_role                 | idservice            | name of the wrapper role       | provision.yml, apache.yml            |
+| wrapper_role                 | idservice            | name of the wrapper role       | provision.yml                        |
+| web_frontend                 | nginx                | name of the web frontend       | roles/??service/defaults/main.yml    |
 | qbroker_repo_url             | s3://ylutest/qbroker | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
 
 The playbook also requires boto and boto3 installed.
