@@ -1,14 +1,15 @@
 {
-  "Name": "rcvr_stats_log",
+  "Name": "rcvr_event_log",
   "ClassName": "org.qbroker.receiver.LogReceiver",
   "URI": "log://${LOG_FILE}",
   "Type": "LogReceiver",
   "LinkName": "root",
+  "Capacity": "1024",
   "Partition": "0,0",
   "Operation": "fetch",
   "Mode": "daemon",
   "XAMode": "0",
-  "ReferenceFile": "${LOG_DIR}/.status/stats.log",
+  "ReferenceFile": "${LOG_DIR}/.status/event.log",
   "TextMode": "1",
   "OldLogFile": "${LOG_FILE}.1",
   "LogSize": "1",
@@ -31,7 +32,7 @@
     {
       "Dependency": [
         {
-          "Name": "stats_log",
+          "Name": "event_log",
           "URI": "file://${LOG_FILE}",
           "Type": "FileTester"
         }

@@ -25,6 +25,12 @@
     name: "{{influxdb_pkg_name}}"
     state: started
     enabled: yes
+  register: influxdb_up
+
+- name: Pause for 3 sec
+  pause:
+    seconds: 3
+  when: influxdb_up|changed
 
 - name: Create database
   influxdb_database:

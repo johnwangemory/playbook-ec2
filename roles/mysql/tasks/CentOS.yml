@@ -18,6 +18,7 @@
     name: "{{mysql_service_name}}"
     state: started
     enabled: yes
+  register: mysqld_up
 
 - name: Get stats of .my.cnf
   stat:
@@ -29,7 +30,7 @@
 - name: Pause for 10 sec
   pause:
     seconds: 10
-  when: not st_mycnf.stat.exists
+  when: mysqld_up|changed
 
 - name: Grep temporary password
   shell: "/usr/bin/grep 'temporary password' {{mysql_logfile}} | /usr/bin/awk '{print $NF}'"

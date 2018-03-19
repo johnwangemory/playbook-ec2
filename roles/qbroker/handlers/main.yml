@@ -4,4 +4,4 @@
     name: qbroker
     enabled: yes
     state: restarted
-  when: qbroker_service_id != None and qbroker_webcontext == None
+  when: qbroker_service_id != None and qbroker_webapp_context == None

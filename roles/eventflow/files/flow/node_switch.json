@@ -1,0 +1,43 @@
+{
+  "Name": "node_switch",
+  "ClassName": "org.qbroker.node.SwitchNode",
+  "Description": "switch events",
+  "Operation": "switch",
+  "LinkName": "switch",
+  "Capacity": "1024",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "bypass",
+      "Type": "preferred",
+      "PreferredOutLink": "parsed",
+      "JMSPropertyGroup": [
+        {
+          "site": "^DEFAULT$",
+          "category": "^EVENT$"
+        }
+      ]
+    },
+    {
+      "Name": "newrelic",
+      "Type": "preferred",
+      "PreferredOutLink": "parsed",
+      "JMSPropertyGroup": [
+        {
+          "site": "^NEWRELIC$"
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    {
+      "Name": "null",
+      "Capacity": "256",
+      "Partition": "0,128"
+    },
+    "buffer",
+    "data",
+    "parsed"
+  ]
+}

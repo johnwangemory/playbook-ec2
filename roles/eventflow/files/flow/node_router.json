@@ -1,0 +1,54 @@
+{
+  "Name": "node_router",
+  "ClassName": "org.qbroker.node.SwitchNode",
+  "Description": "switch json events",
+  "Operation": "switch",
+  "LinkName": "json",
+  "Capacity": "1024",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "mq",
+      "Type": "preferred",
+      "PreferredOutLink": "elastic",
+      "DisplayMask": "0",
+      "JMSPropertyGroup": [
+        {
+          "type": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "ContentType",
+          "Template": [
+            "application/json"
+          ]
+        },
+        {
+          "FieldName": "yyyy",
+          "Template": [
+            "##JMSTimestamp##"
+          ],
+          "Substitution": [
+            "s//#=yyyy/e"
+          ]
+        },
+        {
+          "FieldName": "url",
+          "Template": [
+            "http://localhost:9200/event_##yyyy##/##type##/"
+          ]
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "elastic",
+    {
+      "Name": "null",
+      "Capacity": "256",
+      "Partition": "192,64"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "Name": "rule_log_only",
+  "ClassName": "org.qbroker.event.EventActionGroup",
+  "Type": "EventActionGroup",
+  "Site": "DEVOPS",
+  "Category": "RELAY",
+  "Description": "log event to a file",
+  "EventPattern": [
+    {
+      "priority": "^(ERR|CRIT)$"
+    }
+  ],
+  "ActionGroup": [
+    {
+      "URI": "log://${LOG_DIR}/stats/test.log",
+      "Summary": "##date## ##priority## ##name## ##hostname## ##text##",
+      "Template": "\n##compact##\n"
+    }
+  ],
+  "ActiveTime": {
+    "TimeWindow": [
+      {
+        "Interval": "00:00:00-24:00:00"
+      }
+    ]
+  }
+}

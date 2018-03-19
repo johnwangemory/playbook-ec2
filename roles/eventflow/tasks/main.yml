@@ -21,6 +21,6 @@
     mode: 0664
   vars:
     log_dir: "{{qbroker_logdir}}"
-    log_file: "{{nginx_logdir}}/{{statsflow_log_location.service}}.log"
-    db_url: "http://{{influxdb_bind_ip}}:{{influxdb_port}}/write?db={{statsflow_db_name}}"
+    log_file: "{{nginx_logdir}}/{{eventflow_log_location.service}}.log"
+    es_url: "http://{{elasticsearch_bind_ip}}:{{elasticsearch_port}}/"
   notify: Restart_qbroker

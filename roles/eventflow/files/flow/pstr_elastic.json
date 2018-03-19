@@ -1,0 +1,23 @@
+{
+  "Name": "pstr_elastic",
+  "ClassName": "org.qbroker.persister.FilePersister",
+  "URI": "${ES_URL}",
+  "LinkName": "elastic",
+  "Operation": "store",
+  "FieldName": "url",
+  "IsPost": "true",
+  "IgnoreHTTP412": "true",
+  "HTTPVersion": "1.1",
+  "XAMode": "0",
+  "SOTimeout": "60",
+  "MaxIdleTime": "120",
+  "Retry": "1",
+  "DisplayMask": "6",
+  "RequestProperty": {
+    "Content-Type": "ContentType"
+  },
+  "StringProperty": {
+    "name": "",
+    "url": ""
+  }
+}

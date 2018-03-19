@@ -19,4 +19,11 @@
     owner: "{{tomcat_user}}"
     group: "{{tomcat_group}}"
     mode: 0644
+  vars:
+    url: "{{mbservice_mq_url}}"
+    context_factory: "{{mbservice_context_factory}}"
+    qcf: "{{mbservice_qcf}}"
+    queue: "{{mbservice_queue}}"
+    user: "{{mbservice_mq_user}}"
+    passwd: "{{mbservice_mq_passwd}}"
   notify: Restart_tomcat.service

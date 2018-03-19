@@ -1,0 +1,211 @@
+{
+  "Name": "node_format",
+  "ClassName": "org.qbroker.node.FormatNode",
+  "Description": "format events",
+  "Operation": "format",
+  "LinkName": "parsed",
+  "Capacity": "1024",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "json",
+      "ResetOption": "0",
+      "DisplayMask": "8190",
+      "JMSPropertyGroup": [
+        {
+          "site": "^NEWRELIC$",
+          "timestamp": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "JMSTimestamp",
+          "Template": [
+            "##timestamp##"
+          ]
+        },
+        {
+          "FieldName": "status",
+          "Template": [
+            "##status##"
+          ],
+          "Substitution": [
+            "s//:=upper/e"
+          ]
+        },
+        {
+          "FieldName": "hostname",
+          "Template": [
+            "##hostname##"
+          ],
+          "Substitution": [
+            "s/\\..+$//",
+            "s//:=lower/e"
+          ]
+        },
+        {
+          "FieldName": "JMSPriority",
+          "Template": [
+            "(('##status##' == 'CLOSED') || ('##status##' == 'ACKNOWLEDGED')) ? 3 : ##JMSPriority##"
+          ],
+          "Substitution": [
+            "s//:=eval/e"
+          ]
+        },
+        {
+          "FieldName": "body",
+          "Template": [
+            "##details##"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "notification",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "site": "^DEFAULT$",
+          "category": "^EVENT$",
+          "Type": "flowcontrol"
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "site",
+          "Template": [
+            "LITS"
+          ]
+        },
+        {
+          "FieldName": "category",
+          "Template": [
+            "SonicMQ"
+          ]
+        },
+        {
+          "FieldName": "type",
+          "Template": [
+            "Notification"
+          ]
+        },
+        {
+          "FieldName": "hostname",
+          "Template": [
+            "##hostname##"
+          ],
+          "Substitution": [
+            "s/\\..+$//",
+            "s//:=lower/e"
+          ]
+        },
+        {
+          "FieldName": "name",
+          "Template": [
+            "##SubscriptionUser####User##_##Broker##"
+          ]
+        },
+        {
+          "FieldName": "status",
+          "Template": [
+            "##Type##"
+          ],
+          "Substitution": [
+            "s/^application\\.flowcontrol\\.//"
+          ]
+        },
+        {
+          "FieldName": "JMSPriority",
+          "Template": [
+            "(('##status##' == 'PubPause') || ('##status##' == 'SendPause')) ? 7 : ('##status##' == 'StartFlowToDisk') ? 6 : (('##status##' == 'PubResume') || ('##status##' == 'SendResume')) ? 3 : ('##status##' == 'EndFlowToDisk') ? 3 : ##JMSPriority##"
+          ],
+          "Substitution": [
+            "s//:=eval/e"
+          ]
+        },
+        {
+          "FieldName": "body",
+          "Template": [
+            "##SubscriptionUser####User## of ##Broker## got flow controlled with ##status## on ##SubscriptionTopic####BlockingQueues##"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "syslog",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "type": "^syslog$",
+          "LogTime": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "JMSTimestamp",
+          "Template": [
+            "##LogTime## 2017"
+          ],
+          "Substitution": [
+            "s//~=MMM d HH:mm:ss yyyy/e"
+          ]
+        },
+        {
+          "FieldName": "hostname",
+          "Template": [
+            "##hostname##"
+          ],
+          "Substitution": [
+            "s/\\..+$//",
+            "s//:=lower/e"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "event",
+      "ResetOption": "0",
+      "JMSPropertyGroup": [
+        {
+          "type": "."
+        }
+      ],
+      "FormatterArgument": [
+        {
+          "FieldName": "JMSType",
+          "Template": [
+            "##type##"
+          ]
+        },
+        {
+          "FieldName": "hostname",
+          "Template": [
+            "##hostname##"
+          ],
+          "Substitution": [
+            "s/\\..+$//",
+            "s//:=lower/e"
+          ]
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    {
+      "Name": "bymin",
+      "Capacity": "1024",
+      "Partition": "512,512"
+    },
+    {
+      "Name": "failure",
+      "Capacity": "256",
+      "Partition": "128,32"
+    },
+    {
+      "Name": "nohit",
+      "Capacity": "256",
+      "Partition": "128,64"
+    }
+  ]
+}

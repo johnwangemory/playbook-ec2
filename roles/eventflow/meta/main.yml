@@ -3,5 +3,5 @@ dependencies:
   - role: monit
   - role: nginx
   - role: java
-  - role: influxdb
+  - role: elasticsearch
   - role: qbroker

@@ -1,0 +1,90 @@
+{
+  "Name": "node_monitor",
+  "ClassName": "org.qbroker.node.EventMonitor",
+  "Operation": "monitor",
+  "Capacity": "1024",
+  "LinkName": "action",
+  "XAMode": "1",
+  "Heartbeat": "60",
+  "DisplayMask": "0",
+  "Debug": "9",
+  "StringProperty": {
+    "priority": "",
+    "name": "",
+    "hostname": "",
+    "site": "",
+    "category": ""
+  },
+  "Ruleset": [
+    {
+      "Name": "bypass",
+      "PreferredOutLink": "pub",
+      "EventPattern": [
+        {
+          "priority": "^DEBUG$"
+        }
+      ]
+    },
+    {
+      "Name": "monit",
+      "EventPattern": [
+        {
+          "priority": "^(ERR|INFO)$",
+          "hostname": "(prod|event)",
+          "category": "^MONIT$"
+        }
+      ],
+      "KeyTemplate": "##category##:##hostname##:##name##",
+      "ResetPriority": "INFO",
+      "EscalationPriority": "CRIT",
+      "TimeToLive": "900",
+      "DisplayMask": "0",
+      "EscalationMask": "6",
+      "Template": "##category##:##hostname##:##name## that ##event## has not been cleared within 15 min",
+      "CopiedProperty": [
+        "name",
+        "category",
+        "site",
+        "type",
+        "hostname",
+        "event"
+      ]
+    },
+    {
+      "Name": "newrelic",
+      "EventPattern": [
+        {
+          "priority": "^(ERR|INFO)$",
+          "site": "^NEWRELIC$"
+        }
+      ],
+      "KeyTemplate": "##category##:##hostname##:##name##",
+      "ResetPriority": "INFO",
+      "EscalationPriority": "CRIT",
+      "TimeToLive": "1800",
+      "DisplayMask": "0",
+      "EscalationMask": "6",
+      "Template": "##category##:##hostname##:##name## that ##event## has not been cleared within 30 min",
+      "CopiedProperty": [
+        "name",
+        "category",
+        "site",
+        "type",
+        "policy_name",
+        "condition_name",
+        "incident_id",
+        "severity",
+        "hostname",
+        "status",
+        "url",
+        "details"
+      ]
+    }
+  ],
+  "OutLink": [
+    "pub",
+    "pub",
+    "pub",
+    "pub"
+  ]
+}

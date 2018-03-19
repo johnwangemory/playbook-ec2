@@ -12,7 +12,39 @@
     mode: 0644
   vars:
     heapsize: "{{elasticsearch_heapsize}}"
-  notify: Restart_elasticsearch
+  register: es_cfg
+
+- name: Make sure elasticsearch is up
+  service:
+    name: elasticsearch
+    state: restarted
+    enabled: yes
+  when: es_cfg|changed
+  register: elasticsearch_up
+
+- name: Pause for 7 sec
+  pause:
+    seconds: 7
+  when: elasticsearch_up|changed
+
+- name: Copy index templates
+  copy:
+    src: "../../{{item.value}}/files/{{item.key}}.json"
+    dest: /var/cache/ansible/
+    mode: 0644
+  with_dict: "{{elasticsearch_index_template}}"
+
+- name: Check index templates
+  command: "curl -I -s http://localhost:{{elasticsearch_port}}/_template/{{item.key}}"
+  failed_when: False
+  changed_when: False
+  with_dict: "{{elasticsearch_index_template}}"
+  register: "es_check"
+
+- name: Upload index templates
+  command: "curl -XPUT -s http://localhost:{{elasticsearch_port}}/_template/{{item.item.key}} -d @/var/cache/ansible/{{item.item.key}}.json"
+  when: "' 200 OK' not in item.stdout"
+  with_items: "{{es_check.results}}"
 
 - name: Get stats of monitrc
   stat:

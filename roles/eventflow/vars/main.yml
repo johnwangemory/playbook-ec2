@@ -1,0 +1,15 @@
+---
+qbroker_security_plugin: qbroker-security-1.0.0.jar
+qbroker_logdir: /var/log/qbroker
+qbroker_service_id: EVENT
+qbroker_jar_files: "{{eventflow_jar_files}}"
+qbroker_json_files: "{{eventflow_json_files}}"
+
+elasticsearch_index_template: "{{eventflow_es_template}}"
+
+nginx_log_locations:
+  - "{{eventflow_log_location}}"
+nginx_extra_server:
+  port: 8082
+  server_name: localhost
+  docroot: /var/www/html

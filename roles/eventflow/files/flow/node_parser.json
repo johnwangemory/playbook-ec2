@@ -1,0 +1,106 @@
+{
+  "Name": "node_parser",
+  "ClassName": "org.qbroker.node.ParserNode",
+  "Description": "parse the log into event",
+  "Operation": "parse",
+  "LinkName": "root",
+  "Capacity": "1024",
+  "XAMode": "1",
+  "DisplayMask": "0",
+  "Debug": "1",
+  "StringProperty": {
+    "hostname": "",
+    "name": "",
+    "priority": ""
+  },
+  "Ruleset": [
+    {
+      "Name": "event",
+      "ClassName": "org.qbroker.event.EventParser",
+      "JMSPropertyGroup": [
+        {
+          "JMSType": "^event$"
+        }
+      ],
+      "ParserArgument": "^\\d+\\.\\d+ \\d+\\.\\d+\\.\\d+\\.\\d+ (.+)$"
+    },
+    {
+      "Name": "json",
+      "ClassName": "org.qbroker.json.JSONParser",
+      "JMSPropertyGroup": [
+        {
+          "JMSType": "^json$"
+        }
+      ],
+      "ParserArgument": {
+        "Name": "newrelic",
+        "Pattern": "^\\d+\\.\\d+ \\d+\\.\\d+\\.\\d+\\.\\d+ (.+)$",
+        "Substitution": [
+          "s/\\\\x22/\"/g"
+        ],
+        "JSONPath": {
+          "condition_name": ".condition_name",
+          "policy_name": ".policy_name",
+          "name": ".targets[0].name",
+          "category": ".targets[0].product",
+          "url": ".incident_url",
+          "timestamp": ".timestamp",
+          "severity": ".severity",
+          "incident_id": ".incident_id",
+          "ack_url": ".incident_acknowledge_url",
+          "type": ".event_type",
+          "status": ".current_state",
+          "details": ".details"
+        }
+      },
+      "FormatterArgument": [
+        {
+          "FieldName": "name",
+          "Template": [
+            "##name##"
+          ],
+          "Substitution": [
+            "s/ /_/g"
+          ]
+        },
+        {
+          "FieldName": "JMSPriority",
+          "Template": [
+            "##severity##"
+          ],
+          "Substitution": [
+            "s/^INFO$/3/",
+            "s/^CRITICAL$/6/",
+            "s/^(WARNING|CAUTION)$/5/",
+            "s/^[A-Z]+$/4/"
+          ]
+        },
+        {
+          "FieldName": "hostname",
+          "Template": [
+            "newrelic.com"
+          ]
+        },
+        {
+          "FieldName": "site",
+          "Template": [
+            "NEWRELIC"
+          ]
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "switch",
+    {
+      "Name": "failure",
+      "Capacity": "256",
+      "Partition": "0,64"
+    },
+    {
+      "Name": "nohit",
+      "Capacity": "256",
+      "Partition": "0,64"
+    }
+  ]
+}

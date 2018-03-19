@@ -1,37 +1,50 @@
 {
   "Name": "Flow",
-  "Site": "LITS",
+  "Site": "DEVOPS",
   "Category": "{{id}}",
   "Type": "QFlow",
-  "Operation": "move",
-  "Description": "a flow to process metrics",
+  "Operation": "query",
+  "Description": "a flow to process events",
   "LogDir": "{{log_dir}}",
   "LogDatePattern": "'.'ww",
   "ConfigDir": "{{qb_dir}}/flow/{{id}}",
   "XAMode": "1",
   "Capacity": "256",
   "Mode": "daemon",
-  "Heartbeat": "30",
+  "Heartbeat": "300",
   "Debug": "5",
   "FlowDebug": "37",
   "EscalationCapacity": "64",
   "MaxNumberFlow": "1",
   "OpenSSLPlugin": "org.qbroker.security.Decryptor",
+  "IncludePolicy": {
+    "org.qbroker.node.EventCorrelator": "Ruleset",
+    "org.qbroker.node.EventMonitor": "Ruleset",
+    "org.qbroker.node.EventDispatcher": "Ruleset"
+  },
   "Reporter": [
     "rpt_global_var"
   ],
   "Receiver": [
-    "rcvr_stats_log"
+    "rcvr_event_log"
   ],
   "Node": [
     "node_parser",
-    "node_stats_parser",
+    "node_switch",
+    "node_screen",
+    "node_data_parser",
     "node_format",
-    "node_influx_format",
-    "node_switch"
+    "node_correlation",
+    "node_monitor",
+    "node_dispatcher",
+    "node_json_format",
+    "node_router"
   ],
   "Persister": [
-    "pstr_influx",
+    "pstr_pool",
+    "pstr_pool",
+    "pstr_pool",
+    "pstr_elastic",
     "pstr_null",
     "pstr_failure",
     "pstr_nohit"

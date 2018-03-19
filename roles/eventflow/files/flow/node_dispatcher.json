@@ -1,0 +1,29 @@
+{
+  "Name": "node_dispatcher",
+  "ClassName": "org.qbroker.node.EventDispatcher",
+  "URI": "event://localhost",
+  "Operation": "dispatch",
+  "Capacity": "1024",
+  "LinkName": "pub",
+  "XAMode": "1",
+  "MaxNumberRule": "4096",
+  "DisplayMask": "6",
+  "Debug": "1",
+  "StringProperty": {
+    "uri": "",
+    "status": ""
+  },
+  "Ruleset": [
+    "rule_log_only"
+  ],
+  "OutLink": [
+    "pool",
+    "done",
+    {
+      "Name": "failure",
+      "Capacity": "256",
+      "Partition": "160,32"
+    },
+    "done"
+  ]
+}
