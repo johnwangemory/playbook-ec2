@@ -12,4 +12,4 @@ nginx_log_locations:
 nginx_extra_server:
   port: 8082
   server_name: localhost
-  docroot: /var/www/html
+  docroot: "{{nginx_default_docroot}}"

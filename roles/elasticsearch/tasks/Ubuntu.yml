@@ -1,30 +1,39 @@
 ---
+- name: Add elasticsearch gpg key
+  apt_key:
+    url: "{{elasticsearch_gpg_key}}"
+    state: present
+
+- name: Add the repo
+  apt_repository:
+    repo: "{{elasticsearch_repo_uri}}"
+    state: present
+
 - name: Install ElasticSearch package
   apt:
     name: "{{elasticsearch_pkg_name}}"
     state: present
     update_cache: yes
 
-- name: Template of elasticsearch for /etc/default
+- name: Template of jvm.options
   template:
-    src: elasticsearch.j2
-    dest: /etc/default/elasticsearch
+    src: jvm.options.j2
+    dest: "{{elasticsearch_dir}}/jvm.options"
     mode: 0644
   vars:
     heapsize: "{{elasticsearch_heapsize}}"
-  register: es_cfg
+  notify: Restart_elasticsearch
 
 - name: Make sure elasticsearch is up
   service:
     name: elasticsearch
-    state: restarted
+    state: started
     enabled: yes
-  when: es_cfg|changed
   register: elasticsearch_up
 
-- name: Pause for 7 sec
+- name: Pause a while
   pause:
-    seconds: 7
+    seconds: "{{elasticsearch_pausetime}}"
   when: elasticsearch_up|changed
 
 - name: Copy index templates
@@ -42,7 +51,7 @@
   register: "es_check"
 
 - name: Upload index templates
-  command: "curl -XPUT -s http://localhost:{{elasticsearch_port}}/_template/{{item.item.key}} -d @/var/cache/ansible/{{item.item.key}}.json"
+  command: "curl -XPUT -s http://localhost:{{elasticsearch_port}}/_template/{{item.item.key}} -H 'Content-Type: application/json' -d @/var/cache/ansible/{{item.item.key}}.json"
   when: "' 200 OK' not in item.stdout"
   with_items: "{{es_check.results}}"
 

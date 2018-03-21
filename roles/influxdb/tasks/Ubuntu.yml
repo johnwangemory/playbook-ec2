@@ -27,9 +27,9 @@
     enabled: yes
   register: influxdb_up
 
-- name: Pause for 3 sec
+- name: Pause a while
   pause:
-    seconds: 3
+    seconds: "{{influxdb_pausetime}}" 
   when: influxdb_up|changed
 
 - name: Create database

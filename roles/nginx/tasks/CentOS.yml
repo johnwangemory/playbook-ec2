@@ -38,19 +38,8 @@
     locations: "{{nginx_locations}}"
   notify: Restart_nginx.service
 
-- name: Template of server.conf
-  template:
-    src: server.conf.j2
-    dest: "{{nginx_dir}}/conf.d/server.conf"
-    mode: 0644
-  vars:
-    port: "{{nginx_extra_server.port}}"
-    server_name: "{{nginx_extra_server.server_name}}"
-    docroot: "{{nginx_extra_server.docroot}}"
-    logdir: "{{nginx_logdir}}"
-    log_locations: "{{nginx_log_locations}}"
+- include: extra_server.yml
   when: nginx_extra_server|length > 0
-  notify: Restart_nginx.service
 
 - name: Get stats of monitrc
   stat:
