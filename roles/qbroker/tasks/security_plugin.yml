@@ -7,7 +7,7 @@
   register: st_qb_security_plugin
 
 - name: Get the security plugin
-  command: "aws s3 cp {{qbroker_repo_url}}/{{qbroker_security_plugin}} /var/cache/ansible/"
+  command: "aws s3 --region {{region|default('us-east-2')}} cp {{qbroker_repo_url}}/{{qbroker_security_plugin}} /var/cache/ansible/"
   when: not st_qb_security_plugin.stat.exists
 
 - name: Copy security plugin

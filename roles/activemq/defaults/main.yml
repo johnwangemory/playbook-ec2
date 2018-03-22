@@ -11,6 +11,7 @@ activemq_broker_port: 61616
 activemq_broker_user: system
 activemq_broker_passwd: manager
 activemq_guest_passwd: password
+activemq_jmx: disabled
 activemq_store_usage: 5
 activemq_temp_usage: 3
 activemq_pending_limit: 1000

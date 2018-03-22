@@ -30,7 +30,7 @@
   register: st_qb_tarball
 
 - name: Get the tarball
-  command: "aws s3 cp {{qbroker_repo_url}}/{{qbroker_artifact}} /var/cache/ansible/"
+  command: "aws s3 --region {{region|default('us-east-2')}} cp {{qbroker_repo_url}}/{{qbroker_artifact}} /var/cache/ansible/"
   when: not st_qb_tarball.stat.exists
   register: new_archive_qb
 
