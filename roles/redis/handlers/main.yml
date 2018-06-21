@@ -1,6 +1,0 @@
----
-- name: Restart_redis.service
-  systemd:
-    name: "{{redis_pkg_name}}"
-    enabled: yes
-    state: restarted

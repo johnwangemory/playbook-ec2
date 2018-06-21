@@ -1,6 +1,0 @@
----
-- name: Install Java package
-  package:
-    name: "{{java_pkg_name}}"
-    state: present
-    update_cache: yes

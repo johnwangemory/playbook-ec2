@@ -1,3 +1,0 @@
----
-java_pkg_name: "{{ 'java-devel' if ansible_distribution in ['RedHat','CentOS'] else 'openjdk-8-jdk' }}"
-java_home: "{{ '/usr/lib/jvm/java-1.8.0-openjdk' if ansible_distribution in ['RedHat','CentOS'] else '/usr/lib/jvm/java-8-openjdk-amd64' }}"

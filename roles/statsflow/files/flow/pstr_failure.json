@@ -1,9 +1,0 @@
-{
-  "Name": "pstr_failure",
-  "ClassName": "org.qbroker.persister.LogPersister",
-  "URI": "log:///var/log/qbroker/stats_failure.log",
-  "Operation": "append",
-  "LinkName": "failure",
-  "Template": "##body##\n",
-  "DisplayMask": "2"
-}

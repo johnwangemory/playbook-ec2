@@ -1,4 +1,0 @@
----
-- include_vars: ../../ec2_launcher/defaults/main.yml  # Load default variables
-- include: ../../ec2_launcher/tasks/query.yml         # Query EC2 instances
-- include: destroy.yml                                # Terminate EC2 instances

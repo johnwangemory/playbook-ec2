@@ -1,2 +1,0 @@
----
-- include: "{{ansible_os_family}}.yml"   # install and config elasticsearch

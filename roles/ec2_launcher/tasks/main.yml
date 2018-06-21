@@ -1,8 +1,0 @@
----
-- include: query.yml     # query the instance
-
-- include: inventory.yml # add hosts to in-memory inventory
-  when: ec2_info.instances|length > 0
-
-- include: create.yml    # create the instance in case no such instance
-  when: ec2_info.instances|length == 0

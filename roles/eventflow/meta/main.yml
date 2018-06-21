@@ -1,7 +1,0 @@
----
-dependencies:
-  - role: monit
-  - role: nginx
-  - role: java
-  - role: elasticsearch
-  - role: qbroker

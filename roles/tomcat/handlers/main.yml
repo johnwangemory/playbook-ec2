@@ -1,6 +1,0 @@
----
-- name: Restart_tomcat.service
-  systemd:
-    name: "{{tomcat_pkg_name}}"
-    enabled: yes
-    state: restarted

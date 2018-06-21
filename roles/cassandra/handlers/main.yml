@@ -1,6 +1,0 @@
----
-- name: Restart_cassandra.service
-  systemd:
-    name: cassandra
-    enabled: yes
-    state: restarted

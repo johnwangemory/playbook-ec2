@@ -1,6 +1,0 @@
----
-- name: Restart_mongodb.service
-  systemd:
-    name: mongod
-    enabled: yes
-    state: restarted
