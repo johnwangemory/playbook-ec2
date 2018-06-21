@@ -17,7 +17,7 @@ qbroker_jar_files: "{{mbservice_jar_files}}"
 qbroker_json_files: "{{mbservice_json_files}}"
 qbroker_jsp_files: "{{mbservice_jsp_files}}"
 
-apache2_locations:
+apache_locations:
   - "{{mbservice_location}}"
   - "{{activemq_admin_location}}"
 

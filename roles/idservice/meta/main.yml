@@ -6,5 +6,5 @@ dependencies:
   - role: qbroker
   - { role: postgresql, when: web_frontend == 'nginx' }
   - { role: mysql, when: web_frontend == 'apache' }
-  - { role: nginx, when: web_frontend == 'nginx' }
-  - { role: apache2, when: web_frontend == 'apache' }
+  - { role: apache, when: web_frontend == 'apache' }
+  - { role: nginx, when: web_frontend != 'apache' }

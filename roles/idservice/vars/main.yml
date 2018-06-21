@@ -16,7 +16,7 @@ qbroker_jsp_files: "{{idservice_jsp_files}}"
 
 tomcat_se_mode: "{{ 'permissive' if web_frontend == 'apache' else '' }}"
 
-apache2_locations:
+apache_locations:
   - "{{idservice_location}}"
 
 nginx_locations:

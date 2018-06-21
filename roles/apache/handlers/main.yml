@@ -1,6 +1,6 @@
 ---
 - name: Restart_apache.service
   systemd:
-    name: "{{apache2_pkg_name}}"
+    name: "{{apache_pkg_name}}"
     enabled: yes
     state: restarted

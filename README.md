@@ -1,6 +1,6 @@
 # playbook-ec2
 
-This is a role-based Ansible Playbook to provision EC2 instances with list and terminate plays. All the roles are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only. Two web applications, idservice and mbservice, have been fully tested with Nginx and Apache. Within these web applications, roles for Nginx, Apache2, Tomcat7, ActiveMQ and Postgresql are used.
+This is a role-based Ansible Playbook to provision EC2 instances with list and terminate plays. All the roles are idempotent which means it is safe to run them multiple times. Currenly, it supports Ubuntu and CentOS only. Two web applications, idservice and mbservice, have been fully tested with Nginx and Apache. Within these web applications, roles for Nginx, Apache, Tomcat, ActiveMQ and Postgresql are used.
 
 This playbook treats the EC2 instance immutable on most of the EC2 properties, such as Region, AMI, Type, VPC, Subnet, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
 
@@ -69,8 +69,6 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | wrapper_role                 | idservice            | name of the wrapper role       | provision.yml                        |
 | web_frontend                 | nginx                | name of the web frontend       | roles/??service/default/main.yml     |
 | qbroker_repo_url             | s3://ylutest/qbroker | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
-| sonicmq_repo_url             | s3://ylutest/sonicmq | repo url for sonicmq tarball   | roles/sonicmq/defaults/main.yml      |
-| esb_repo_url                 | s3://ylutest/esb     | repo url for esbservice tarball| roles/esbservice/defaults/main.yml   |
 
 The playbook also requires boto and boto3 installed.
 
