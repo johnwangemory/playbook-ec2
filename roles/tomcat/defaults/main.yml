@@ -11,3 +11,5 @@ tomcat_basedir: "{{ '/usr/share/tomcat' if ansible_distribution in ['RedHat','Ce
 tomcat_logdir: "{{ '/var/log/tomcat' if ansible_distribution in ['RedHat','CentOS'] else '/var/log/tomcat7' }}"
 tomcat_user: "{{ 'tomcat' if ansible_distribution in ['RedHat','CentOS'] else 'tomcat7' }}"
 tomcat_group: "{{ 'tomcat' if ansible_distribution in ['RedHat','CentOS'] else 'tomcat7' }}"
+
+tomcat_links: []

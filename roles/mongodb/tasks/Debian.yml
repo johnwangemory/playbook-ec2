@@ -26,7 +26,7 @@
     bind_ip: "{{mongodb_bind_ip}}"
     dbpath: "{{mongodb_dbpath}}"
     logfile: "{{mongodb_logfile}}"
-  notify: Restart_mongodb
+  notify: Restart_mongodb.service
 
 - name: Get stats of monitrc
   stat:
@@ -41,7 +41,7 @@
     dest: "{{monit_includedir}}/mongodb.monit"
     mode: 0644
   vars:
-    start_program: '/usr/sbin/service {{mongodb_service_name}} start'
-    stop_program: '/usr/sbin/service {{mongodb_service_name}} stop'
+    start_program: '/usr/bin/systemctl start {{mongodb_service_name}}'
+    stop_program: '/usr/bin/systemctl stop {{mongodb_service_name}}'
   when: st_monitrc.stat.exists
-  notify: Restart_monit
+  notify: Restart_monit.service

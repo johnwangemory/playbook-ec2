@@ -1,5 +1,6 @@
 ---
 common_wait_timeout: 600
+common_systemd_dir: "{{'/usr/lib/systemd' if ansible_distribution in ['RedHat','CentOS'] else '/lib/systemd'}}"
 common_pkg_list:
   - jq
   - git

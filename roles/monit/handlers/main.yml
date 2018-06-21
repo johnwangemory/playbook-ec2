@@ -1,10 +1,4 @@
 ---
-- name: Restart_monit
-  service:
-    name: monit
-    enabled: yes
-    state: restarted
-
 - name: Restart_monit.service
   systemd:
     name: monit

@@ -1,10 +1,4 @@
 ---
-- name: Restart_elasticsearch
-  service:
-    name: elasticsearch
-    enabled: yes
-    state: restarted
-
 - name: Restart_elasticsearch.service
   systemd:
     name: elasticsearch

@@ -1,2 +1,52 @@
 ---
-- include: "{{ansible_distribution}}.yml"      # install tomcat only
+- name: Install Tomcat package
+  package:
+    name: "{{tomcat_pkg_name}}"
+    state: present
+    update_cache: yes
+
+- name: Template of web.xml
+  template:
+    src: web.xml.j2
+    dest: "{{tomcat_dir}}/web.xml"
+    owner: root
+    group: "{{tomcat_group}}"
+    mode: 0644
+  vars:
+    is_readonly: "{{tomcat_is_readonly}}"
+  notify: Restart_tomcat.service
+
+- name: Create symlinks
+  file:
+    src: "{{item.path}}"
+    dest: "{{tomcat_basedir}}/{{item.dest}}"
+    state: link
+    force: yes
+    owner: "{{tomcat_user}}"
+    group: "{{tomcat_group}}"
+    mode: 0775
+  with_items: "{{tomcat_links}}"
+  when: tomcat_links|length > 0
+
+- name: Get stats of monitrc
+  stat:
+    path: "{{monit_dir}}/monitrc"
+    get_md5: no
+    get_checksum: no
+  register: st_monitrc
+
+- name: Template of tomcat.monit
+  template:
+    src: tomcat.monit.j2
+    dest: "{{monit_includedir}}/tomcat.monit"
+    mode: 0644
+  vars:
+    pattern: '.base={{tomcat_basedir}} '
+    port: "{{tomcat_port}}"
+    start_program: '/usr/bin/systemctl start {{tomcat_pkg_name}}'
+    stop_program: '/usr/bin/systemctl stop {{tomcat_pkg_name}}'
+  when: st_monitrc.stat.exists
+  notify: Restart_monit.service
+
+- include: selinux.yml
+  when: ansible_distribution in ['RedHat', 'CentOS'] 

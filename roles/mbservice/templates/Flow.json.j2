@@ -7,22 +7,31 @@
   "Description": "message bridge",
   "Operation": "move",
   "XAMode": "1",
-  "Capacity": "512",
+  "Capacity": "128",
   "Mode": "daemon",
   "Debug": "5",
-  "FlowDebug": "37",
+  "FlowDebug": "5",
   "LogDir": "{{log_dir}}",
   "LogDatePattern": "'.'MM",
   "ConfigDir": "{{qb_dir}}/flow/{{id}}",
   "Heartbeat": "30",
   "EscalationCapacity": "64",
   "MaxNumberFlow": "1",
+  "OpenSSLPlugin": "org.qbroker.security.Decryptor",
+  "Reporter": [
+    "rpt_global_var"
+  ],
   "Node": [
-    "node_format"
+    "node_switch",
+    "node_format",
+    "node_collect"
   ],
   "Persister": [
+    "pstr_null",
     "pstr_msg",
-    "pstr_failure"
+    "pstr_esb",
+    "pstr_eval",
+    "pstr_failure",
+    "pstr_nohit"
   ]
 }
-

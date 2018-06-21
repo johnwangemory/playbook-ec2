@@ -1,2 +1,6 @@
 ---
-- include: "{{ansible_distribution}}.yml"   # install and config nginx
+- name: Install Java package
+  package:
+    name: "{{java_pkg_name}}"
+    state: present
+    update_cache: yes

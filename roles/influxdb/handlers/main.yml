@@ -1,10 +1,4 @@
 ---
-- name: Restart_influxdb
-  service:
-    name: influxdb
-    enabled: yes
-    state: restarted
-
 - name: Restart_influxdb.service
   systemd:
     name: influxdb

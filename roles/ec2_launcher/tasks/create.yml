@@ -18,7 +18,7 @@
 
 - name: Create security group
   ec2_group:
-    name: "{{sg_name}}"
+    name: "{{sg_name | default(key_name + '_sg')}}"
     description: "A Security group"
     profile: "{{profile}}"
     region: "{{region}}"
@@ -39,7 +39,7 @@
     instance_type: "{{instance_type}}"
     image: "{{image_id}}"
     instance_tags:
-      Name: "{{instance_tag}}"
+      Name: "{{instance_tag | default(key_name + '_test')}}"
     user_data: "{{lookup('file', 'files/user_data.sh')}}"
     volumes:
       - device_name: "{{ami_info.results[0].root_device_name}}"

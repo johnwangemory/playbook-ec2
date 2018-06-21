@@ -1,10 +1,4 @@
 ---
-- name: Restart_activemq
-  service:
-    name: activemq
-    enabled: yes
-    state: restarted
-
 - name: Restart_activemq.service
   systemd:
     name: activemq

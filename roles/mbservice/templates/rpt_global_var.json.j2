@@ -1,0 +1,20 @@
+{
+  "Name": "rpt_global_var",
+  "ClassName": "org.qbroker.monitor.StaticReport",
+  "Site": "DEVOPS",
+  "Type": "StaticReport",
+  "Category": "STATIC",
+  "Description": "define a set of globals for message flows",
+  "Step": "1",
+  "ReportName": "GlobalProperties",
+  "ReportClass": "org.qbroker.flow.QFlow",
+  "StringProperty": {
+    "hostname": "##hostname##",
+    "HOSTNAME": "##HOSTNAME##",
+    "JNDI_URL": "{{url}}",
+    "JNDI_CTX": "{{ctx}}",
+    "MQ_USER": "{{user}}",
+    "MQ_PASS": "{{passwd}}",
+    "Template": "${hostname} ${HOSTNAME} ${MQ_USER} ${MQ_PASS} ${JNDI_CTX} ${JNDI_URL}"
+  }
+}

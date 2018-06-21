@@ -1,2 +1,2 @@
 ---
-- include: "{{ansible_distribution}}.yml"   # install and config cassandra
+- include: "{{ansible_os_family}}.yml"   # install and config cassandra

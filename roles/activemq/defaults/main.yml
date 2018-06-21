@@ -5,6 +5,7 @@ activemq_pidfile: /opt/activemq/data/activemq.pid
 activemq_pkg_name: apache-activemq
 activemq_version: 5.14.3
 activemq_repo_url: https://archive.apache.org/dist/activemq
+activemq_systemd_dir: "{{'/usr/lib/systemd' if ansible_distribution in ['RedHat','CentOS'] else '/lib/systemd'}}"
 
 activemq_broker_ip: 127.0.0.1
 activemq_broker_port: 61616

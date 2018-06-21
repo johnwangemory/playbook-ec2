@@ -22,7 +22,7 @@
     mode: 0644
   vars:
     heapsize: "{{elasticsearch_heapsize}}"
-  notify: Restart_elasticsearch
+  notify: Restart_elasticsearch.service
 
 - name: Make sure elasticsearch is up
   service:
@@ -69,7 +69,7 @@
     mode: 0644
   vars:
     pidfile: "{{elasticsearch_pidfile}}"
-    start_program: '/usr/sbin/service {{elasticsearch_pkg_name}} start'
-    stop_program: '/usr/sbin/service {{elasticsearch_pkg_name}} stop'
+    start_program: '/usr/bin/systemctl start {{elasticsearch_pkg_name}}'
+    stop_program: '/usr/bin/systemctl stop {{elasticsearch_pkg_name}}'
   when: st_monitrc.stat.exists
-  notify: Restart_monit
+  notify: Restart_monit.service

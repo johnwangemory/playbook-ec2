@@ -4,61 +4,57 @@ This is a role-based Ansible Playbook to provision EC2 instances with list and t
 
 This playbook treats the EC2 instance immutable on most of the EC2 properties, such as Region, AMI, Type, VPC, Subnet, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
 
-This playbook also requires access to AWS S3 service for the artifact of qblite-1.0.0.tgz. Therefore, it is assumed that the artifact is already uploaded to a S3 bucket and a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variable of qbroker_repo_url in case it is different from the default value.
+This playbook also requires access to AWS S3 service for artifacts such as qblite-1.0.1.tgzi for QBroker, install.bin for SonicMQ and esblib-1.0.0.tgz for ESB. Therefore, it is assumed that the artifacts have been already uploaded to an S3 bucket and a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the EC2 instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variables such as qbroker_repo_url in case they are different from the default values.
 
 ## Status
 
-Tested with images of Ubuntu and CentOS only
+Tested with images of Ubuntu 16.04 and CentOS 7 only
 
 ## Description
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS on the default AWS profile and with the default web application plus the database of Postgresql and the web frontend of Nginx:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/your.pem -e key_name=your_keyname provision.yml
 ```
+where your.pem is the pem file for your private key, your_keyname the name of the keypair. Make sure to replace them with the right ones for you.
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application plus the database of MySQL and the web frontend of Apache:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e web_frontend=apache provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/your.pem -e key_name=your_keyname -e web_frontend=apache provision.yml
 ```
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the web application of mbservice and the web frontend of Nginx:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e wrapper_role=mbservice provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/your.pem -e key_name=your_keyname -e wrapper_role=mbservice provision.yml
 ```
 
 To terminate the launched instances in a specific region, such as us-east-1:
 ```
-ansible-playbook -i hosts -e region=us-east-1 terminate.yml
+ansible-playbook -i hosts -e key_name=your_keyname -e region=us-east-1 terminate.yml
 ```
 
-To list the launched instances on a non-default profile:
+To list the launched instances on a specific profile, say the profile of integration:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e profile=test provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/your.pem -e key_name=your_keyname -e profile=integration list.yml
 ```
 
 To run the playbook to provision an EC2 instance of CentOS 7 with the default web application and the web frontend of Nginx:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e image_id=ami-9cbf9bf9 provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/your.pem -e key_name=your_keyname -e image_id=ami-9cbf9bf9 provision.yml
 ```
 
 To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in a different region:
 ```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e region=us-east-1 -e vpc_id=vpc-db3fdda2 -e subnet_id=subnet-af7351ca -e image_id=ami-cd0f5cb6 provision.yml
+ansible-playbook -i hosts -e pem_file=~/.ssh/your.pem -e key_name=your_keyname -e region=us-east-1 -e vpc_id=vpc-db3fdda2 -e subnet_id=subnet-af7351ca -e image_id=ami-cd0f5cb6 provision.yml
 ```
 
-To run the playbook to provision an EC2 instance of Ubuntu 16.04 LTS with the default web application in the default region and a different qbroker_repo_url:
-```
-ansible-playbook -i hosts -e pem_file=~/.ssh/ylu.pem -e profile=rotation -e qbroker_repo_url=s3://ylutest1/qbroker provision.yml
-```
-
-In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key for either the default profile or a specific profile. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The default values of the following variables may need to be customized to fit your choice:
+In order to run this playbook, the path of the ssh private key file for the key_name has to be specified in the command line under the var name of pem_file. The correct name for the keypair should be specified for key_name. It is also assumed that ~/.aws/credentials is set up with the access_key and secret_key for either the default profile or a specific profile. Further more, it is also assuemd that the ssh key pair has been set up on the AWS region. The default values of the following variables may need to be customized to fit your choice:
 
 | Name                         | Value                | Description                    | File                                 |
 | ---                          | ---                  | ---                            | ---                                  |
 | key_name                     | ylu                  | name of your ssh key on AWS    | roles/ec2_launcher/defaults/main.yml |
-| sg_name                      | ylu_sg               | name of the security group     | roles/ec2_launcher/defaults/main.yml |
-| instance_tag                 | ylu_test             | tag name for your EC2 instance | roles/ec2_launcher/defaults/main.yml |
+| sg_name                      | {{key_name}}_sg      | name of the security group     | undefined                            |
+| instance_tag                 | {{key_name}}_test    | tag name for your EC2 instance | undefined                            |
 | instance_type                | t2.micro             | type of EC2 instance           | roles/ec2_launcher/defaults/main.yml |
 | image_id                     | ami-8b92b4ee         | AMI id for your OS platform    | roles/ec2_launcher/defaults/main.yml |
 | profile                      | default              | AWS profile name               | roles/ec2_launcher/defaults/main.yml |
@@ -71,8 +67,10 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | sg_rules                     | ...                  | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
 | extra_sg_rules               | ...                  | list of extra rules of sgroup  | roles/ec2_launcher/defaults/main.yml |
 | wrapper_role                 | idservice            | name of the wrapper role       | provision.yml                        |
-| web_frontend                 | nginx                | name of the web frontend       | roles/??service/defaults/main.yml    |
+| web_frontend                 | nginx                | name of the web frontend       | roles/??service/default/main.yml     |
 | qbroker_repo_url             | s3://ylutest/qbroker | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
+| sonicmq_repo_url             | s3://ylutest/sonicmq | repo url for sonicmq tarball   | roles/sonicmq/defaults/main.yml      |
+| esb_repo_url                 | s3://ylutest/esb     | repo url for esbservice tarball| roles/esbservice/defaults/main.yml   |
 
 The playbook also requires boto and boto3 installed.
 

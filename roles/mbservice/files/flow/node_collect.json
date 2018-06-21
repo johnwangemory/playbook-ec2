@@ -1,0 +1,68 @@
+{
+  "Name": "node_collect",
+  "ClassName": "org.qbroker.node.CollectNode",
+  "Description": "collecting responses",
+  "Operation": "collect",
+  "LinkName": "request",
+  "Capacity": "128",
+  "DisplayMask": "0",
+  "XAMode": "1",
+  "Debug": "1",
+  "Ruleset": [
+    {
+      "Name": "greeting",
+      "PreferredOutLink": "ESB",
+      "JMSPropertyGroup": [
+        {
+          "JMSType": "^\\/GreetingServiceQueue$"
+        },
+        {
+          "path": "^\\/xml$"
+        }
+      ],
+      "FieldName": "COMMAND_NAME",
+      "Template": "GreetingRequest",
+      "NextTask": [
+        {
+          "Success": "eval_out",
+          "Failure": "eval_out",
+          "FieldName": "RuleName",
+          "Template": "check_response|failure"
+        }
+      ]
+    },
+    {
+      "Name": "rest",
+      "PreferredOutLink": "eval_out",
+      "FieldName": "RuleName",
+      "Template": "nohit",
+      "NextTask": [
+        {
+          "Success": "nohit",
+          "Failure": "nohit"
+        }
+      ]
+    }
+  ],
+  "OutLink": [
+    "null",
+    {
+      "Name": "failure",
+      "Capacity": "64",
+      "Partition": "32,32"
+    },
+    {
+      "Name": "nohit",
+      "Capacity": "64",
+      "Partition": "32,32"
+    },
+    {
+      "Name": "eval_out",
+      "Capacity": "128"
+    },
+    {
+      "Name": "ESB",
+      "Capacity": "128"
+    }
+  ]
+}

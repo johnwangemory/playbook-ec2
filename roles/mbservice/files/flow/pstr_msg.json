@@ -1,0 +1,17 @@
+{
+  "Name": "pstr_msg",
+  "ClassName": "org.qbroker.persister.JMSPersister",
+  "LinkName": "MSG_OUT",
+  "URI": "${JNDI_URL}",
+  "ContextFactory": "${JNDI_CTX}",
+  "ConnectionFactoryName": "cn=QueueConnectionFactory",
+  "QueueName": "cn=OutQueue",
+  "Operation": "put",
+  "Username": "${MQ_USER}",
+  "Password": "${MQ_PASS}",
+  "DisplayMask": "4102",
+  "Persistence": "2",
+  "StringProperty": {
+    "path": ""
+  }
+}

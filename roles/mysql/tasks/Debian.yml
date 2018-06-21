@@ -9,7 +9,7 @@
     - python-mysqldb
 
 - name: Make sure mysqld is up
-  service:
+  systemd:
     name: "{{mysql_service_name}}"
     state: started
     enabled: yes
@@ -82,4 +82,4 @@
   vars:
     pidfile: "{{mysql_pidfile}}"
   when: st_monitrc.stat.exists
-  notify: Restart_monit
+  notify: Restart_monit.service

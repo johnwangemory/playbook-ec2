@@ -28,7 +28,7 @@
     mode: 0600
 
 - name: Make sure postgresql is up
-  service:
+  systemd:
     name: postgresql
     state: started
     enabled: yes

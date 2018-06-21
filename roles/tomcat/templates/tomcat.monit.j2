@@ -1,4 +1,5 @@
-check process tomcat matching "{{pattern}}"
+check process tomcat
+    matching "{{pattern}}"
     start program = "{{start_program}}"
     stop program = "{{stop_program}}"
     if does not exist 5 cycles then restart

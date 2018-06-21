@@ -9,6 +9,7 @@ activemq_admin_passwd: admin
 # to allow PUT method
 tomcat_is_readonly: 'false'
 
+qbroker_artifact: qblite-1.0.1.tgz
 qbroker_security_plugin: qbroker-security-1.0.0.jar
 qbroker_webapp_context: mbservice
 qbroker_service_id: MB

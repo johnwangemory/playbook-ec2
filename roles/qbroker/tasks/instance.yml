@@ -1,11 +1,14 @@
 ---
-- name: Create dir for flow
+- name: Create sub dirs for instance
   file:
-    path: "{{qbroker_dir}}/flow/{{qbroker_service_id}}"
+    path: "{{qbroker_dir}}/{{item}}/{{qbroker_service_id}}"
     state: directory
     owner: "{{qbroker_user}}"
     group: "{{qbroker_group}}"
     mode: 0775
+  with_items:
+    - flow
+    - jndi
 
 - name: Copy json files
   copy:
@@ -64,17 +67,6 @@
     get_checksum: no
   register: st_monitrc
 
-- name: Template of qbroker.monit for Ubuntu
-  template:
-    src: qbroker.monit.j2
-    dest: "{{monit_includedir}}/qbroker.monit"
-    mode: 0644
-  vars:
-    id: "{{qbroker_service_id}}"
-    qb_dir: "{{qbroker_dir}}"
-  when: st_monitrc.stat.exists and ansible_distribution in ['Debian', 'Ubuntu']
-  notify: Restart_monit
-
 - name: Template of qbroker.monit for CentOS
   template:
     src: qbroker.monit.j2
@@ -83,5 +75,5 @@
   vars:
     id: "{{qbroker_service_id}}"
     qb_dir: "{{qbroker_dir}}"
-  when: st_monitrc.stat.exists and ansible_distribution in ['RedHat', 'CentOS']
+  when: st_monitrc.stat.exists
   notify: Restart_monit.service

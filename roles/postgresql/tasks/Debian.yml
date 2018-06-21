@@ -48,4 +48,4 @@
     pattern: ''
     pidfile: "{{postgresql_pidfile}}"
   when: st_monitrc.stat.exists
-  notify: Restart_monit
+  notify: Restart_monit.service

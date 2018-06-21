@@ -1,14 +1,16 @@
 ---
-- name: Add influxdb repo
-  yum_repository:
-    name: "influxdb"
-    description: "influxdb repo"
-    baseurl: "{{influxdb_repo_uri}}"
-    gpgkey: "{{influxdb_gpg_key}}"
+- name: Add influxdb gpg key
+  apt_key:
+    url: "{{influxdb_gpg_key}}"
+    state: present
+
+- name: Add the repo
+  apt_repository:
+    repo: "{{influxdb_repo_uri}}"
     state: present
 
 - name: Install InfluxDB package
-  yum:
+  apt:
     name: "{{influxdb_pkg_name}}"
     state: present
     update_cache: yes
@@ -27,7 +29,7 @@
 
 - name: Pause a while
   pause:
-    seconds: "{{influxdb_pausetime}}"
+    seconds: "{{influxdb_pausetime}}" 
   when: influxdb_up|changed
 
 - name: Create database
@@ -36,7 +38,7 @@
     port: "{{influxdb_port}}"
     database_name: "{{influxdb_db_name}}"
     state: present
-  when: influxdb_db_name != None
+  when: influxdb_db_name|lenth > 0
 
 - name: Get stats of monitrc
   stat:

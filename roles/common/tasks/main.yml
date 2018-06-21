@@ -6,4 +6,22 @@
     sleep: 5
     timeout: "{{common_wait_timeout}}"
 
-- include: "{{ansible_distribution}}.yml"      # install packages
+- name: Install common packages
+  package:
+    name: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items: "{{common_pkg_list}}"
+
+- name: Install python modules
+  pip:
+    name: "{{item}}"
+    state: present
+  with_items: "{{common_module_list}}"
+
+- name: Update sysctl.conf
+  sysctl:
+    name: "{{item}}"
+    value: 1
+    sysctl_set: yes
+  with_items: "{{common_sysctl_props}}"

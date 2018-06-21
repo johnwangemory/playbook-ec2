@@ -14,7 +14,7 @@
     - MySQL-python
 
 - name: Make sure mysqld is up
-  service:
+  systemd:
     name: "{{mysql_service_name}}"
     state: started
     enabled: yes

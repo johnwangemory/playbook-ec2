@@ -1,6 +1,0 @@
----
-- name: Install Java package
-  apt:
-    name: "{{java_pkg_name}}"
-    state: present
-    update_cache: yes

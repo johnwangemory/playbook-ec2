@@ -8,7 +8,7 @@
   when: qbroker_security_plugin != None
 
 - include: instance.yml
-  when: qbroker_service_id != None and qbroker_webapp_context == None
+  when: qbroker_service_id != None and qbroker_webapp_context == None 
 
-- include: "{{ansible_distribution}}_webapp.yml"
+- include: webapp.yml
   when: qbroker_service_id != None and qbroker_webapp_context != None

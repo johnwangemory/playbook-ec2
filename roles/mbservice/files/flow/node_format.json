@@ -3,21 +3,11 @@
   "ClassName": "org.qbroker.node.FormatNode",
   "Description": "format requests",
   "Operation": "format",
-  "LinkName": "root",
-  "Capacity": "512",
+  "LinkName": "rest",
+  "Capacity": "128",
   "DisplayMask": "0",
   "Debug": "1",
   "Ruleset": [
-    {
-      "Name": "admin",
-      "PreferredOutLink": "escalation",
-      "JMSPropertyGroup": [
-        {
-          "short_name": "^Console$",
-          "service": "."
-        }
-      ]
-    },
     {
       "Name": "feeds",
       "ResetOption": "0",
@@ -50,9 +40,13 @@
   ],
   "OutLink": [
     "MSG_OUT",
-    "failure",
     {
-      "Name": "escalation",
+      "Name": "failure",
+      "Capacity": "64",
+      "Partition": "0,32"
+    },
+    {
+      "Name": "nohit",
       "Capacity": "64",
       "Partition": "0,32"
     }
