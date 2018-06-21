@@ -1,63 +1,63 @@
 [submodule "roles/nginx"]
 	path = roles/nginx
-	url = ../role-nginx.git
+	url = https://github.com/yannanlu/role-nginx.git
 [submodule "roles/apache"]
 	path = roles/apache
-	url = ../role-apache.git
+	url = https://github.com/yannanlu/role-apache.git
 [submodule "roles/ec2_launcher"]
 	path = roles/ec2_launcher
-	url = ../role-ec2_launcher.git
+	url = https://github.com/yannanlu/role-ec2_launcher.git
 [submodule "roles/ec2_destroyer"]
 	path = roles/ec2_destroyer
-	url = ../role-ec2_destroyer.git
+	url = https://github.com/yannanlu/role-ec2_destroyer.git
 [submodule "roles/common"]
 	path = roles/common
-	url = ../role-common.git
+	url = https://github.com/yannanlu/role-common.git
 [submodule "roles/java"]
 	path = roles/java
-	url = ../role-java.git
+	url = https://github.com/yannanlu/role-java.git
 [submodule "roles/monit"]
 	path = roles/monit
-	url = ../role-monit.git
+	url = https://github.com/yannanlu/role-monit.git
 [submodule "roles/activemq"]
 	path = roles/activemq
-	url = ../role-activemq.git
+	url = https://github.com/yannanlu/role-activemq.git
 [submodule "roles/qbroker"]
 	path = roles/qbroker
-	url = ../role-qbroker.git
+	url = https://github.com/yannanlu/role-qbroker.git
 [submodule "roles/mbservice"]
 	path = roles/mbservice
-	url = ../role-mbservice.git
+	url = https://github.com/yannanlu/role-mbservice.git
 [submodule "roles/idservice"]
 	path = roles/idservice
-	url = ../role-idservice.git
+	url = https://github.com/yannanlu/role-idservice.git
 [submodule "roles/mysql"]
 	path = roles/mysql
-	url = ../role-mysql.git
+	url = https://github.com/yannanlu/role-mysql.git
 [submodule "roles/postgresql"]
 	path = roles/postgresql
-	url = ../role-postgresql.git
+	url = https://github.com/yannanlu/role-postgresql.git
 [submodule "roles/redis"]
 	path = roles/redis
-	url = ../role-redis.git
+	url = https://github.com/yannanlu/role-redis.git
 [submodule "roles/tomcat"]
 	path = roles/tomcat
-	url = ../role-tomcat.git
+	url = https://github.com/yannanlu/role-tomcat.git
 [submodule "roles/mongodb"]
 	path = roles/mongodb
-	url = ../role-mongodb.git
+	url = https://github.com/yannanlu/role-mongodb.git
 [submodule "roles/influxdb"]
 	path = roles/influxdb
-	url = ../role-influxdb.git
+	url = https://github.com/yannanlu/role-influxdb.git
 [submodule "roles/cassandra"]
 	path = roles/cassandra
-	url = ../role-cassandra.git
+	url = https://github.com/yannanlu/role-cassandra.git
 [submodule "roles/elasticsearch"]
 	path = roles/elasticsearch
-	url = ../role-elasticsearch.git
+	url = https://github.com/yannanlu/role-elasticsearch.git
 [submodule "roles/eventflow"]
 	path = roles/eventflow
-	url = ../role-eventflow.git
+	url = https://github.com/yannanlu/role-eventflow.git
 [submodule "roles/statsflow"]
 	path = roles/statsflow
-	url = ../role-statsflow.git
+	url = https://github.com/yannanlu/role-statsflow.git
