@@ -1,0 +1,4 @@
+---
+
+monit_extra_allow_list:
+  - 68.117.220.134/32

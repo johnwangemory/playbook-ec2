@@ -1,9 +1,16 @@
 ---
-# Provision an EC2 instance and configure the given role with Nginx as the web frontend
+# Provision an EC2 instance and configure the given wrapper service
 ## Create EC2 instances
 - hosts: localhost
   connection: local
   gather_facts: false
+  vars:
+    region: us-east-2
+
+  vars_files:
+    - "group_vars/{{region}}.yml"
+    - group_vars/extra_sg_rules.yml
+    - "group_vars/service/{{wrapper_service}}.yml"
 
   roles:
     - ec2_launcher
@@ -14,8 +21,28 @@
   become: true
   vars:
     ansible_ssh_private_key_file: "{{pem_file}}"
-    wrapper_role: idservice
+    allowed_hosts: "{{groups['ec2hosts']}}"
+    ec2_private_ips: []
+    ec2_sg_info: "{{hostvars['localhost'].ec2_sg_info}}"
+    ec2_subnet_cidr: "{{hostvars['localhost'].ec2_subnet_info.subnets[0].cidr_block}}"
+    extra_role: dummy
+    region: us-east-2
+    web_frontend: nginx
+    wrapper_service: idservice
+
+  vars_files:
+    - "group_vars/{{region}}.yml"
+    - group_vars/extra_sg_rules.yml
+    - group_vars/monit.yml
+    - "group_vars/service/{{wrapper_service}}.yml"
+
+  pre_tasks:
+    - name: Set ec2_private_ips
+      set_fact:
+        ec2_private_ips: "{{ec2_private_ips}} + ['{{hostvars[item].private_ip}}']"
+      with_items: "{{allowed_hosts}}"
 
   roles:
     - common
-    - "{{wrapper_role}}"
+    - "{{wrapper_service}}"
+    - {role: "{{extra_role}}", when: extra_role != 'dummy'}

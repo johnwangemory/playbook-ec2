@@ -1,0 +1,15 @@
+---
+
+extra_sg_rules:
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    cidr_ip: 68.117.220.134/32
+  - proto: tcp
+    from_port: 443
+    to_port: 443
+    cidr_ip: 68.117.220.134/32
+  - proto: tcp
+    from_port: 2812
+    to_port: 2812
+    cidr_ip: 68.117.220.134/32

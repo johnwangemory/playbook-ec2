@@ -61,3 +61,6 @@
 [submodule "roles/statsflow"]
 	path = roles/statsflow
 	url = https://github.com/yannanlu/role-statsflow.git
+[submodule "roles/dummy"]
+	path = roles/dummy
+	url = https://github.com/yannanlu/role-dummy.git

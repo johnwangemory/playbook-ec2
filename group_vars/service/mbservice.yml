@@ -1,0 +1,25 @@
+---
+qbroker_repo_url: https://68.117.220.134
+qbroker_artifact: qbroker-1.2.3.jar
+web_frontend: apache
+
+activemq_ssl: enabled
+activemq_broker_ip: 0.0.0.0
+activemq_broker_port: 61617
+activemq_broker_user: system
+activemq_broker_passwd: manager
+activemq_broker_list: ssl\://localhost\:61617
+
+mbservice_mq: activemq
+mbservice_mq_local: True
+mbservice_broker_list: activemq_broker_list
+mbservice_out_queue: MSG_OUT
+mbservice_proxy_queue: PROXY_OUT
+mbservice_mq_user: activemq_broker_user
+mbservice_mq_passwd: activemq_broker_passwd
+
+activemq_extra_sg_rules:
+  - proto: tcp
+    from_port: "{{activemq_broker_port}}"
+    to_port: "{{activemq_broker_port}}"
+    cidr_ip: 68.117.220.134/32

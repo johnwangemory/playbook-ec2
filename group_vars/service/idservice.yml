@@ -1,0 +1,23 @@
+---
+
+qbroker_repo_url: https://68.117.220.134
+qbroker_artifact: qbroker-1.2.3.jar
+web_frontend: nginx
+
+mysql_port: 3306
+mysql_db_name: testdb
+mysql_db_user: guest
+mysql_db_passwd: secret
+mysql_db_url: "jdbc:mysql://localhost:{{mysql_port}}/{{mysql_db_name}}"
+
+postgresql_db_name: testdb
+postgresql_db_port: 5432
+postgresql_db_user: guest
+postgresql_db_password: secret
+postgresql_db_url: "jdbc:postgresql://localhost:{{postgresql_db_port}}/{{postgresql_db_name}}"
+
+idservice_db: mysql
+idservice_db_local: True
+idservice_db_url: "{{postgresql_db_url if idservice_db == 'postgresql' else mysql_db_url}}"
+idservice_db_user: "{{postgresql_db_user if idservice_db == 'postgresql' else mysql_db_user}}"
+idservice_db_passwd: "{{postgresql_db_password if idservice_db == 'postgresql' else mysql_db_passwd}}"

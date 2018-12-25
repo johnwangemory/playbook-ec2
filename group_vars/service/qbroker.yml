@@ -1,0 +1,6 @@
+---
+qbroker_repo_url: https://68.117.220.134
+qbroker_shared_lib: qblite-1.0.1.tgz
+qbroker_artifact: qbroker-1.2.3.jar
+sg_name: "sg_{{key_name}}_qb"
+instance_tag: "{{key_name}}_qb_test"

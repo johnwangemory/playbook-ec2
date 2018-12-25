@@ -1,0 +1,24 @@
+---
+ec2_count: 2
+activemq_ssl: disabled
+activemq_broker_ip: 0.0.0.0
+activemq_broker_port: 61616
+activemq_broker_user: system
+activemq_broker_passwd: manager
+activemq_admin_ip: 0.0.0.0
+activemq_admin_port: 8161
+activemq_network_brokers: "{{allowed_hosts}}"
+
+activemq_extra_sg_rules:
+  - proto: tcp
+    from_port: "{{activemq_broker_port}}"
+    to_port: "{{activemq_broker_port}}"
+    cidr_ip: "{{ec2_subnet_cidr}}"
+  - proto: tcp
+    from_port: "{{activemq_broker_port}}"
+    to_port: "{{activemq_broker_port}}"
+    cidr_ip: 68.117.220.134/32
+  - proto: tcp
+    from_port: "{{activemq_admin_port}}"
+    to_port: "{{activemq_admin_port}}"
+    cidr_ip: 68.117.220.134/32
