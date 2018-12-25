@@ -80,5 +80,5 @@ Yannan Lu <yannanlu@yahoo.com>
 * [Ansible Docs] (http://docs.ansible.com)
 * [CentOS EC2 AMI List] (https://wiki.centos.org/Cloud/AWS)
 * [Ubuntu EC2 AMI Finder] (https://cloud-images.ubuntu.com/locator/ec2/)
-* [Ansible Lab for EC2] (https://yannanlu.github.io/playbook-ec2.html)
-* [Ansible Lab for ActiveMQ] (https://yannanlu.github.io/ec2-activemq.html)
+* [Ansible Lab for EC2] (https://yannanlu.github.io/playbook-ec2.txt)
+* [Ansible Lab for ActiveMQ] (https://yannanlu.github.io/ec2-activemq.txt)
