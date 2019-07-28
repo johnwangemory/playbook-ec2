@@ -67,3 +67,6 @@
 [submodule "roles/MonitorAgent"]
 	path = roles/MonitorAgent
 	url = https://github.com/yannanlu/role-MonitorAgent.git
+[submodule "roles/webproxy"]
+	path = roles/webproxy
+	url = https://github.com/yannanlu/role-webproxy.git

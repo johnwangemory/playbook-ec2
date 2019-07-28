@@ -1,0 +1,23 @@
+---
+qbroker_repo_url: s3://ylutest/qbroker
+qbroker_shared_lib: qblite-1.0.1.tgz
+qbroker_artifact: qbroker-1.2.4.jar
+broker1_ip: 127.0.0.1
+broker2_ip: 127.0.0.1
+broker_port: 8162
+
+webproxy_locations:
+  - service: broker1
+    proxy: "https://{{broker1_ip}}:{{broker_port}}/"
+    expire: 'off'
+  - service: broker2
+    proxy: "https://{{broker2_ip}}:{{broker_port}}/"
+    expire: 'off'
+
+webproxy_redirect_locations:
+  - service: admin
+    referer:
+      - broker1
+      - broker2
+
+extra_role: qbroker
