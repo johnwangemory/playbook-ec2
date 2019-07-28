@@ -1,6 +1,6 @@
 ---
 
 vpc_id: vpc-bd94a7d5
-subnet_id: subnet-de9606a4
-image_id: ami-8b92b4ee
-iam_role:
+subnet_ids:
+  - subnet-de9606a4
+image_id: ami-9cbf9bf9

@@ -61,3 +61,9 @@
 [submodule "roles/dummy"]
 	path = roles/dummy
 	url = https://github.com/yannanlu/role-dummy.git
+[submodule "roles/amazonmq"]
+	path = roles/amazonmq
+	url = https://github.com/yannanlu/role-amazonmq.git
+[submodule "roles/MonitorAgent"]
+	path = roles/MonitorAgent
+	url = https://github.com/yannanlu/role-MonitorAgent.git

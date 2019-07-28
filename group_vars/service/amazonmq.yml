@@ -1,0 +1,20 @@
+---
+subnet_ids:
+  - subnet-de9606a4
+  - subnet-d4738b98
+amazonmq_sg_name: "sg_{{stack_name}}_amazonmq_test"
+amazonmq_username: ylutest
+amazonmq_passwd: thetest123456
+amazonmq_cft: dual_broker_cft.json
+amazonmq_instance_type: mq.t2.micro
+amazonmq_publicly_accessible: 'false'
+
+amazonmq_extra_sg_rules:
+  - proto: tcp
+    from_port: "{{amazonmq_broker_port}}"
+    to_port: "{{amazonmq_broker_port}}"
+    cidr_ip: 68.117.195.161/32
+  - proto: tcp
+    from_port: "{{amazonmq_admin_port}}"
+    to_port: "{{amazonmq_admin_port}}"
+    cidr_ip: 68.117.195.161/32

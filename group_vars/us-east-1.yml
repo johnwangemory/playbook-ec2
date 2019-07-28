@@ -1,6 +1,6 @@
 ---
 
 vpc_id: vpc-7e19c804
-subnet_id: subnet-d061e4b7
-image_id: ami-cd0f5cb6
-iam_role:
+subnet_ids:
+  - subnet-d061e4b7
+image_id: ami-ae7bfdb8

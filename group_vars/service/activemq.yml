@@ -1,5 +1,12 @@
 ---
-ec2_count: 2
+subnet_ids:
+  - subnet-de9606a4
+  - subnet-d4738b98
+
+sg_name: sg_amq_{{key_name}}
+instance_tag: amq_{{key_name}}_test
+activemq_jmx_status: 'true'
+activemq_jmx_access: readonly
 activemq_ssl: disabled
 activemq_broker_ip: 0.0.0.0
 activemq_broker_port: 61616
@@ -13,12 +20,8 @@ activemq_extra_sg_rules:
   - proto: tcp
     from_port: "{{activemq_broker_port}}"
     to_port: "{{activemq_broker_port}}"
-    cidr_ip: "{{ec2_subnet_cidr}}"
-  - proto: tcp
-    from_port: "{{activemq_broker_port}}"
-    to_port: "{{activemq_broker_port}}"
-    cidr_ip: 68.117.220.134/32
+    cidr_ip: 68.117.195.161/32
   - proto: tcp
     from_port: "{{activemq_admin_port}}"
     to_port: "{{activemq_admin_port}}"
-    cidr_ip: 68.117.220.134/32
+    cidr_ip: 68.117.195.161/32

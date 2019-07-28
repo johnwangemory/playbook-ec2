@@ -6,6 +6,8 @@
   gather_facts: false
   vars:
     region: us-east-2
+    service_tag: "{{wrapper_service}}"
+    env_tag: test
 
   vars_files:
     - "group_vars/{{region}}.yml"
@@ -24,10 +26,12 @@
     allowed_hosts: "{{groups['ec2hosts']}}"
     ec2_private_ips: []
     ec2_sg_info: "{{hostvars['localhost'].ec2_sg_info}}"
-    ec2_subnet_cidr: "{{hostvars['localhost'].ec2_subnet_info.subnets[0].cidr_block}}"
+    ec2_sg_rules: "{{hostvars['localhost'].ec2_sg_rules}}"
+    ec2_subnet_info: "{{hostvars['localhost'].ec2_subnet_info}}"
+    profile: "{{hostvars['localhost'].ec2_profile}}"
     extra_role: dummy
     region: us-east-2
-    web_frontend: nginx
+    web_frontend: apache
     wrapper_service: idservice
 
   vars_files:

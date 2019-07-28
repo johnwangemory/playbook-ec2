@@ -1,17 +1,15 @@
 ---
-# Terminate EC2 instances
+# Create a CloudFormation stack for the given wrapper service
+## Create CloudFormation stack
 - hosts: localhost
   connection: local
   gather_facts: false
   vars:
     region: us-east-2
-    pause_for_down: 30
 
   vars_files:
-    - roles/ec2_launcher/defaults/main.yml
     - "group_vars/{{region}}.yml"
-    - group_vars/extra_sg_rules.yml
     - "group_vars/service/{{wrapper_service}}.yml"
 
-  tasks:
-    - include: roles/ec2_launcher/tasks/destroy.yml
+  roles:
+    - { role: "{{wrapper_service}}", stack_action: create_stack }

@@ -3,7 +3,13 @@
 - hosts: localhost
   connection: local
   gather_facts: false
+  vars:
+    region: us-east-2
+
+  vars_files:
+    - roles/ec2_launcher/defaults/main.yml
+    - "group_vars/{{region}}.yml"
+    - "group_vars/service/{{wrapper_service}}.yml"
 
   tasks:
-    - include_vars: roles/ec2_launcher/defaults/main.yml
     - include: roles/ec2_launcher/tasks/query.yml
