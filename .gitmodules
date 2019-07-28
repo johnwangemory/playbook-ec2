@@ -7,9 +7,6 @@
 [submodule "roles/ec2_launcher"]
 	path = roles/ec2_launcher
 	url = https://github.com/yannanlu/role-ec2_launcher.git
-[submodule "roles/ec2_destroyer"]
-	path = roles/ec2_destroyer
-	url = https://github.com/yannanlu/role-ec2_destroyer.git
 [submodule "roles/common"]
 	path = roles/common
 	url = https://github.com/yannanlu/role-common.git
