@@ -10,9 +10,9 @@
     env_tag: test
 
   vars_files:
-    - "group_vars/{{region}}.yml"
-    - group_vars/extra_sg_rules.yml
-    - "group_vars/service/{{wrapper_service}}.yml"
+    - "vars/{{region}}.yml"
+    - vars/extra_sg_rules.yml
+    - "vars/service/{{wrapper_service}}.yml"
 
   roles:
     - ec2_launcher
@@ -35,10 +35,10 @@
     wrapper_service: idservice
 
   vars_files:
-    - "group_vars/{{region}}.yml"
-    - group_vars/extra_sg_rules.yml
-    - group_vars/monit.yml
-    - "group_vars/service/{{wrapper_service}}.yml"
+    - "vars/{{region}}.yml"
+    - vars/extra_sg_rules.yml
+    - vars/monit.yml
+    - "vars/service/{{wrapper_service}}.yml"
 
   pre_tasks:
     - name: Set ec2_private_ips

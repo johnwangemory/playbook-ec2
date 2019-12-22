@@ -8,8 +8,8 @@
     region: us-east-2
 
   vars_files:
-    - "group_vars/{{region}}.yml"
-    - "group_vars/service/{{wrapper_service}}.yml"
+    - "vars/{{region}}.yml"
+    - "vars/service/{{wrapper_service}}.yml"
 
   roles:
     - { role: "{{wrapper_service}}", stack_action: delete_stack }

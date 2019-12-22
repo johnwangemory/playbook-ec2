@@ -6,11 +6,13 @@ This playbook treats the EC2 instance immutable on most of the EC2 properties, s
 
 This playbook also requires access to AWS S3 service for artifacts such as qblite-1.0.1.tgz for QBroker. Therefore, it is assumed that the artifacts have been already uploaded to an S3 bucket and a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the EC2 instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variables such as qbroker_repo_url in case they are different from the default values.
 
-## Status
-
-Tested with images of Ubuntu 16.04, CentOS 7 and RedHat 7 only.
 
 ## Description
+
+It is a challenge to work on a repo with **submodules**. Since this repo has a bunch of **submodules**, please always use the url of **HTTPS** to clone the repo with the option of **--recurse-submodules**. For example:
+```
+git clone --recurse-submodules https://github.com/yannanlu/playbook-ec2.git
+```
 
 To run the playbook to provision an EC2 instance of CentOS 7 on the default AWS profile with the default web application, idservice, plus the database of MySQL and the web frontend of Apache
 ```
@@ -88,6 +90,10 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | qbroker_repo_url             | s3://ylutest/qbroker | repo url for qbroker tarball   | roles/qbroker/defaults/main.yml      |
 
 The playbook also requires boto and boto3 installed.
+
+## Status
+
+Tested on images of Ubuntu 16.04, CentOS 7 and RHEL 7.3 with Ansible Core 2.6.
 
 ## Author
 Yannan Lu <yannanlu@yahoo.com>

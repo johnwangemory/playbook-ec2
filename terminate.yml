@@ -9,9 +9,9 @@
 
   vars_files:
     - roles/ec2_launcher/defaults/main.yml
-    - "group_vars/{{region}}.yml"
+    - "vars/{{region}}.yml"
     - group_vars/extra_sg_rules.yml
-    - "group_vars/service/{{wrapper_service}}.yml"
+    - "vars/service/{{wrapper_service}}.yml"
 
   tasks:
     - include: roles/ec2_launcher/tasks/destroy.yml

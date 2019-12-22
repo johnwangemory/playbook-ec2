@@ -8,8 +8,8 @@
 
   vars_files:
     - roles/ec2_launcher/defaults/main.yml
-    - "group_vars/{{region}}.yml"
-    - "group_vars/service/{{wrapper_service}}.yml"
+    - "vars/{{region}}.yml"
+    - "vars/service/{{wrapper_service}}.yml"
 
   tasks:
     - include: roles/ec2_launcher/tasks/query.yml
