@@ -1,11 +1,10 @@
 # playbook-ec2
 
-This is a repo of role-based Ansible playbooks to provision EC2 instances and to list or terminate active instances. All the roles are submodules, supporting either cloud or on-premise platform. They are idempotent which means it is safe to run them multiple times. Currently, all the playbooks are tested with Ubuntu, CentOS and RedHat. Two web applications, idservice and mbservice, have been fully tested with Nginx and Apache. Within these web applications, roles for Nginx, Apache, Tomcat, ActiveMQ, MySQL, and Postgresql are used.
+This is a repo of role-based Ansible playbooks to provision EC2 instances and to list or terminate active instances. All the roles are submodules, supporting either cloud or local platform. They are idempotent which means it is safe to run them multiple times. Currently, all the playbooks are tested with Ubuntu, CentOS and RedHat. Two web applications, idservice and mbservice, have been fully tested with Nginx and Apache. Within these web applications, roles for Nginx, Apache, Tomcat, ActiveMQ, MySQL, and Postgresql are used.
 
 This playbook treats the EC2 instance immutable on most of the EC2 properties, such as Region, AMI, Type, VPC, Subnet, Volume, etc. It means if any of them needs to be changed, a new instance has to be created with the old instance destroyed. But for other server configurations, such as packages, applications, etc, they will be treated as mutable.
 
 This playbook also requires access to AWS S3 service for artifacts such as qblite-1.0.1.tgz for QBroker. Therefore, it is assumed that the artifacts have been already uploaded to an S3 bucket and a role to access S3 is already set up for the user account. By default, the role of S3GetRole is assigned to the EC2 instance at the creation. Make sure to overwrite the name of the role via iam_role if it has a different name. You may also overwrite the variables such as qbroker_repo_url in case they are different from the default values.
-
 
 ## Description
 
@@ -74,16 +73,16 @@ In order to run this playbook, the path of the ssh private key file for the key_
 | sg_name                      | {{key_name}}_sg      | name of the security group     | undefined                            |
 | instance_tag                 | {{key_name}}_test    | tag name for your EC2 instance | undefined                            |
 | instance_type                | t2.micro             | type of EC2 instance           | roles/ec2_launcher/defaults/main.yml |
-| image_id                     | ami-9cbf9bf9         | AMI id for your OS platform    | group_vars/us-east-2.yml             |
+| image_id                     | ami-9cbf9bf9         | AMI id for your OS platform    | vars/us-east-2.yml                   |
 | profile                      | default              | AWS profile name               | roles/ec2_launcher/defaults/main.yml |
-| region                       | us-east-2            | EC2 region of AWS              | group_vars/us-east-2.yml             |
-| vpc_id                       | vpc-bd94a7d5         | id of an existing VPC          | group_vars/us-east-2.yml             |
-| subnect_id                   | subnet-de9606a4      | id of a Subnet on the VPC      | group_vars/us-east-2.yml             |
+| region                       | us-east-2            | EC2 region of AWS              | vars/us-east-2.yml                   |
+| vpc_id                       | vpc-bd94a7d5         | id of an existing VPC          | vars/us-east-2.yml                   |
+| subnect_id                   | subnet-de9606a4      | id of a Subnet on the VPC      | vars/us-east-2.yml                   |
 | iam_role                     | S3GetRole            | IAM Role for the instance      | roles/ec2_launcher/defaults/main.yml |
 | default_user                 | ec2-user             | default user for ssh           | roles/ec2_launcher/defaults/main.yml |
 | pause_for_up                 | 15                   | seconds to pause for vm up     | roles/ec2_launcher/defaults/main.yml |
 | sg_rules                     | ...                  | list of rules of security group| roles/ec2_launcher/defaults/main.yml |
-| extra_sg_rules               | ...                  | list of extra rules of sgroup  | group_vars/extra_sg_rules.yml        |
+| extra_sg_rules               | ...                  | list of extra rules of sgroup  | vars/extra_sg_rules.yml              |
 | wrapper_service              | idservice            | name of the wrapper role       | provision.yml                        |
 | web_frontend                 | apache               | name of the web frontend       | provision.yml                        |
 | extra_role                   | undefined            | name of the role for backend   |                                      |
@@ -93,10 +92,7 @@ The playbook also requires boto and boto3 installed.
 
 ## Status
 
-Tested on images of Ubuntu 16.04, CentOS 7 and RHEL 7.3 with Ansible Core 2.6.
-
-## Author
-Yannan Lu <yannanlu@yahoo.com>
+Tested on images of Ubuntu 18.04, CentOS 7 and RHEL 7.3 with Ansible Core 2.6.
 
 ## See Also
 * [Ansible Docs] (http://docs.ansible.com)
